@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DragRacerGwil.Controls.csBasicControlGwil">
+    <Position X="6.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgiAAAgCgQAgMQAAAKAAEQAgAAQAAACAAAAAgAAIiA=</HashCode>
+      <FileName>Controls\BasicControlGwil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DragRacerGwil.Controls.csButtonGwil">
+    <Position X="5.25" Y="0.75" Width="1.5" />
+    <InheritanceLine Type="DragRacerGwil.Controls.csBasicControlGwil" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.25" Y="0.993" />
+        <Point X="8.625" Y="0.993" />
+        <Point X="8.625" Y="0.375" />
+        <Point X="4.875" Y="0.375" />
+        <Point X="4.875" Y="1.209" />
+        <Point X="5.25" Y="1.209" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AgAgIAAAAAAoAAAAgAAAAACACCgAAAAAAAAACAACAAA=</HashCode>
+      <FileName>Controls\csButtonGwil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
