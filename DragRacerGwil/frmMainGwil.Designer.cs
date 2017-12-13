@@ -25,6 +25,7 @@
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.frmMainGwil_MouseClick);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.frmMainGwil_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.frmMainGwil_MouseMove);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.frmMainGwil_MouseUp);
             this.ResumeLayout(false);
 
         }

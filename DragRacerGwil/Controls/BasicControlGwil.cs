@@ -26,12 +26,13 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public string Name
         {
-            get => nameGwil;
+            get => nameGwil;//return the name
             set
             {
+                //the the new name is diffente than say the control changed
                 if (nameGwil != value)
                     changedSinceDrawGwil = true;
-                nameGwil = value;
+                nameGwil = value;//update the name value
             }
         }
 
@@ -40,12 +41,13 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public Size Size
         {
-            get => sizeGwil;
+            get => sizeGwil;//returns the size
             set
             {
+                //if the size changed than sya the control chaged
                 if (sizeGwil != value)
                     changedSinceDrawGwil = true;
-                sizeGwil = value;
+                sizeGwil = value;//update the size value
             }
         }
 
@@ -54,26 +56,29 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public Point Location
         {
-            get => locationGwil;
+            get => locationGwil;//returns the location
             set
             {
+                //of the location has changed say the control has changed
                 if (locationGwil != value)
                     changedSinceDrawGwil = true;
-                locationGwil = value;
+                locationGwil = value;//update the location
             }
         }
 
         /// <summary>
-        /// Possible childs
+        /// Childs if it has any
         /// </summary>
-        public csBasicControlGwil[] Childs
+        public List<csBasicControlGwil> Childs
         {
-            get => controlsGwil.ToArray();
+            get => controlsGwil;//returns the controls in an array format
             set
             {
+                //if the value is not the same than say the control has changed
                 if (controlsGwil != value.ToList())
                     changedSinceDrawGwil = true;
-                controlsGwil = value.ToList();
+                //replace the list
+                controlsGwil = value;
             }
         }
 
@@ -90,7 +95,7 @@ namespace DragRacerGwil.Controls
         /// <param name="eGwil">The extra info of the event</param>
         public void ClickGwil(object senderGwil, System.Windows.Forms.MouseEventArgs eGwil)
         {
-            OnClickGwil?.Invoke(senderGwil, eGwil);
+            OnClickGwil?.Invoke(senderGwil, eGwil);//raise the eventhandler if is not null
         }
 
 
@@ -101,8 +106,8 @@ namespace DragRacerGwil.Controls
         /// <param name="eGwil">The extra info of the event</param>
         public void MouseDownRaiseGwil(object senderGwil, System.Windows.Forms.MouseEventArgs eGwil)
         {
-            mouseDownGwil = true;
-            OnMouseDownGwil?.Invoke(senderGwil, eGwil);
+            mouseDownGwil = true;//say the mousebutton is down
+            OnMouseDownGwil?.Invoke(senderGwil, eGwil);//raise the event handler if it not null
         }
 
         /// <summary>
@@ -112,8 +117,8 @@ namespace DragRacerGwil.Controls
         /// <param name="eGwil">The extra info of the event</param>
         public void MouseUpRaiseGwil(object senderGwil, System.Windows.Forms.MouseEventArgs eGwil)
         {
-            mouseDownGwil = false;
-            OnMouseUpGwil?.Invoke(senderGwil, eGwil);
+            mouseDownGwil = false;//say the mouse if not down
+            OnMouseUpGwil?.Invoke(senderGwil, eGwil);//raise the eventhandler if it is not null
         }
 
         /// <summary>
@@ -123,8 +128,8 @@ namespace DragRacerGwil.Controls
         /// <param name="eGwil">The extra info of the event</param>
         public void MouseMoveRaiseGwil(object senderGwil, System.Windows.Forms.MouseEventArgs eGwil)
         {
-            this.mouseEnteredGwil = true;
-            OnMouseMoveGwil?.Invoke(senderGwil, eGwil);
+            this.mouseEnteredGwil = true;//say the mouse is in the control
+            OnMouseMoveGwil?.Invoke(senderGwil, eGwil);//raise the mouse moved event if it is not null
         }
 
         /// <summary>
@@ -134,8 +139,8 @@ namespace DragRacerGwil.Controls
         /// <param name="eGwil">The extra info of the event</param>
         public void MouseLeaveGwil(object senderGwil, System.Windows.Forms.MouseEventArgs eGwil)
         {
-            mouseEnteredGwil = false;
-            OnMouseLeaveGwil?.Invoke(senderGwil, eGwil);
+            mouseEnteredGwil = false;//say the mouse is not in the control
+            OnMouseLeaveGwil?.Invoke(senderGwil, eGwil);//raise the mouse left event if it is not null
         }
     }
 }

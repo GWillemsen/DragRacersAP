@@ -37,16 +37,16 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public Font Font
         {
-            get => fontGwil;
-            set => fontGwil = value;
+            get => fontGwil;//returns the current font
+            set => fontGwil = value;//sets the new font
         }
 
         /// <summary>
         /// The backgroundcolor use for the button
         /// </summary>
         public Color BackgroundColor {
-            get => backgroundColorGwil;
-            set => backgroundColorGwil = value;
+            get => backgroundColorGwil;//returns the currrent background color
+            set => backgroundColorGwil = value;//set the new background color
         }
 
         /// <summary>
@@ -54,8 +54,8 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public Color ForegroundColor
         {
-            get => foregroundColorGwil;
-            set => foregroundColorGwil = value;
+            get => foregroundColorGwil;//returns the text color
+            set => foregroundColorGwil = value;//sets the text color
         }
 
         /// <summary>
@@ -63,8 +63,8 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public string Text
         {
-            get => contentGwil;
-            set => contentGwil = value;
+            get => contentGwil;//returns the text in the button
+            set => contentGwil = value;//sets the text in the button
         }
 
         /// <summary>
@@ -72,20 +72,15 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public Brush DrawingBrush
         {
-            get => drawBrushGwil;
-            set => drawBrushGwil = value;
-        }
-
-        public Pen DrawingPen
-        {
-            get => new Pen(drawBrushGwil);
+            get => drawBrushGwil;//returns the drawing brush
+            set => drawBrushGwil = value;//sets the drawing brush
         }
 
         public override void DrawGwil(Graphics grGwil)
         {
             if (changedSinceDrawGwil == true) {
                 System.Diagnostics.Debug.WriteLine(mouseDownGwil + "  " + mouseEnteredGwil);
-                if (mouseEnteredGwil) {
+                if (mouseEnteredGwil && mouseDownGwil == false) {
                     //create an array with the corners of the rectagle
                     Point[] cornersGwil = new Point[] {
                         Location,
@@ -144,7 +139,7 @@ namespace DragRacerGwil.Controls
                 //create new string to fit the content that will fit in it
                 string drawingContentGwil = contentGwil.Substring(0, charsCountGwil - 1);
                 //draw the string
-                grGwil.DrawString(drawingContentGwil, Font, new SolidBrush(Color.FromArgb(255, 0, 0, 255)), new Rectangle(Location, Size));
+                grGwil.DrawString(drawingContentGwil, Font, new SolidBrush(foregroundColorGwil), new Rectangle(Location, Size));
                 changedSinceDrawGwil = false;
             }
         }
