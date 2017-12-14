@@ -4,10 +4,38 @@ namespace DragRacerGwil.Controls
 {
     public class csLabelGwil : csBasicControlGwil
     {
-        private Color foregroundColorGwil = Color.Black;
-        private Brush drawBrushGwil = new SolidBrush(Color.Gray);
+        #region Fields
+
         private string contentGwil = "";
+        private Brush drawBrushGwil = new SolidBrush(Color.Gray);
         private Font fontGwil = new Font("Times New Roman", 11);
+        private Color foregroundColorGwil = Color.Black;
+
+        #endregion Fields
+
+        public csLabelGwil()
+        {
+            contentGwil = NameGwil;
+            drawBrushGwil = new SolidBrush(Color.Gray);
+            foregroundColorGwil = Color.Black;
+        }
+
+        public csLabelGwil(string a_NameGwil, Point a_LocationGwil)
+        {
+            FullResetGwil();
+            LocationGwil = a_LocationGwil;
+        }
+
+        #region Properties
+
+        /// <summary>
+        /// The brush used to draw the text
+        /// </summary>
+        public Brush DrawingBrushGwil
+        {
+            get => drawBrushGwil;//returns the drawing brush
+            set => drawBrushGwil = value;//sets the drawing brush
+        }
 
         /// <summary>
         /// The font to use when drawing the text
@@ -36,21 +64,16 @@ namespace DragRacerGwil.Controls
             set => contentGwil = value;//sets the text in the button
         }
 
-        /// <summary>
-        /// The brush used to draw the text
-        /// </summary>
-        public Brush DrawingBrushGwil
-        {
-            get => drawBrushGwil;//returns the drawing brush
-            set => drawBrushGwil = value;//sets the drawing brush
-        }
+        #endregion Properties
+
+        #region Methods
 
         public override void DrawGwil(Graphics grGwil)
         {
             if (changedSinceDrawGwil == true)
             {
                 //just draw a straight forward rectangle with basic color
-                grGwil.FillRectangle(drawBrushGwil, new Rectangle(LocationGwil, SizeGwil));
+                grGwil.FillRectangle(drawBrushGwil, new RectangleF(LocationGwil, SizeGwil));
 
                 //measure how many lines and characters will fit in the button
                 int charsCountGwil = 0;
@@ -61,9 +84,11 @@ namespace DragRacerGwil.Controls
                 string drawingContentGwil = contentGwil.Substring(0, charsCountGwil - 1);
 
                 //draw the string
-                grGwil.DrawString(drawingContentGwil, FontGwil, new SolidBrush(foregroundColorGwil), new Rectangle(LocationGwil, SizeGwil));
+                grGwil.DrawString(drawingContentGwil, FontGwil, new SolidBrush(foregroundColorGwil), new RectangleF(LocationGwil, SizeGwil));
                 changedSinceDrawGwil = false;
             }
         }
+
+        #endregion Methods
     }
 }

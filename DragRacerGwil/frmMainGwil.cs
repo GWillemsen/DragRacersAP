@@ -8,11 +8,19 @@ namespace DragRacerGwil
 {
     public partial class frmMainGwil : Form
     {
+        #region Fields
+
         //list of controls to draw
         private static List<csBasicControlGwil> controlsGwil = new List<csBasicControlGwil>();
 
         //offset of the graphics on the screen
         private Point graphicsOffsetGwil = new Point(0, 0);
+
+        private Size lastKnowSizeGwil = new Size(0, 0);
+
+        #endregion Fields
+
+        #region Constructors
 
         public frmMainGwil()
         {
@@ -43,6 +51,10 @@ namespace DragRacerGwil
             tmrKeepDrawingGwil.Enabled = false;
         }
 
+        #endregion Constructors
+
+        #region Methods
+
         protected override void OnPaint(PaintEventArgs e)
         {
             //create an new graphics object from the existing e.graphics
@@ -68,7 +80,6 @@ namespace DragRacerGwil
              * will do its run
              */
             base.OnPaint(e);
-            System.Diagnostics.Debug.WriteLine(DateTime.Now.ToLongTimeString() + ":"+ DateTime.Now.Millisecond);
         }
 
         private void frmMainGwil_MouseClick(object sender, MouseEventArgs e)
@@ -84,6 +95,42 @@ namespace DragRacerGwil
                     {
                         //raise the controls click event
                         controlGwil.ClickGwil(this, e);
+                    }
+                }
+            }
+        }
+
+        private void frmMainGwil_MouseDown(object sender, MouseEventArgs e)
+        {
+            foreach (csBasicControlGwil controlGwil in controlsGwil)
+            {
+                //check if mouse is in the control
+                if (e.X >= controlGwil.LocationGwil.X + graphicsOffsetGwil.X &&
+                    e.X <= controlGwil.SizeGwil.Width + controlGwil.LocationGwil.X + graphicsOffsetGwil.X)
+                {
+                    if (e.Y >= controlGwil.LocationGwil.Y + graphicsOffsetGwil.Y &&
+                         e.Y <= controlGwil.LocationGwil.Y + controlGwil.SizeGwil.Height + graphicsOffsetGwil.Y)
+                    {
+                        //raise the mouse down event
+                        controlGwil.MouseDownRaiseGwil(this, e);
+                    }
+                    else
+                    {
+                        //if mouse is down or mouse is entered, but the mouse is not actualy there reset to properties
+                        if (controlGwil.mouseDownGwil == true || controlGwil.mouseEnteredGwil == true)
+                        {
+                            controlGwil.mouseDownGwil = false;
+                            controlGwil.mouseEnteredGwil = false;
+                        }
+                    }
+                }
+                else
+                {
+                    //if mouse is down or mouse is entered, but the mouse is not actualy there reset to properties
+                    if (controlGwil.mouseDownGwil == true || controlGwil.mouseEnteredGwil == true)
+                    {
+                        controlGwil.mouseDownGwil = false;
+                        controlGwil.mouseEnteredGwil = false;
                     }
                 }
             }
@@ -128,48 +175,6 @@ namespace DragRacerGwil
                 this.Invalidate();
         }
 
-        private void tmrKeepDrawingGwil_Tick(object sender, EventArgs e)
-        {
-            //force an screen update
-            this.Invalidate();
-        }
-
-        private void frmMainGwil_MouseDown(object sender, MouseEventArgs e)
-        {
-            foreach (csBasicControlGwil controlGwil in controlsGwil)
-            {
-                //check if mouse is in the control
-                if (e.X >= controlGwil.LocationGwil.X + graphicsOffsetGwil.X &&
-                    e.X <= controlGwil.SizeGwil.Width + controlGwil.LocationGwil.X + graphicsOffsetGwil.X)
-                {
-                    if (e.Y >= controlGwil.LocationGwil.Y + graphicsOffsetGwil.Y &&
-                         e.Y <= controlGwil.LocationGwil.Y + controlGwil.SizeGwil.Height + graphicsOffsetGwil.Y)
-                    {
-                        //raise the mouse down event
-                        controlGwil.MouseDownRaiseGwil(this, e);
-                    }
-                    else
-                    {
-                        //if mouse is down or mouse is entered, but the mouse is not actualy there reset to properties
-                        if (controlGwil.mouseDownGwil == true || controlGwil.mouseEnteredGwil == true)
-                        {
-                            controlGwil.mouseDownGwil = false;
-                            controlGwil.mouseEnteredGwil = false;
-                        }
-                    }
-                }
-                else
-                {
-                    //if mouse is down or mouse is entered, but the mouse is not actualy there reset to properties
-                    if (controlGwil.mouseDownGwil == true || controlGwil.mouseEnteredGwil == true)
-                    {
-                        controlGwil.mouseDownGwil = false;
-                        controlGwil.mouseEnteredGwil = false;
-                    }
-                }
-            }
-        }
-
         private void frmMainGwil_MouseUp(object sender, MouseEventArgs e)
         {
             foreach (csBasicControlGwil controlGwil in controlsGwil)
@@ -206,9 +211,34 @@ namespace DragRacerGwil
             }
         }
 
-        private void frmMainGwil_Load(object sender, EventArgs e)
+        private void frmMainGwil_Resize(object sender, EventArgs e)
         {
-
+            if (lastKnowSizeGwil.Width != Size.Width || lastKnowSizeGwil.Height != Size.Height)
+            {
+                double resizerWidthGwil = Size.Width / (double)lastKnowSizeGwil.Width;
+                double resizerHeightGwil = Size.Height / (double)lastKnowSizeGwil.Height;
+                foreach (csBasicControlGwil controlGwil in controlsGwil)
+                {
+                    System.Diagnostics.Debug.WriteLine(controlGwil.SizeGwil + "    " + new SizeF(
+                        (float)(controlGwil.SizeGwil.Width * resizerWidthGwil),
+                        (float)(controlGwil.SizeGwil.Height * resizerHeightGwil)).ToString());
+                    controlGwil.SizeGwil = new SizeF(
+                        (float)(controlGwil.SizeGwil.Width * resizerWidthGwil),
+                        (float)(controlGwil.SizeGwil.Height * resizerHeightGwil));
+                }
+                System.Diagnostics.Debug.WriteLine("end of loop");
+                System.Diagnostics.Debug.WriteLine(resizerWidthGwil);
+                this.Invalidate();
+                lastKnowSizeGwil = Size;
+            }
         }
+
+        private void tmrKeepDrawingGwil_Tick(object sender, EventArgs e)
+        {
+            //force an screen update
+            this.Invalidate();
+        }
+
+        #endregion Methods
     }
 }
