@@ -49,6 +49,8 @@
   <ItemGroup>
     <Compile Include="Controls\BasicControlGwil.cs" />
     <Compile Include="Controls\csButtonGwil.cs" />
+    <Compile Include="Controls\csLabelGwil.cs" />
+    <Compile Include="Controls\csDragRacerGwil.cs" />
     <Compile Include="frmMainGwil.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -69,7 +71,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="classes.cd" />
+    <None Include="Controls\classesGwil.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
