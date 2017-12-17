@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace DragRacerGwil.Controls
 {
@@ -145,7 +146,7 @@ namespace DragRacerGwil.Controls
                         new PointF(LocationGwil.X, LocationGwil.Y + SizeGwil.Height)
                     };
                     //create new brush with the corners and center color
-                    System.Drawing.Drawing2D.PathGradientBrush pathBrushGwil = new System.Drawing.Drawing2D.PathGradientBrush(cornersGwil);
+                    PathGradientBrush pathBrushGwil = new PathGradientBrush(cornersGwil);
                     pathBrushGwil.CenterColor = BackgroundColorGwil;
 
                     //creating new color for surrounded colors
@@ -173,7 +174,7 @@ namespace DragRacerGwil.Controls
                         new PointF(LocationGwil.X, LocationGwil.Y + SizeGwil.Height)
                     };
                     //create new brush with the corners and center color
-                    System.Drawing.Drawing2D.PathGradientBrush pathBrushGwil = new System.Drawing.Drawing2D.PathGradientBrush(cornersGwil);
+                    PathGradientBrush pathBrushGwil = new PathGradientBrush(cornersGwil);
                     pathBrushGwil.CenterColor = BackgroundColorGwil;
 
                     //creating new color for surrounded colors

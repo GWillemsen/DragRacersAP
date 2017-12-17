@@ -136,6 +136,7 @@ namespace DragRacerGwil.Controls
                     changedSinceDrawGwil = true;
                 backgroundColorGwil = value;//set the new background color
             }
+            
         }
 
         /// <summary>
