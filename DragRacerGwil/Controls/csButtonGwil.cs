@@ -10,7 +10,7 @@ namespace DragRacerGwil.Controls
     {
         #region Fields
 
-        private static Color foregroundColorGwil = Color.Black;        
+        private static Color foregroundColorGwil = Color.Black;
         private Brush drawBrushGwil = new SolidBrush(Color.Gray);
         private Font fontGwil = new Font("Times New Roman", 11);
 
@@ -54,8 +54,9 @@ namespace DragRacerGwil.Controls
         /// <param name="a_SizeGwil">The size of the button</param>
         /// <param name="a_Text">The text of the button</param>
         /// <param name="a_FontGwil">The font of the text</param>
-        public csButtonGwil(Point a_LocationGwil, Size a_SizeGwil, string a_NameGwil, string a_Text = "", Font a_FontGwil = default(Font))
+        public csButtonGwil(string a_NameGwil)
         {
+            FullResetGwil();
             //add events for the redraw of the button
             OnMouseDownGwil += (senderGwil, eGwil) =>
             {
@@ -73,12 +74,96 @@ namespace DragRacerGwil.Controls
             {
                 changedSinceDrawGwil = true;
             };
+
+            //set the properties
+            NameGwil = a_NameGwil;
+        }
+
+        /// <summary>
+        /// Creates an new button with event handlers for mouse down,up,move and leave
+        /// </summary>
+        /// <param name="a_SizeGwil">The size of the button</param>
+        /// <param name="a_NameGwil">The name of the label</param>
+        public csButtonGwil(string a_NameGwil, Size a_SizeGwill)
+        {
+            FullResetGwil();
+            //add events for the redraw of the button
+            OnMouseDownGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
+            OnMouseUpGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
+            OnMouseMoveGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
+            OnMouseLeaveGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
+
+            //set the properties
+            SizeGwil = a_SizeGwill;
+            NameGwil = a_NameGwil;
+        }
+
+        /// <summary>
+        /// Creates an new button with event handlers for mouse down,up,move and leave
+        /// </summary>
+        /// <param name="a_LocationGwil">The location of the button</param>
+        /// <param name="a_SizeGwil">The size of the button</param>
+        /// <param name="a_NameGwil">The name of the label</param>
+        public csButtonGwil(string a_NameGwil, Size a_SizeGwil, Point a_LocationGwil)
+        {
+            FullResetGwil();
+            //add events for the redraw of the button
+            OnMouseDownGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
+            OnMouseUpGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
+            OnMouseMoveGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
+            OnMouseLeaveGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
+
+            //set the properties
             SizeGwil = a_SizeGwil;
             LocationGwil = a_LocationGwil;
-            if (a_Text != "")
-                ContentGwil = a_Text;
-            if (a_FontGwil != null)
-                fontGwil = a_FontGwil;
+            NameGwil = a_NameGwil;
+        }
+
+        /// <summary>
+        /// Creates an new button with event handlers for mouse down,up,move and leave
+        /// </summary>
+        /// <param name="a_LocationGwil">The location of the button</param>
+        /// <param name="a_SizeGwil">The size of the button</param>
+        /// <param name="a_Text">The text of the button</param>
+        /// <param name="a_NameGwil">The name of the label</param>
+        public csButtonGwil(string a_NameGwil, Size a_SizeGwil, Point a_LocationGwil, string a_Text)
+        {
+            FullResetGwil();
+            //add events for the redraw of the button
+            OnMouseDownGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
+            OnMouseUpGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
+            OnMouseMoveGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
+            OnMouseLeaveGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
+
+            //set the properties
+            SizeGwil = a_SizeGwil;
+            LocationGwil = a_LocationGwil;
+            ContentGwil = a_Text;
+            NameGwil = a_NameGwil;
+        }
+
+        /// <summary>
+        /// Creates an new button with event handlers for mouse down,up,move and leave
+        /// </summary>
+        /// <param name="a_LocationGwil">The location of the button</param>
+        /// <param name="a_SizeGwil">The size of the button</param>
+        /// <param name="a_Text">The text of the button</param>
+        /// <param name="a_FontGwil">The font of the text</param>
+        /// <param name="a_NameGwil">The name of the label</param>
+        public csButtonGwil(string a_NameGwil, Size a_SizeGwil, Point a_LocationGwil, string a_Text, Font a_FontGwil)
+        {
+            FullResetGwil();
+            //add events for the redraw of the button
+            OnMouseDownGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
+            OnMouseUpGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
+            OnMouseMoveGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
+            OnMouseLeaveGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
+
+            //set the properties
+            SizeGwil = a_SizeGwil;
+            LocationGwil = a_LocationGwil;
+            ContentGwil = a_Text;
+            fontGwil = a_FontGwil;
             NameGwil = a_NameGwil;
         }
 

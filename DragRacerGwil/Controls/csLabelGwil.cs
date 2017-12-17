@@ -13,18 +13,68 @@ namespace DragRacerGwil.Controls
 
         #endregion Fields
 
+        #region Constructors
+
+        /// <summary>
+        /// Creates an new label
+        /// </summary>
         public csLabelGwil()
         {
+            FullResetGwil();
             contentGwil = NameGwil;
             drawBrushGwil = new SolidBrush(Color.Gray);
             foregroundColorGwil = Color.Black;
         }
 
-        public csLabelGwil(string a_NameGwil, Point a_LocationGwil)
+        /// <summary>
+        /// Creates an new label
+        /// </summary>
+        /// <param name="a_NameGwil">The name of the label</param>
+        /// <param name="a_LocationGwil">The location of the label</param>
+        /// <param name="a_ControlSizeGwil">The size of the label</param>
+        public csLabelGwil(string a_NameGwil, Point a_LocationGwil, Size a_ControlSizeGwil)
         {
             FullResetGwil();
             LocationGwil = a_LocationGwil;
+            NameGwil = a_NameGwil;
+            SizeGwil = a_ControlSizeGwil;
         }
+
+        /// <summary>
+        /// Creates an new label
+        /// </summary>
+        /// <param name="a_NameGwil">The name of the label</param>
+        /// <param name="a_LocationGwil">The location of the label</param>
+        /// <param name="a_ControlSizeGwil">The size of the label</param>
+        /// <param name="a_ContentGwil">The text of the label</param>
+        public csLabelGwil(string a_NameGwil, Point a_LocationGwil, Size a_ControlSizeGwil, string a_Content)
+        {
+            FullResetGwil();
+            LocationGwil = a_LocationGwil;
+            NameGwil = a_NameGwil;
+            ContentGwil = a_Content;
+            SizeGwil = a_ControlSizeGwil;
+        }
+
+        /// <summary>
+        /// Creates an new label
+        /// </summary>
+        /// <param name="a_NameGwil">The name of the label</param>
+        /// <param name="a_LocationGwil">The location of the label</param>
+        /// <param name="a_ControlSizeGwil">The size of the label</param>
+        /// <param name="a_ContentGwil">The text of the label</param>
+        /// <param name="a_TextColorGwil">The color of the text</param>
+        public csLabelGwil(string a_NameGwil, Point a_LocationGwil, Size a_ControlSizeGwil, string a_ContentGwil, Color a_TextColorGwil)
+        {
+            FullResetGwil();
+            LocationGwil = a_LocationGwil;
+            NameGwil = a_NameGwil;
+            ContentGwil = a_ContentGwil;
+            foregroundColorGwil = a_TextColorGwil;
+            SizeGwil = a_ControlSizeGwil;
+        }
+
+        #endregion Constructors
 
         #region Properties
 
