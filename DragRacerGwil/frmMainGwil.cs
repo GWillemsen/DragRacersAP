@@ -12,12 +12,10 @@ namespace DragRacerGwil
 
         //list of controls to draw
         private static List<csBasicControlGwil> controlsGwil = new List<csBasicControlGwil>();
-
         //offset of the graphics on the screen
         private Point graphicsOffsetGwil = new Point(0, 0);
-
         private Size lastKnowSizeGwil = new Size(0, 0);
-
+        private PointF[] trackGwil = new PointF[1000];
         #endregion Fields
 
         #region Constructors
@@ -26,29 +24,42 @@ namespace DragRacerGwil
         {
             //initialize the normal form items
             InitializeComponent();
+            float xPosGwil = 100;
+            bool downGwil = false;
+            for(int trackNumberPointGwil = 0;  trackNumberPointGwil < trackGwil.Length; trackNumberPointGwil++)
+            {
+                trackGwil[trackNumberPointGwil] = new PointF(xPosGwil, (float)trackNumberPointGwil / 10);
+                if(downGwil == true)
+                {
+                    xPosGwil = xPosGwil - 0.3F;
+                    if (xPosGwil <= 0)
+                        downGwil = false;
+                }
+                else
+                {
+                    xPosGwil += 0.3F;
+                    if (xPosGwil >= 200)
+                        downGwil = true;
+                }
+            }
+
             //create a graphics out of the current form
             Graphics grGwil = this.CreateGraphics();
 
-            //create a new button
-            csButtonGwil obHelloWorldButtonGwil = new csButtonGwil();
-
-            //set the controls properties
-            obHelloWorldButtonGwil.SizeGwil = new Size(100, 20);
-            obHelloWorldButtonGwil.TextGwil = "Hello this is a button";
-            //add the event function that is raised when it is clicked
-            obHelloWorldButtonGwil.OnClickGwil += (senderGwil, eventGwil) => { MessageBox.Show("Hello this is a button"); };
-            //add the button to the list of controls
-            controlsGwil.Add(obHelloWorldButtonGwil);
-
-            foreach (csBasicControlGwil controlGwil in controlsGwil)
-            {
-                //make sure it will draw it self
-                controlGwil.changedSinceDrawGwil = true;
-                //draw the control on the graphics
-                controlGwil.DrawGwil(grGwil);
-            }
             //start the timer for a regular form update
             tmrKeepDrawingGwil.Enabled = false;
+            tmrKeepEmRacingGwil.Enabled = true;
+            for (int dragracerCount = 0; dragracerCount < 4; dragracerCount++)
+            {
+                var racerGwil = new csDragRacerGwil(dragracerCount.ToString(), new PointF(dragracerCount * 50, 0), new Size(40, 40), Color.Red);
+                racerGwil.CreateRandomSpeedGwil();
+                Random rnd = new Random();
+                Color rndColor = Color.FromArgb(rnd.Next(0, byte.MaxValue + 1), rnd.Next(0, byte.MaxValue + 1), rnd.Next(0, byte.MaxValue + 1));
+                racerGwil.BackgroundColorGwil = rndColor;
+                controlsGwil.Add(racerGwil);
+                System.Threading.Thread.Sleep(30);
+            }
+            
         }
 
         #endregion Constructors
@@ -226,8 +237,6 @@ namespace DragRacerGwil
                         (float)(controlGwil.SizeGwil.Width * resizerWidthGwil),
                         (float)(controlGwil.SizeGwil.Height * resizerHeightGwil));
                 }
-                System.Diagnostics.Debug.WriteLine("end of loop");
-                System.Diagnostics.Debug.WriteLine(resizerWidthGwil);
                 this.Invalidate();
                 lastKnowSizeGwil = Size;
             }
@@ -240,5 +249,20 @@ namespace DragRacerGwil
         }
 
         #endregion Methods
+
+        private void tmrKeepEmRacingGwil_Tick(object sender, EventArgs e)
+        {
+            int controlsCountGwil = 0;
+            foreach(var controlGwil in controlsGwil)
+            {
+                if (controlGwil.GetType() == typeof(csDragRacerGwil))
+                {
+                    csDragRacerGwil racerGwil = ((csDragRacerGwil)controlGwil);
+                    racerGwil.DoMovementGwil(trackGwil, new Point(controlsCountGwil * 50, 0));
+                    this.Invalidate();
+                    controlsCountGwil++;
+                }
+            }
+        }
     }
 }

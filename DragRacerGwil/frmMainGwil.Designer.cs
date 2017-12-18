@@ -8,12 +8,18 @@
         {
             this.components = new System.ComponentModel.Container();
             this.tmrKeepDrawingGwil = new System.Windows.Forms.Timer(this.components);
+            this.tmrKeepEmRacingGwil = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // tmrKeepDrawingGwil
             // 
             this.tmrKeepDrawingGwil.Interval = 1000;
             this.tmrKeepDrawingGwil.Tick += new System.EventHandler(this.tmrKeepDrawingGwil_Tick);
+            // 
+            // tmrKeepEmRacingGwil
+            // 
+            this.tmrKeepEmRacingGwil.Interval = 1;
+            this.tmrKeepEmRacingGwil.Tick += new System.EventHandler(this.tmrKeepEmRacingGwil_Tick);
             // 
             // frmMainGwil
             // 
@@ -34,6 +40,7 @@
 
         private System.Windows.Forms.Timer tmrKeepDrawingGwil;
         private System.ComponentModel.IContainer components;
+        private System.Windows.Forms.Timer tmrKeepEmRacingGwil;
     }
 }
 

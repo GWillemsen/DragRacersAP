@@ -37,6 +37,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_NameGwil">The name of the control</param>
         public csBasicControlGwil(string a_NameGwil)
         {
+            FullResetGwil();
             //make everything default except the text
             contentGwil = "";
             mouseDownGwil = false;
@@ -56,6 +57,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_LocationGwil">The new location of the control</param>
         public csBasicControlGwil(string a_NameGwil, PointF a_LocationGwil)
         {
+            FullResetGwil();
             //make everything default except the text and location
             contentGwil = "";
             mouseDownGwil = false;
@@ -76,6 +78,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_SizeGwil">The new size of the control</param>
         public csBasicControlGwil(string a_NameGwil, PointF a_LocationGwil, Size a_SizeGwil)
         {
+            FullResetGwil();
             //make everything default except the text, size and location
             contentGwil = "";
             mouseDownGwil = false;
@@ -97,6 +100,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_BackgroundColorGwil">The background color of the control</param>
         public csBasicControlGwil(string a_NameGwil, PointF a_LocationGwil, Size a_SizeGwil, Color a_BackgroundColorGwil)
         {
+            FullResetGwil();
             //make everything default except the text, size, location and background color
             contentGwil = "";
             mouseDownGwil = false;
