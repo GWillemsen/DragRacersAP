@@ -126,9 +126,7 @@ namespace DragRacerGwil.Controls
                 grGwil.FillRectangle(drawBrushGwil, new RectangleF(LocationGwil, SizeGwil));
 
                 //measure how many lines and characters will fit in the button
-                int charsCountGwil = 0;
-                int linesGwil = 0;
-                grGwil.MeasureString(contentGwil, FontGwil, SizeGwil, StringFormat.GenericDefault, out charsCountGwil, out linesGwil);
+                grGwil.MeasureString(contentGwil, FontGwil, SizeGwil, StringFormat.GenericDefault, out int charsCountGwil, out int linesGwil);
 
                 //create new string to fit the content that will fit in it
                 string drawingContentGwil = contentGwil.Substring(0, charsCountGwil - 1);

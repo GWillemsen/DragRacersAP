@@ -12,10 +12,13 @@ namespace DragRacerGwil
 
         //list of controls to draw
         private static List<csBasicControlGwil> controlsGwil = new List<csBasicControlGwil>();
+
         //offset of the graphics on the screen
         private Point graphicsOffsetGwil = new Point(0, 0);
+
         private Size lastKnowSizeGwil = new Size(0, 0);
-        private PointF[] trackGwil = new PointF[1000];
+        private PointF[] trackGwil = new PointF[2000];
+
         #endregion Fields
 
         #region Constructors
@@ -26,10 +29,10 @@ namespace DragRacerGwil
             InitializeComponent();
             float xPosGwil = 100;
             bool downGwil = false;
-            for(int trackNumberPointGwil = 0;  trackNumberPointGwil < trackGwil.Length; trackNumberPointGwil++)
+            for (int trackNumberPointGwil = 0; trackNumberPointGwil < trackGwil.Length; trackNumberPointGwil++)
             {
                 trackGwil[trackNumberPointGwil] = new PointF(xPosGwil, (float)trackNumberPointGwil / 10);
-                if(downGwil == true)
+                if (downGwil == true)
                 {
                     xPosGwil = xPosGwil - 0.3F;
                     if (xPosGwil <= 0)
@@ -59,7 +62,6 @@ namespace DragRacerGwil
                 controlsGwil.Add(racerGwil);
                 System.Threading.Thread.Sleep(30);
             }
-            
         }
 
         #endregion Constructors
@@ -248,12 +250,10 @@ namespace DragRacerGwil
             this.Invalidate();
         }
 
-        #endregion Methods
-
         private void tmrKeepEmRacingGwil_Tick(object sender, EventArgs e)
         {
             int controlsCountGwil = 0;
-            foreach(var controlGwil in controlsGwil)
+            foreach (csBasicControlGwil controlGwil in controlsGwil)
             {
                 if (controlGwil.GetType() == typeof(csDragRacerGwil))
                 {
@@ -264,5 +264,7 @@ namespace DragRacerGwil
                 }
             }
         }
+
+        #endregion Methods
     }
 }

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 
 namespace DragRacerGwil.Controls
 {
@@ -14,10 +12,10 @@ namespace DragRacerGwil.Controls
         public bool mouseEnteredGwil = false;
         private Color backgroundColorGwil = Color.LightGray;
         private string contentGwil = "";
-        private List<csBasicControlGwil> controlsGwil = new List<csBasicControlGwil>();
         private PointF locationGwil = new PointF(0, 0);
         private string nameGwil = "";
         private SizeF sizeGwil = new SizeF(0, 0);
+        private int zIndexGwil = 0;
 
         #endregion Fields
 
@@ -44,7 +42,6 @@ namespace DragRacerGwil.Controls
             mouseEnteredGwil = false;
             changedSinceDrawGwil = false;
             backgroundColorGwil = Color.LightGray;
-            controlsGwil = new List<csBasicControlGwil>();
             locationGwil = new PointF(0, 0);
             nameGwil = a_NameGwil;
             sizeGwil = new SizeF(0, 0);
@@ -64,7 +61,6 @@ namespace DragRacerGwil.Controls
             mouseEnteredGwil = false;
             changedSinceDrawGwil = false;
             backgroundColorGwil = Color.LightGray;
-            controlsGwil = new List<csBasicControlGwil>();
             locationGwil = a_LocationGwil;
             nameGwil = a_NameGwil;
             sizeGwil = new SizeF(0, 0);
@@ -85,7 +81,6 @@ namespace DragRacerGwil.Controls
             mouseEnteredGwil = false;
             changedSinceDrawGwil = false;
             backgroundColorGwil = Color.LightGray;
-            controlsGwil = new List<csBasicControlGwil>();
             locationGwil = a_LocationGwil;
             nameGwil = a_NameGwil;
             sizeGwil = a_SizeGwil;
@@ -107,7 +102,6 @@ namespace DragRacerGwil.Controls
             mouseEnteredGwil = false;
             changedSinceDrawGwil = false;
             backgroundColorGwil = a_BackgroundColorGwil;
-            controlsGwil = new List<csBasicControlGwil>();
             locationGwil = a_LocationGwil;
             nameGwil = a_NameGwil;
             sizeGwil = a_SizeGwil;
@@ -139,23 +133,6 @@ namespace DragRacerGwil.Controls
                 if (backgroundColorGwil != value)
                     changedSinceDrawGwil = true;
                 backgroundColorGwil = value;//set the new background color
-            }
-        }
-
-        /// <summary>
-        /// Child's if it has any
-        /// </summary>
-        public List<csBasicControlGwil> ChildsGwil
-        {
-            get => controlsGwil;//returns the controls in an array format
-            set
-            {
-                //if the value is not the same than say the control has changed
-                if (controlsGwil != value.ToList())
-                    changedSinceDrawGwil = true;
-
-                //replace the list
-                controlsGwil = value;
             }
         }
 
@@ -220,6 +197,15 @@ namespace DragRacerGwil.Controls
             }
         }
 
+        /// <summary>
+        /// The index of wich the control layer is
+        /// </summary>
+        public int Z_indexGwil
+        {
+            get => zIndexGwil;
+            set => zIndexGwil = value;
+        }
+
         #endregion Properties
 
         #region Methods
@@ -250,7 +236,6 @@ namespace DragRacerGwil.Controls
             mouseEnteredGwil = false;
             changedSinceDrawGwil = false;
             backgroundColorGwil = Color.LightGray;
-            controlsGwil = new List<csBasicControlGwil>();
             locationGwil = new PointF(0, 0);
             nameGwil = "";
             sizeGwil = new SizeF(0, 0);

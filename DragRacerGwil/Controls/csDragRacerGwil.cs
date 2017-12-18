@@ -7,12 +7,13 @@ namespace DragRacerGwil.Controls
     {
         #region Fields
 
-        private string racerNameGwil;
-        private double speedGwil = 1;
-        private double traveldRouteGwil = 0;
-        private bool reachedFinshGwil = false;
-        private TimeSpan startOfRaceGwil = new TimeSpan();
         private TimeSpan endOfRaceGwil = new TimeSpan();
+        private string racerNameGwil;
+        private bool reachedFinshGwil = false;
+        private double speedGwil = 1;
+        private TimeSpan startOfRaceGwil = new TimeSpan();
+        private double traveldRouteGwil = 0;
+
         #endregion Fields
 
         #region Constructors
@@ -98,6 +99,14 @@ namespace DragRacerGwil.Controls
         #region Properties
 
         /// <summary>
+        /// indication weather the racer has reached the finish
+        /// </summary>
+        public bool FinishedGwil
+        {
+            get => reachedFinshGwil;//return true if finished
+        }
+
+        /// <summary>
         /// The name of the racer
         /// </summary>
         public string RacerNameGwil
@@ -115,35 +124,25 @@ namespace DragRacerGwil.Controls
             set => speedGwil = value;
         }
 
-        /// <summary>
-        /// indication weather the racer has reached the finish
-        /// </summary>
-        public bool FinishedGwil
-        {
-            get => reachedFinshGwil;//return true if finished
-        }
-
         public TimeSpan TimeRacedGwil
         {
             //read-only, the time the racer raced
-            get => endOfRaceGwil - startOfRaceGwil;            
+            get => endOfRaceGwil - startOfRaceGwil;
         }
+
         #endregion Properties
 
         #region Methods
 
         /// <summary>
-        /// Reset racer to the start 
+        /// Creates an random speed for the current racer
         /// </summary>
-        /// <param name="startPointGwil"></param>
-        /// <param name="offset"></param>
-        public void ResetRacerToStartGwil( PointF startPointGwil, PointF offsetGwil)
+        public void CreateRandomSpeedGwil()
         {
-            LocationGwil = new PointF() { X = startPointGwil.X + offsetGwil.X, Y = startPointGwil.Y + offsetGwil.Y }; //reset the location of the racer
-            reachedFinshGwil = false;//reset the finished boolean
-            //reset the time when the race started and stopped
-            startOfRaceGwil = new TimeSpan();
-            endOfRaceGwil = new TimeSpan();
+            //create random class
+            System.Random rndGwil = new System.Random();
+            //get a new random for the speed
+            speedGwil = rndGwil.NextDouble() * 10;
         }
 
         /// <summary>
@@ -165,27 +164,30 @@ namespace DragRacerGwil.Controls
         }
 
         /// <summary>
-        /// Creates an random speed for the current racer
-        /// </summary>
-        public void CreateRandomSpeedGwil()
-        {
-            //create random class
-            System.Random rndGwil = new System.Random();
-            //get a new random for the speed
-            speedGwil = rndGwil.NextDouble() * 10;
-
-        }
-
-        /// <summary>
         /// Draws the racer on the graphics
         /// </summary>
         /// <param name="grGwil">The graphic to draw on</param>
         public override void DrawGwil(Graphics grGwil)
         {
-            //draw a rectangle with color on the graphics as the racer 
+            //draw a rectangle with color on the graphics as the racer
             grGwil.FillRectangle(new SolidBrush(BackgroundColorGwil), new RectangleF(LocationGwil, SizeGwil));
             base.DrawGwil(grGwil);
         }
+
+        /// <summary>
+        /// Reset racer to the start
+        /// </summary>
+        /// <param name="startPointGwil"></param>
+        /// <param name="offset"></param>
+        public void ResetRacerToStartGwil(PointF startPointGwil, PointF offsetGwil)
+        {
+            LocationGwil = new PointF() { X = startPointGwil.X + offsetGwil.X, Y = startPointGwil.Y + offsetGwil.Y }; //reset the location of the racer
+            reachedFinshGwil = false;//reset the finished boolean
+            //reset the time when the race started and stopped
+            startOfRaceGwil = new TimeSpan();
+            endOfRaceGwil = new TimeSpan();
+        }
+
         #endregion Methods
     }
 }
