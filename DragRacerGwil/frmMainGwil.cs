@@ -9,6 +9,7 @@ namespace DragRacerGwil
     public partial class frmMainGwil : Form
     {
         #region Fields
+        public List<PointF> newTrackGwil = new List<PointF>(6000000);
 
         //list of controls to draw
         private static csControlListGwil obControlsGwil = new csControlListGwil();
@@ -27,21 +28,21 @@ namespace DragRacerGwil
         {
             //initialize the normal form items
             InitializeComponent();
-            float xPosGwil = 100;
+            double xPosGwil = 0;
             bool downGwil = false;
             //generate the track
             for (int trackNumberPointGwil = 0; trackNumberPointGwil < trackGwil.Length; trackNumberPointGwil++)
             {
-                trackGwil[trackNumberPointGwil] = new PointF(xPosGwil, (float)trackNumberPointGwil / 10);
+                trackGwil[trackNumberPointGwil] = new PointF((float)xPosGwil, (float)trackNumberPointGwil / 10);
                 if (downGwil == true)
                 {
-                    xPosGwil = xPosGwil - 0.3F;
+                    xPosGwil -= 0.3F;
                     if (xPosGwil <= 0)
                         downGwil = false;
                 }
                 else
                 {
-                    xPosGwil += 0.3F;
+                    xPosGwil += 0.3F; ;
                     if (xPosGwil >= 200)
                         downGwil = true;
                 }
@@ -50,6 +51,19 @@ namespace DragRacerGwil
             #region buttons
 
             csButtonGwil fileButtonGwil = new csButtonGwil("btnFileGwil", new Size(100, 50), new Point(3, 3), "File");
+            fileButtonGwil.OnClickGwil += (senderGwil, argGwil) =>
+            {
+                int dragracerCountGwil = 0;
+                foreach (csDragRacerGwil racerGwil in ((csPanelGwil)obControlsGwil.GetByNameGwil("pnlRacersGwil")).ChildsListGwil)
+                {
+                    racerGwil.ResetRacerToStartGwil(trackGwil[0], new PointF(dragracerCountGwil++ * 50, 0));
+                    racerGwil.StartRaceGwil();
+                    racerGwil.CreateRandomSpeedGwil();
+                    System.Threading.Thread.Sleep(30);
+                }
+                tmrKeepEmRacingGwil.Enabled = true;
+            };
+            obControlsGwil.Add(fileButtonGwil);
 
             #endregion buttons
 
@@ -59,19 +73,19 @@ namespace DragRacerGwil
             tmrKeepDrawingGwil.Enabled = false;
             tmrKeepEmRacingGwil.Enabled = true;
             //create an new panel, add 4 racers to it and add it to the form
-            csPanelGwil mainPanelGwil = new csPanelGwil("main_panel", new PointF(100, 0), new Size(400, 300));
+            csPanelGwil mainPanelGwil = new csPanelGwil("pnlRacersGwil", new PointF(100, 0), new Size(400, 300));
             mainPanelGwil.BackgroundColorGwil = Color.Red;
-            for (int dragracerCount = 0; dragracerCount < 4; dragracerCount++)
+            System.Security.Cryptography.RandomNumberGenerator rndGwil = System.Security.Cryptography.RandomNumberGenerator.Create();
+            for (int dragracerCountGwil = 0; dragracerCountGwil < 4; dragracerCountGwil++)
             {
-                var racerGwil = new csDragRacerGwil(dragracerCount.ToString(), new PointF(dragracerCount * 50, 0), new Size(40, 40), Color.Red);
+                var racerGwil = new csDragRacerGwil(dragracerCountGwil.ToString(), new PointF(dragracerCountGwil * 50, 0), new Size(40, 40), Color.Red);
                 racerGwil.CreateRandomSpeedGwil();
-                Random rnd = new Random();
                 //create random colors
                 //using cryptography random to avoid repeating numbers
-                System.Security.Cryptography.RandomNumberGenerator rndGwil = System.Security.Cryptography.RandomNumberGenerator.Create();
+
                 byte[] newColorGwil = new byte[4];
                 rndGwil.GetBytes(newColorGwil);
-                Color rndColor = Color.FromArgb(newColorGwil[0], newColorGwil[1], newColorGwil[2], newColorGwil[3]);// rnd.Next(0, byte.MaxValue + 1), rnd.Next(0, byte.MaxValue + 1), rnd.Next(0, byte.MaxValue + 1));
+                Color rndColor = Color.FromArgb(255, newColorGwil[1], newColorGwil[2], newColorGwil[3]);// rnd.Next(0, byte.MaxValue + 1), rnd.Next(0, byte.MaxValue + 1), rnd.Next(0, byte.MaxValue + 1));
                 racerGwil.BackgroundColorGwil = rndColor;
                 racerGwil.StartRaceGwil();
                 mainPanelGwil.ChildsListGwil.Add(racerGwil);
@@ -90,12 +104,9 @@ namespace DragRacerGwil
         {
             //create an new graphics object from the existing e.graphics
             Graphics grGwil = e.Graphics;
-            grGwil.Clear(this.BackColor);//clear it with the set background color of the fomr
+            grGwil.Clear(this.BackColor);//clear it with the set background color of the form
             foreach (csBasicControlGwil controlGwil in obControlsGwil)
             {
-                //set the to true so the control will be forced to update
-                controlGwil.changedSinceDrawGwil = true;
-
                 //calculate mouse position and check if mouse is in control than leave the control
                 Point currentPosMouseGwil = new Point(MousePosition.X - this.Location.X, MousePosition.Y - this.Location.Y);
                 if ((currentPosMouseGwil.X > Width || currentPosMouseGwil.Y > Height) && controlGwil.mouseEnteredGwil)
@@ -103,17 +114,16 @@ namespace DragRacerGwil
                 //also if it thinks the mouse is down than tell it otherwise
                 if ((currentPosMouseGwil.X > Width || currentPosMouseGwil.Y > Height) && controlGwil.mouseDownGwil)
                     controlGwil.MouseUpRaiseGwil(this, new MouseEventArgs(MouseButtons.None, 0, currentPosMouseGwil.X, currentPosMouseGwil.Y, 0));
-                //draw the control on the graphic
-                controlGwil.DrawGwil(grGwil);
+                //force draw the control on the graphic
+                controlGwil.DrawGwil(grGwil, true);
             }
             /*send message to the original on-paint that it can do its job
              * (we are first and than the original on-paint(that handles toolbox items etc.)
              * will do its run
              */
-            base.OnPaint(e);
         }
 
-        private void CheckChildsGwil(List<csBasicControlGwil> parentControlGwil, ref int controlCountGwil, csPanelGwil parentGwil = null)
+        private void CheckChildsGwil(List<csBasicControlGwil> parentControlGwil, ref int controlCountGwil, ref bool updateScreenGwil, csPanelGwil parentGwil = null)
         {
             if (parentControlGwil != null)
             {
@@ -126,7 +136,7 @@ namespace DragRacerGwil
                         {
                             csDragRacerGwil racerGwil = ((csDragRacerGwil)controlGwil);
                             racerGwil.DoMovementGwil(trackGwil, new Point(controlCountGwil * 50, 0));
-                            this.Invalidate();
+
                             controlCountGwil++;
                             if (racerGwil.KnowIsFinished == false && racerGwil.FinishedGwil == true)
                             {
@@ -137,8 +147,10 @@ namespace DragRacerGwil
                         }
                         else if (typeOfControlGwil == typeof(csPanelGwil))
                         {
-                            CheckChildsGwil(((csPanelGwil)controlGwil).ChildsListGwil, ref controlCountGwil, (csPanelGwil)controlGwil);
+                            CheckChildsGwil(((csPanelGwil)controlGwil).ChildsListGwil, ref controlCountGwil, ref updateScreenGwil, (csPanelGwil)controlGwil);
                         }
+                        if (controlGwil.changedSinceDrawGwil == true)
+                            updateScreenGwil = true;
                     }
                 }
             }
@@ -232,7 +244,7 @@ namespace DragRacerGwil
 
                 //check if the control has detected that is should redraw
                 if (controlGwil.changedSinceDrawGwil == true)
-                    somethingChangedGwil = true;//set our bool to true so the form will invalidate
+                    somethingChangedGwil = true;//set our boolean to true so the form will invalidate
             }
 
             //if we changed something invalidate the form
@@ -284,9 +296,6 @@ namespace DragRacerGwil
                 double resizerHeightGwil = Size.Height / (double)lastKnowSizeGwil.Height;
                 foreach (csBasicControlGwil controlGwil in obControlsGwil)
                 {
-                    System.Diagnostics.Debug.WriteLine(controlGwil.SizeGwil + "    " + new SizeF(
-                        (float)(controlGwil.SizeGwil.Width * resizerWidthGwil),
-                        (float)(controlGwil.SizeGwil.Height * resizerHeightGwil)).ToString());
                     controlGwil.SizeGwil = new SizeF(
                         (float)(controlGwil.SizeGwil.Width * resizerWidthGwil),
                         (float)(controlGwil.SizeGwil.Height * resizerHeightGwil));
@@ -305,7 +314,10 @@ namespace DragRacerGwil
         private void tmrKeepEmRacingGwil_Tick(object sender, EventArgs e)
         {
             int controlsCountGwil = 0;
-            CheckChildsGwil(obControlsGwil, ref controlsCountGwil);
+            bool updateScreenGwil = false;
+            CheckChildsGwil(obControlsGwil, ref controlsCountGwil, ref updateScreenGwil);
+            if (updateScreenGwil == true)
+                this.Invalidate();
         }
 
         #endregion Methods

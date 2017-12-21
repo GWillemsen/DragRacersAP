@@ -274,7 +274,7 @@ namespace DragRacerGwil.Controls
         /// Draw the control
         /// </summary>
         /// <param name="grGwil">Graphics to draw the button on</param>
-        public virtual void DrawGwil(Graphics grGwil) { }
+        public virtual void DrawGwil(Graphics grGwil, bool forceRedrawGwil = false) { }
 
         /// <summary>
         /// Raise the event that the mouse button is pressed down

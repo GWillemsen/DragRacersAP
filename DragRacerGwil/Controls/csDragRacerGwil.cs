@@ -210,7 +210,6 @@ namespace DragRacerGwil.Controls
             System.Random rndGwil = new System.Random();
             //get a new random for the speed
             speedGwil = rndGwil.Next(5, 11);
-            //speedGwil = rndGwil.NextDouble() * 10;
         }
 
         /// <summary>
@@ -235,11 +234,30 @@ namespace DragRacerGwil.Controls
         /// Draws the racer on the graphics
         /// </summary>
         /// <param name="grGwil">The graphic to draw on</param>
-        public override void DrawGwil(Graphics grGwil)
+        /// <param name="forceRedrawGwil">Force a redraw weather necessary or not</param>
+        public override void DrawGwil(Graphics grGwil, bool forceRedrawGwil = false)
         {
-            //draw a rectangle with color on the graphics as the racer
-            grGwil.FillRectangle(new SolidBrush(BackgroundColorGwil), new RectangleF(LocationGwil, SizeGwil));
-            base.DrawGwil(grGwil);
+            if (changedSinceDrawGwil == true || forceRedrawGwil == true && Visible == true)
+            {
+                //save settings graphics, than set our own
+                var prevSettingInterGwil = grGwil.InterpolationMode;
+                var prevSettingSmoothGwil = grGwil.SmoothingMode;
+                grGwil.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                grGwil.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+
+                //draw a rectangle with color on the graphics as the racer
+                grGwil.FillRectangle(new SolidBrush(BackgroundColorGwil), new RectangleF(LocationGwil, SizeGwil));
+
+                //put back the stored settings
+                grGwil.InterpolationMode = prevSettingInterGwil;
+                grGwil.SmoothingMode = prevSettingSmoothGwil;
+
+                //call base.draw so the base has a chance to draw it self again
+                base.DrawGwil(grGwil);
+
+                //finish off drawing
+                changedSinceDrawGwil = false;
+            }
         }
 
         /// <summary>
@@ -262,6 +280,8 @@ namespace DragRacerGwil.Controls
             //reset the time when the race started and stopped
             startOfRaceGwil = new DateTime();
             endOfRaceGwil = new DateTime();
+            KnowIsFinished = false;
+            traveldRouteGwil = 0;
         }
 
         /// <summary>

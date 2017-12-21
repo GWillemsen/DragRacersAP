@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace DragRacerGwil.Controls
 {
+    /// <summary>
+    /// A list that filters items.
+    /// </summary>
     public class csControlListGwil : List<csBasicControlGwil>
     {
         #region Methods

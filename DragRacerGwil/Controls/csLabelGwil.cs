@@ -117,9 +117,14 @@ namespace DragRacerGwil.Controls
 
         #region Methods
 
-        public override void DrawGwil(Graphics grGwil)
+        /// <summary>
+        /// Draws the label on the graphics
+        /// </summary>
+        /// <param name="grGwil">The graphic to draw on</param>
+        /// <param name="forceRedrawGwil">Force a redraw weather necessary or not</param>
+        public override void DrawGwil(Graphics grGwil, bool forceRedrawGwil = false)
         {
-            if (changedSinceDrawGwil == true)
+            if (changedSinceDrawGwil == true || forceRedrawGwil == true && Visible == true)
             {
                 //just draw a straight forward rectangle with basic color
                 grGwil.FillRectangle(drawBrushGwil, new RectangleF(LocationGwil, SizeGwil));
@@ -133,6 +138,7 @@ namespace DragRacerGwil.Controls
                 //draw the string
                 grGwil.DrawString(drawingContentGwil, FontGwil, new SolidBrush(foregroundColorGwil), new RectangleF(LocationGwil, SizeGwil));
                 changedSinceDrawGwil = false;
+                base.DrawGwil(grGwil);
             }
         }
 

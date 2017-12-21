@@ -211,13 +211,14 @@ namespace DragRacerGwil.Controls
         #region Methods
 
         /// <summary>
-        /// Draws the button on the specified graphics
+        /// Draws the button on the graphics
         /// </summary>
-        /// <param name="grGwil">The graphics to draw on</param>
-        public override void DrawGwil(Graphics grGwil)
+        /// <param name="grGwil">The graphic to draw on</param>
+        /// <param name="forceRedrawGwil">Force a redraw weather necessary or not</param>
+        public override void DrawGwil(Graphics grGwil, bool forceRedrawGwil = false)
         {
             //check if we need to redraw
-            if (changedSinceDrawGwil == true)
+            if (changedSinceDrawGwil == true || forceRedrawGwil == true && Visible == true)
             {
                 //check if mouse is in control but not down
                 if (mouseEnteredGwil && mouseDownGwil == false)
@@ -288,6 +289,7 @@ namespace DragRacerGwil.Controls
                 grGwil.DrawString(drawingContentGwil, FontGwil, new SolidBrush(foregroundColorGwil), new RectangleF(LocationGwil, SizeGwil));
                 //note that the we update to the most recent changes
                 changedSinceDrawGwil = false;
+                base.DrawGwil(grGwil);
             }
         }
 

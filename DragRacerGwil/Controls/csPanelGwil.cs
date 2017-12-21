@@ -153,24 +153,33 @@ namespace DragRacerGwil.Controls
         /// <summary>
         /// Draws the panel and its components
         /// </summary>
-        /// <param name="grGwil">The graphics to draw on</param>
-        public override void DrawGwil(Graphics grGwil)
+        /// <param name="grGwil">The graphic to draw on</param>
+        /// <param name="forceRedrawGwil">Force a redraw weather necessary or not</param>
+        public override void DrawGwil(Graphics grGwil, bool forceRedrawGwil = false)
         {
-            //sort the child's on index
-            childsGwil.Sort(new csSorter());
+            if (changedSinceDrawGwil == true || forceRedrawGwil == true && Visible == true)
+            {
+                //sort the child's on index
+                childsGwil.Sort(new csSorter());
 
-            //create graphics objects for the drawing
-            Bitmap thePanelGwil = new Bitmap((int)SizeGwil.Width, (int)SizeGwil.Height);
-            Graphics panelGrGwil = Graphics.FromImage(thePanelGwil);
-            //clear the bitmap with the background color
-            panelGrGwil.Clear(BackgroundColorGwil);
-            //draw each individual control on the graphics
-            foreach (csBasicControlGwil childGwil in childsGwil)
-                childGwil.DrawGwil(panelGrGwil);
+                //create graphics objects for the drawing
+                Bitmap thePanelGwil = new Bitmap((int)SizeGwil.Width, ((int)SizeGwil.Height));
+                Graphics panelGrGwil = Graphics.FromImage(thePanelGwil);
 
-            //draw the panel on the graphics
-            grGwil.DrawImage(thePanelGwil, LocationGwil.X, LocationGwil.Y, SizeGwil.Width, SizeGwil.Height);
-            base.DrawGwil(grGwil);
+                //clear the bitmap with the background color
+                panelGrGwil.Clear(BackgroundColorGwil);
+                //draw each individual control on the graphics
+                foreach (csBasicControlGwil childGwil in childsGwil)
+                    childGwil.DrawGwil(panelGrGwil, true);
+
+                //draw the panel on the graphics
+                grGwil.DrawImage(thePanelGwil, LocationGwil.X, LocationGwil.Y, SizeGwil.Width, SizeGwil.Height);
+                //dispose of the local graphics and image
+                panelGrGwil.Dispose();
+                thePanelGwil.Dispose();
+                base.DrawGwil(grGwil);
+                changedSinceDrawGwil = false;
+            }
         }
 
         #endregion Methods
