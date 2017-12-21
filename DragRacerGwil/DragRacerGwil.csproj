@@ -52,6 +52,7 @@
     <Compile Include="Controls\csLabelGwil.cs" />
     <Compile Include="Controls\csDragRacerGwil.cs" />
     <Compile Include="Controls\csPanelGwil.cs" />
+    <Compile Include="Controls\csControlListGwil.cs" />
     <Compile Include="frmMainGwil.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -60,7 +61,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controls\Sorter.cs" />
+    <Compile Include="Controls\csSorter.cs" />
     <EmbeddedResource Include="frmMainGwil.resx">
       <DependentUpon>frmMainGwil.cs</DependentUpon>
     </EmbeddedResource>

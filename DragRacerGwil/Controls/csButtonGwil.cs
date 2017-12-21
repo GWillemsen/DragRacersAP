@@ -9,7 +9,6 @@ namespace DragRacerGwil.Controls
     public class csButtonGwil : csBasicControlGwil
     {
         #region Fields
-
         private static Color foregroundColorGwil = Color.Black;
         private Brush drawBrushGwil = new SolidBrush(Color.Gray);
         private Font fontGwil = new Font("Times New Roman", 11);
@@ -24,7 +23,7 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public csButtonGwil()
         {
-            FullResetGwil();
+            BasicControlFullResetGwil();
             foregroundColorGwil = Color.Black;
             drawBrushGwil = new SolidBrush(Color.Gray);
 
@@ -56,7 +55,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_FontGwil">The font of the text</param>
         public csButtonGwil(string a_NameGwil)
         {
-            FullResetGwil();
+            BasicControlFullResetGwil();
             //add events for the redraw of the button
             OnMouseDownGwil += (senderGwil, eGwil) =>
             {
@@ -86,7 +85,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_NameGwil">The name of the label</param>
         public csButtonGwil(string a_NameGwil, Size a_SizeGwill)
         {
-            FullResetGwil();
+            BasicControlFullResetGwil();
             //add events for the redraw of the button
             OnMouseDownGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
             OnMouseUpGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
@@ -106,7 +105,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_NameGwil">The name of the label</param>
         public csButtonGwil(string a_NameGwil, Size a_SizeGwil, Point a_LocationGwil)
         {
-            FullResetGwil();
+            BasicControlFullResetGwil();
             //add events for the redraw of the button
             OnMouseDownGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
             OnMouseUpGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
@@ -128,7 +127,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_NameGwil">The name of the label</param>
         public csButtonGwil(string a_NameGwil, Size a_SizeGwil, Point a_LocationGwil, string a_Text)
         {
-            FullResetGwil();
+            BasicControlFullResetGwil();
             //add events for the redraw of the button
             OnMouseDownGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
             OnMouseUpGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
@@ -152,7 +151,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_NameGwil">The name of the label</param>
         public csButtonGwil(string a_NameGwil, Size a_SizeGwil, Point a_LocationGwil, string a_Text, Font a_FontGwil)
         {
-            FullResetGwil();
+            BasicControlFullResetGwil();
             //add events for the redraw of the button
             OnMouseDownGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
             OnMouseUpGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };

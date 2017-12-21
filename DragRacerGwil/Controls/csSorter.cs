@@ -2,7 +2,7 @@
 
 namespace DragRacerGwil.Controls
 {
-    public class Sorter : IComparer<csBasicControlGwil>
+    public class csSorter : IComparer<csBasicControlGwil>
     {
         #region Methods
 
@@ -10,11 +10,10 @@ namespace DragRacerGwil.Controls
         {
             if (x.Z_indexGwil > y.Z_indexGwil)
                 return 1;
-            else if (x.Z_indexGwil == y.Z_indexGwil)
-                return 0;
             else if (x.Z_indexGwil < y.Z_indexGwil)
                 return -1;
-            return 0;
+            else
+                return 0;
         }
 
         #endregion Methods

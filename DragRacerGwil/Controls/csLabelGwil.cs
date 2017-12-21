@@ -5,7 +5,6 @@ namespace DragRacerGwil.Controls
     public class csLabelGwil : csBasicControlGwil
     {
         #region Fields
-
         private string contentGwil = "";
         private Brush drawBrushGwil = new SolidBrush(Color.Gray);
         private Font fontGwil = new Font("Times New Roman", 11);
@@ -20,7 +19,7 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public csLabelGwil()
         {
-            FullResetGwil();
+            BasicControlFullResetGwil();
             contentGwil = NameGwil;
             drawBrushGwil = new SolidBrush(Color.Gray);
             foregroundColorGwil = Color.Black;
@@ -34,7 +33,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_ControlSizeGwil">The size of the label</param>
         public csLabelGwil(string a_NameGwil, Point a_LocationGwil, Size a_ControlSizeGwil)
         {
-            FullResetGwil();
+            BasicControlFullResetGwil();
             LocationGwil = a_LocationGwil;
             NameGwil = a_NameGwil;
             SizeGwil = a_ControlSizeGwil;
@@ -49,7 +48,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_ContentGwil">The text of the label</param>
         public csLabelGwil(string a_NameGwil, Point a_LocationGwil, Size a_ControlSizeGwil, string a_Content)
         {
-            FullResetGwil();
+            BasicControlFullResetGwil();
             LocationGwil = a_LocationGwil;
             NameGwil = a_NameGwil;
             ContentGwil = a_Content;
@@ -66,7 +65,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_TextColorGwil">The color of the text</param>
         public csLabelGwil(string a_NameGwil, Point a_LocationGwil, Size a_ControlSizeGwil, string a_ContentGwil, Color a_TextColorGwil)
         {
-            FullResetGwil();
+            BasicControlFullResetGwil();
             LocationGwil = a_LocationGwil;
             NameGwil = a_NameGwil;
             ContentGwil = a_ContentGwil;

@@ -48,23 +48,30 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAEgAAlAkAAEAQAAAAAAAAAAEAAAABAAAAAAEAAAABI=</HashCode>
+      <HashCode>AAEgAAlAkAAMAQAAAAAAAA4AEAAAABAAAAAAEAAAABI=</HashCode>
       <FileName>Controls\csDragRacerGwil.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DragRacerGwil.Controls.Sorter">
-    <Position X="10.75" Y="0.75" Width="1.5" />
+  <Class Name="DragRacerGwil.Controls.csSorter">
+    <Position X="12.75" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
-      <FileName>Controls\Sorter.cs</FileName>
+      <FileName>Controls\csSorter.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="DragRacerGwil.Controls.csPanelGwil">
     <Position X="0.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAgAAAAAAAAAAAAAACAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
       <FileName>Controls\csPanelGwil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DragRacerGwil.Controls.csControlListGwil">
+    <Position X="10.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>csControlListGwil.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
