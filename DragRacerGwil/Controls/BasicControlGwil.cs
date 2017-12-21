@@ -9,6 +9,7 @@ namespace DragRacerGwil.Controls
         public bool changedSinceDrawGwil = false;
         public bool mouseDownGwil = false;
         public bool mouseEnteredGwil = false;
+        private bool allowAutoResizeGwil = false;
         private Color backgroundColorGwil = Color.LightGray;
         private string contentGwil = "";
         private PointF locationGwil = new PointF(0, 0);
@@ -139,6 +140,15 @@ namespace DragRacerGwil.Controls
         #endregion Events
 
         #region Properties
+
+        /// <summary>
+        /// Weather the control will resize automatically with the parent control
+        /// </summary>
+        public bool AutoResizeGwil
+        {
+            get => allowAutoResizeGwil;
+            set => allowAutoResizeGwil = value;
+        }
 
         /// <summary>
         /// The background color use for the control

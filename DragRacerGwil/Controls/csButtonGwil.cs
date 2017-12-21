@@ -83,7 +83,7 @@ namespace DragRacerGwil.Controls
         /// </summary>
         /// <param name="a_SizeGwil">The size of the button</param>
         /// <param name="a_NameGwil">The name of the label</param>
-        public csButtonGwil(string a_NameGwil, Size a_SizeGwill)
+        public csButtonGwil(string a_NameGwil, Point a_LocationGwil)
         {
             BasicControlFullResetGwil();
             //add events for the redraw of the button
@@ -93,7 +93,7 @@ namespace DragRacerGwil.Controls
             OnMouseLeaveGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
 
             //set the properties
-            SizeGwil = a_SizeGwill;
+            LocationGwil = a_LocationGwil;
             NameGwil = a_NameGwil;
         }
 
@@ -103,7 +103,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_LocationGwil">The location of the button</param>
         /// <param name="a_SizeGwil">The size of the button</param>
         /// <param name="a_NameGwil">The name of the label</param>
-        public csButtonGwil(string a_NameGwil, Size a_SizeGwil, Point a_LocationGwil)
+        public csButtonGwil(string a_NameGwil, Point a_LocationGwil, Size a_SizeGwil)
         {
             BasicControlFullResetGwil();
             //add events for the redraw of the button
@@ -125,7 +125,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_SizeGwil">The size of the button</param>
         /// <param name="a_Text">The text of the button</param>
         /// <param name="a_NameGwil">The name of the label</param>
-        public csButtonGwil(string a_NameGwil, Size a_SizeGwil, Point a_LocationGwil, string a_Text)
+        public csButtonGwil(string a_NameGwil, Point a_LocationGwil, Size a_SizeGwil, string a_Text)
         {
             BasicControlFullResetGwil();
             //add events for the redraw of the button
@@ -149,7 +149,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_Text">The text of the button</param>
         /// <param name="a_FontGwil">The font of the text</param>
         /// <param name="a_NameGwil">The name of the label</param>
-        public csButtonGwil(string a_NameGwil, Size a_SizeGwil, Point a_LocationGwil, string a_Text, Font a_FontGwil)
+        public csButtonGwil(string a_NameGwil, Point a_LocationGwil, Size a_SizeGwil, string a_Text, Font a_FontGwil)
         {
             BasicControlFullResetGwil();
             //add events for the redraw of the button
@@ -284,7 +284,7 @@ namespace DragRacerGwil.Controls
                 //measure how many lines and characters will fit in the button
                 grGwil.MeasureString(ContentGwil, FontGwil, SizeGwil, StringFormat.GenericDefault, out int charsCountGwil, out int linesGwil);
                 //create new string to fit the content that will fit in it
-                string drawingContentGwil = ContentGwil.Substring(0, (charsCountGwil - 1 >= 0) ? charsCountGwil - 1 : 0);
+                string drawingContentGwil = ContentGwil.Substring(0, (charsCountGwil >= 0) ? charsCountGwil : 0);
                 //draw the string
                 grGwil.DrawString(drawingContentGwil, FontGwil, new SolidBrush(foregroundColorGwil), new RectangleF(LocationGwil, SizeGwil));
                 //note that the we update to the most recent changes

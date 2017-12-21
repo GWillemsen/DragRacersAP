@@ -133,7 +133,7 @@ namespace DragRacerGwil.Controls
                 grGwil.MeasureString(contentGwil, FontGwil, SizeGwil, StringFormat.GenericDefault, out int charsCountGwil, out int linesGwil);
 
                 //create new string to fit the content that will fit in it
-                string drawingContentGwil = contentGwil.Substring(0, charsCountGwil - 1);
+                string drawingContentGwil = contentGwil.Substring(0, charsCountGwil);
 
                 //draw the string
                 grGwil.DrawString(drawingContentGwil, FontGwil, new SolidBrush(foregroundColorGwil), new RectangleF(LocationGwil, SizeGwil));

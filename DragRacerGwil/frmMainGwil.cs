@@ -49,21 +49,20 @@ namespace DragRacerGwil
             }
 
             #region buttons
+            csPanelGwil obFileOptionsPanelGwil = new csPanelGwil("pnlFileOptionsGwil", new PointF(3, 35), new Size(50, 50));
 
-            csButtonGwil fileButtonGwil = new csButtonGwil("btnFileGwil", new Size(100, 50), new Point(3, 3), "File");
-            fileButtonGwil.OnClickGwil += (senderGwil, argGwil) =>
+            csButtonGwil obFileButtonGwil = new csButtonGwil("btnFileGwil", new Point(3, 3), new Size(50, 30), "File");
+            obFileButtonGwil.OnClickGwil += (senderGwil, argGwil) =>
             {
-                int dragracerCountGwil = 0;
-                foreach (csDragRacerGwil racerGwil in ((csPanelGwil)obControlsGwil.GetByNameGwil("pnlRacersGwil")).ChildsListGwil)
+                csPanelGwil obFilePanelGwil = (csPanelGwil)obControlsGwil.GetByNameGwil("pnlFileOptionsGwil");
+                if (obFilePanelGwil != null)
                 {
-                    racerGwil.ResetRacerToStartGwil(trackGwil[0], new PointF(dragracerCountGwil++ * 50, 0));
-                    racerGwil.StartRaceGwil();
-                    racerGwil.CreateRandomSpeedGwil();
-                    System.Threading.Thread.Sleep(30);
+                    obFilePanelGwil.Visible = !obFilePanelGwil.Visible;
+                    this.Invalidate();
                 }
-                tmrKeepEmRacingGwil.Enabled = true;
             };
-            obControlsGwil.Add(fileButtonGwil);
+            obControlsGwil.Add(obFileButtonGwil);
+            obControlsGwil.Add(obFileOptionsPanelGwil);
 
             #endregion buttons
 
@@ -75,14 +74,14 @@ namespace DragRacerGwil
             //create an new panel, add 4 racers to it and add it to the form
             csPanelGwil mainPanelGwil = new csPanelGwil("pnlRacersGwil", new PointF(100, 0), new Size(400, 300));
             mainPanelGwil.BackgroundColorGwil = Color.Red;
+
+            // use the RNG from crypto to make it more random.
             System.Security.Cryptography.RandomNumberGenerator rndGwil = System.Security.Cryptography.RandomNumberGenerator.Create();
             for (int dragracerCountGwil = 0; dragracerCountGwil < 4; dragracerCountGwil++)
             {
-                var racerGwil = new csDragRacerGwil(dragracerCountGwil.ToString(), new PointF(dragracerCountGwil * 50, 0), new Size(40, 40), Color.Red);
+                var racerGwil = new csDragRacerGwil("dragRacer" + dragracerCountGwil.ToString(), new PointF(dragracerCountGwil * 50, 0), new Size(40, 40), Color.Red);
                 racerGwil.CreateRandomSpeedGwil();
-                //create random colors
-                //using cryptography random to avoid repeating numbers
-
+                //create random colors using cryptography random to avoid repeating numbers
                 byte[] newColorGwil = new byte[4];
                 rndGwil.GetBytes(newColorGwil);
                 Color rndColor = Color.FromArgb(255, newColorGwil[1], newColorGwil[2], newColorGwil[3]);// rnd.Next(0, byte.MaxValue + 1), rnd.Next(0, byte.MaxValue + 1), rnd.Next(0, byte.MaxValue + 1));
@@ -296,9 +295,12 @@ namespace DragRacerGwil
                 double resizerHeightGwil = Size.Height / (double)lastKnowSizeGwil.Height;
                 foreach (csBasicControlGwil controlGwil in obControlsGwil)
                 {
-                    controlGwil.SizeGwil = new SizeF(
-                        (float)(controlGwil.SizeGwil.Width * resizerWidthGwil),
-                        (float)(controlGwil.SizeGwil.Height * resizerHeightGwil));
+                    if (controlGwil.AutoResizeGwil == true)
+                    {
+                        controlGwil.SizeGwil = new SizeF(
+                            (float)(controlGwil.SizeGwil.Width * resizerWidthGwil),
+                            (float)(controlGwil.SizeGwil.Height * resizerHeightGwil));
+                    }
                 }
                 this.Invalidate();
                 lastKnowSizeGwil = Size;
