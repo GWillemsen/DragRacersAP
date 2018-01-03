@@ -5,9 +5,9 @@ namespace DragRacerGwil.Controls
     public class csLabelGwil : csBasicControlGwil
     {
         #region Fields
-        private string contentGwil = "";
-        private Brush drawBrushGwil = new SolidBrush(Color.Gray);
-        private Font fontGwil = new Font("Times New Roman", 11);
+        private string obContentGwil = "";
+        private Brush obDrawBrushGwil = new SolidBrush(Color.Gray);
+        private Font obFontGwil = new Font("Times New Roman", 11);
         private Color foregroundColorGwil = Color.Black;
 
         #endregion Fields
@@ -20,8 +20,8 @@ namespace DragRacerGwil.Controls
         public csLabelGwil()
         {
             BasicControlFullResetGwil();
-            contentGwil = NameGwil;
-            drawBrushGwil = new SolidBrush(Color.Gray);
+            obContentGwil = NameGwil;
+            obDrawBrushGwil = new SolidBrush(Color.Gray);
             foregroundColorGwil = Color.Black;
         }
 
@@ -82,8 +82,8 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public Brush DrawingBrushGwil
         {
-            get => drawBrushGwil;//returns the drawing brush
-            set => drawBrushGwil = value;//sets the drawing brush
+            get => obDrawBrushGwil;//returns the drawing brush
+            set => obDrawBrushGwil = value;//sets the drawing brush
         }
 
         /// <summary>
@@ -91,8 +91,8 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public Font FontGwil
         {
-            get => fontGwil;//returns the current font
-            set => fontGwil = value;//sets the new font
+            get => obFontGwil;//returns the current font
+            set => obFontGwil = value;//sets the new font
         }
 
         /// <summary>
@@ -109,8 +109,8 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public string TextGwil
         {
-            get => contentGwil;//returns the text in the button
-            set => contentGwil = value;//sets the text in the button
+            get => obContentGwil;//returns the text in the button
+            set => obContentGwil = value;//sets the text in the button
         }
 
         #endregion Properties
@@ -127,16 +127,16 @@ namespace DragRacerGwil.Controls
             if (changedSinceDrawGwil == true || forceRedrawGwil == true && Visible == true)
             {
                 //just draw a straight forward rectangle with basic color
-                grGwil.FillRectangle(drawBrushGwil, new RectangleF(LocationGwil, SizeGwil));
+                grGwil.FillRectangle(obDrawBrushGwil, new RectangleF(LocationGwil, SizeGwil));
 
                 //measure how many lines and characters will fit in the button
-                grGwil.MeasureString(contentGwil, FontGwil, SizeGwil, StringFormat.GenericDefault, out int charsCountGwil, out int linesGwil);
+                grGwil.MeasureString(obContentGwil, FontGwil, SizeGwil, StringFormat.GenericDefault, out int charsCountGwil, out int linesGwil);
 
                 //create new string to fit the content that will fit in it
-                string drawingContentGwil = contentGwil.Substring(0, charsCountGwil);
+                string obDrawingContentGwil = obContentGwil.Substring(0, charsCountGwil);
 
                 //draw the string
-                grGwil.DrawString(drawingContentGwil, FontGwil, new SolidBrush(foregroundColorGwil), new RectangleF(LocationGwil, SizeGwil));
+                grGwil.DrawString(obDrawingContentGwil, FontGwil, new SolidBrush(foregroundColorGwil), new RectangleF(LocationGwil, SizeGwil));
                 changedSinceDrawGwil = false;
                 base.DrawGwil(grGwil);
             }

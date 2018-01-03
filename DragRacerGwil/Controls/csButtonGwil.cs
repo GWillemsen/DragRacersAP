@@ -10,8 +10,8 @@ namespace DragRacerGwil.Controls
     {
         #region Fields
         private static Color foregroundColorGwil = Color.Black;
-        private Brush drawBrushGwil = new SolidBrush(Color.Gray);
-        private Font fontGwil = new Font("Times New Roman", 11);
+        private Brush obDrawBrushGwil = new SolidBrush(Color.Gray);
+        private Font obFontGwil = new Font("Times New Roman", 11);
 
         #endregion Fields
 
@@ -25,7 +25,7 @@ namespace DragRacerGwil.Controls
         {
             BasicControlFullResetGwil();
             foregroundColorGwil = Color.Black;
-            drawBrushGwil = new SolidBrush(Color.Gray);
+            obDrawBrushGwil = new SolidBrush(Color.Gray);
 
             //add events for the redraw of the button
             OnMouseDownGwil += (senderGwil, eGwil) =>
@@ -83,7 +83,7 @@ namespace DragRacerGwil.Controls
         /// </summary>
         /// <param name="a_SizeGwil">The size of the button</param>
         /// <param name="a_NameGwil">The name of the label</param>
-        public csButtonGwil(string a_NameGwil, Point a_LocationGwil)
+        public csButtonGwil(string a_NameGwil, PointF a_LocationGwil)
         {
             BasicControlFullResetGwil();
             //add events for the redraw of the button
@@ -103,7 +103,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_LocationGwil">The location of the button</param>
         /// <param name="a_SizeGwil">The size of the button</param>
         /// <param name="a_NameGwil">The name of the label</param>
-        public csButtonGwil(string a_NameGwil, Point a_LocationGwil, Size a_SizeGwil)
+        public csButtonGwil(string a_NameGwil, PointF a_LocationGwil, Size a_SizeGwil)
         {
             BasicControlFullResetGwil();
             //add events for the redraw of the button
@@ -125,7 +125,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_SizeGwil">The size of the button</param>
         /// <param name="a_Text">The text of the button</param>
         /// <param name="a_NameGwil">The name of the label</param>
-        public csButtonGwil(string a_NameGwil, Point a_LocationGwil, Size a_SizeGwil, string a_Text)
+        public csButtonGwil(string a_NameGwil, PointF a_LocationGwil, Size a_SizeGwil, string a_Text)
         {
             BasicControlFullResetGwil();
             //add events for the redraw of the button
@@ -149,7 +149,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_Text">The text of the button</param>
         /// <param name="a_FontGwil">The font of the text</param>
         /// <param name="a_NameGwil">The name of the label</param>
-        public csButtonGwil(string a_NameGwil, Point a_LocationGwil, Size a_SizeGwil, string a_Text, Font a_FontGwil)
+        public csButtonGwil(string a_NameGwil, PointF a_LocationGwil, Size a_SizeGwil, string a_Text, Font a_FontGwil)
         {
             BasicControlFullResetGwil();
             //add events for the redraw of the button
@@ -162,7 +162,7 @@ namespace DragRacerGwil.Controls
             SizeGwil = a_SizeGwil;
             LocationGwil = a_LocationGwil;
             ContentGwil = a_Text;
-            fontGwil = a_FontGwil;
+            obFontGwil = a_FontGwil;
             NameGwil = a_NameGwil;
         }
 
@@ -175,8 +175,8 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public Brush DrawingBrushGwil
         {
-            get => drawBrushGwil;//returns the drawing brush
-            set => drawBrushGwil = value;//sets the drawing brush
+            get => obDrawBrushGwil;//returns the drawing brush
+            set => obDrawBrushGwil = value;//sets the drawing brush
         }
 
         /// <summary>
@@ -184,8 +184,8 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public Font FontGwil
         {
-            get => fontGwil;//returns the current font
-            set => fontGwil = value;//sets the new font
+            get => obFontGwil;//returns the current font
+            set => obFontGwil = value;//sets the new font
         }
 
         /// <summary>
@@ -213,9 +213,9 @@ namespace DragRacerGwil.Controls
         /// <summary>
         /// Draws the button on the graphics
         /// </summary>
-        /// <param name="grGwil">The graphic to draw on</param>
+        /// <param name="obGrGwil">The graphic to draw on</param>
         /// <param name="forceRedrawGwil">Force a redraw weather necessary or not</param>
-        public override void DrawGwil(Graphics grGwil, bool forceRedrawGwil = false)
+        public override void DrawGwil(Graphics obGrGwil, bool forceRedrawGwil = false)
         {
             //check if we need to redraw
             if (changedSinceDrawGwil == true || forceRedrawGwil == true && Visible == true)
@@ -231,8 +231,8 @@ namespace DragRacerGwil.Controls
                         new PointF(LocationGwil.X, LocationGwil.Y + SizeGwil.Height)
                     };
                     //create new brush with the corners and center color
-                    PathGradientBrush pathBrushGwil = new PathGradientBrush(cornersGwil);
-                    pathBrushGwil.CenterColor = BackgroundColorGwil;
+                    PathGradientBrush obPathBrushGwil = new PathGradientBrush(cornersGwil);
+                    obPathBrushGwil.CenterColor = BackgroundColorGwil;
 
                     //creating new color for surrounded colors
                     byte redNewValGwil = BackgroundColorGwil.R;
@@ -241,12 +241,12 @@ namespace DragRacerGwil.Controls
                     redNewValGwil = (byte)((redNewValGwil / 1.1 < 1) ? 0 : redNewValGwil / 1.1);
                     greenNewValGwil = (byte)((greenNewValGwil / 1.1 < 1) ? 0 : greenNewValGwil / 1.1);
                     blueNewValGwil = (byte)((blueNewValGwil / 1.1 < 1) ? 0 : blueNewValGwil / 1.1);
-                    pathBrushGwil.SurroundColors = new Color[] { Color.FromArgb(BackgroundColorGwil.A, redNewValGwil, greenNewValGwil, blueNewValGwil) };
+                    obPathBrushGwil.SurroundColors = new Color[] { Color.FromArgb(BackgroundColorGwil.A, redNewValGwil, greenNewValGwil, blueNewValGwil) };
 
-                    //set and calculate center point for the gradient
-                    pathBrushGwil.CenterPoint = new PointF((LocationGwil.X + SizeGwil.Width) / 2, (LocationGwil.Y + SizeGwil.Height) / 2);
+                    //set and calculate center PointF for the gradient
+                    obPathBrushGwil.CenterPoint = new Point((int)((LocationGwil.X + SizeGwil.Width) / 2), (int)((LocationGwil.Y + SizeGwil.Height) / 2));
                     //draw the rectangle
-                    grGwil.FillRectangle(pathBrushGwil, new RectangleF(LocationGwil, SizeGwil));
+                    obGrGwil.FillRectangle(obPathBrushGwil, new RectangleF(LocationGwil, SizeGwil));
                 }
                 //if it is entered and down
                 else if (mouseEnteredGwil && mouseDownGwil)
@@ -259,8 +259,8 @@ namespace DragRacerGwil.Controls
                         new PointF(LocationGwil.X, LocationGwil.Y + SizeGwil.Height)
                     };
                     //create new brush with the corners and center color
-                    PathGradientBrush pathBrushGwil = new PathGradientBrush(cornersGwil);
-                    pathBrushGwil.CenterColor = BackgroundColorGwil;
+                    PathGradientBrush obPathBrushGwil = new PathGradientBrush(cornersGwil);
+                    obPathBrushGwil.CenterColor = BackgroundColorGwil;
 
                     //creating new color for surrounded colors
                     byte redNewValGwil = BackgroundColorGwil.R;
@@ -269,27 +269,27 @@ namespace DragRacerGwil.Controls
                     redNewValGwil = (byte)((redNewValGwil / 2 < 1) ? 0 : redNewValGwil / 2);
                     greenNewValGwil = (byte)((greenNewValGwil / 2 < 1) ? 0 : greenNewValGwil / 2);
                     blueNewValGwil = (byte)((blueNewValGwil / 2 < 1) ? 0 : blueNewValGwil / 2);
-                    pathBrushGwil.SurroundColors = new Color[] { Color.FromArgb(BackgroundColorGwil.A, redNewValGwil, greenNewValGwil, blueNewValGwil) };
+                    obPathBrushGwil.SurroundColors = new Color[] { Color.FromArgb(BackgroundColorGwil.A, redNewValGwil, greenNewValGwil, blueNewValGwil) };
 
-                    //set and calculate center point for the gradient
-                    pathBrushGwil.CenterPoint = new PointF((LocationGwil.X + SizeGwil.Width) / 2, (LocationGwil.Y + SizeGwil.Height) / 2);
+                    //set and calculate center PointF for the gradient
+                    obPathBrushGwil.CenterPoint = new Point((int)((LocationGwil.X + SizeGwil.Width) / 2), (int)((LocationGwil.Y + SizeGwil.Height) / 2));
                     //draw the rectangle
-                    grGwil.FillRectangle(pathBrushGwil, new RectangleF(LocationGwil, SizeGwil));
+                    obGrGwil.FillRectangle(obPathBrushGwil, new RectangleF(LocationGwil, SizeGwil));
                 }
                 //all other situation irrelevant
                 else
                     //just draw a straight forward rectangle with basic color
-                    grGwil.FillRectangle(drawBrushGwil, new RectangleF(LocationGwil, SizeGwil));
+                    obGrGwil.FillRectangle(obDrawBrushGwil, new RectangleF(LocationGwil, SizeGwil));
 
                 //measure how many lines and characters will fit in the button
-                grGwil.MeasureString(ContentGwil, FontGwil, SizeGwil, StringFormat.GenericDefault, out int charsCountGwil, out int linesGwil);
+                obGrGwil.MeasureString(ContentGwil, FontGwil, SizeGwil, StringFormat.GenericDefault, out int charsCountGwil, out int linesGwil);
                 //create new string to fit the content that will fit in it
-                string drawingContentGwil = ContentGwil.Substring(0, (charsCountGwil >= 0) ? charsCountGwil : 0);
+                string obDrawingContentGwil = ContentGwil.Substring(0, (charsCountGwil >= 0) ? charsCountGwil : 0);
                 //draw the string
-                grGwil.DrawString(drawingContentGwil, FontGwil, new SolidBrush(foregroundColorGwil), new RectangleF(LocationGwil, SizeGwil));
+                obGrGwil.DrawString(obDrawingContentGwil, FontGwil, new SolidBrush(foregroundColorGwil), new RectangleF(LocationGwil, SizeGwil));
                 //note that the we update to the most recent changes
                 changedSinceDrawGwil = false;
-                base.DrawGwil(grGwil);
+                base.DrawGwil(obGrGwil);
             }
         }
 

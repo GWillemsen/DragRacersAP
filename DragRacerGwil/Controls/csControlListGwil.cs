@@ -13,12 +13,12 @@ namespace DragRacerGwil.Controls
         /// <summary>
         /// Adds item to the list
         /// </summary>
-        /// <param name="itemGwil">The item to add to the list if it doesn't exist yet</param>
-        public new void Add(csBasicControlGwil itemGwil)
+        /// <param name="obItemGwil">The item to add to the list if it doesn't exist yet</param>
+        public new void Add(csBasicControlGwil obItemGwil)
         {
             //if the name does not exist, add item to the list, else throw an exception
-            if (GetByNameGwil(itemGwil.NameGwil) == null)
-                this.Insert(Count, itemGwil);
+            if (GetByNameGwil(obItemGwil.NameGwil) == null)
+                this.Insert(Count, obItemGwil);
             else
                 throw new csItemHasNameThatExististGwil();
         }
@@ -28,15 +28,15 @@ namespace DragRacerGwil.Controls
         /// </summary>
         /// <param name="itemGwil">The items to add to the list</param>
         /// <returns>The items that where already in the list</returns>
-        public List<csBasicControlGwil> AddRange(csBasicControlGwil[] itemsGwil)
+        public List<csBasicControlGwil> AddRange(csBasicControlGwil[] obItemsGwil)
         {
             List<csBasicControlGwil> alreadExistingItemsGwil = new List<csBasicControlGwil>();
             //loop through the list and insert each item to the list of which the name doesn't already exists(when it does add it to the return list)
-            foreach (csBasicControlGwil itemGwil in itemsGwil)
-                if (GetByNameGwil(itemGwil.NameGwil) == null)
-                    this.Insert(Count, itemGwil);
+            foreach (csBasicControlGwil obItemGwil in obItemsGwil)
+                if (GetByNameGwil(obItemGwil.NameGwil) == null)
+                    this.Insert(Count, obItemGwil);
                 else
-                    alreadExistingItemsGwil.Add(itemGwil);
+                    alreadExistingItemsGwil.Add(obItemGwil);
             //return items that are already by name in the list
             return alreadExistingItemsGwil;
         }
@@ -44,13 +44,13 @@ namespace DragRacerGwil.Controls
         /// <summary>
         /// Get an item in the list by its name
         /// </summary>
-        /// <param name="nameGwil">The name of the control to return</param>
+        /// <param name="obNameGwil">The name of the control to return</param>
         /// <returns>The matched control, or null when not found</returns>
-        public csBasicControlGwil GetByNameGwil(string nameGwil)
+        public csBasicControlGwil GetByNameGwil(string obNameGwil)
         {
             //loop through all the items in the list and match for names, if found than return that item
             for (int indexGwil = Count - 1; indexGwil > 0; indexGwil--)
-                if (this[indexGwil].NameGwil == nameGwil)
+                if (this[indexGwil].NameGwil == obNameGwil)
                     return this[indexGwil];
 
             //if no match found return null
@@ -81,7 +81,7 @@ namespace DragRacerGwil.Controls
     public class csItemsHaveNameThatExististGwil : Exception
     {
         #region Fields
-        private List<csBasicControlGwil> errorOnListGwil = new List<csBasicControlGwil>();
+        private List<csBasicControlGwil> obErrorOnListGwil = new List<csBasicControlGwil>();
 
         #endregion Fields
 
@@ -94,7 +94,7 @@ namespace DragRacerGwil.Controls
         public csItemsHaveNameThatExististGwil(List<csBasicControlGwil> erroredOnItemsGwil)
         {
             //set the list
-            errorOnListGwil = erroredOnItemsGwil;
+            obErrorOnListGwil = erroredOnItemsGwil;
         }
 
         #endregion Constructors
@@ -104,7 +104,7 @@ namespace DragRacerGwil.Controls
         ///<summary>
         ///Return the list as read-only
         ///</summary>
-        public List<csBasicControlGwil> ErroredOnListGwil { get => errorOnListGwil; }
+        public List<csBasicControlGwil> ErroredOnListGwil { get => obErrorOnListGwil; }
 
         /// <summary>
         /// Override the message so it show the correct one now

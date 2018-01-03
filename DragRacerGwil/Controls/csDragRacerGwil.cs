@@ -8,11 +8,10 @@ namespace DragRacerGwil.Controls
         #region Fields
         private DateTime endOfRaceGwil = new DateTime();
         private bool knowItsFinishedGwil = false;
-        private string racerNameGwil = "";
+        private string obRacerNameGwil = "";
         private bool reachedFinshGwil = false;
         private double speedGwil = 1;
         private DateTime startOfRaceGwil = new DateTime();
-
         private double traveldRouteGwil = 0;
 
         #endregion Fields
@@ -37,7 +36,7 @@ namespace DragRacerGwil.Controls
             //make everything default except the text
             NameGwil = a_NameGwil;
             endOfRaceGwil = new DateTime();
-            racerNameGwil = "";
+            obRacerNameGwil = "";
             reachedFinshGwil = false;
             speedGwil = 1;
             startOfRaceGwil = new DateTime();
@@ -60,7 +59,7 @@ namespace DragRacerGwil.Controls
             NameGwil = a_NameGwil;
             LocationGwil = a_LocationGwil;
             endOfRaceGwil = new DateTime();
-            racerNameGwil = "";
+            obRacerNameGwil = "";
             reachedFinshGwil = false;
             speedGwil = 1;
             startOfRaceGwil = new DateTime();
@@ -85,7 +84,7 @@ namespace DragRacerGwil.Controls
             LocationGwil = a_LocationGwil;
             SizeGwil = a_SizeGwil;
             endOfRaceGwil = new DateTime();
-            racerNameGwil = "";
+            obRacerNameGwil = "";
             reachedFinshGwil = false;
             speedGwil = 1;
             startOfRaceGwil = new DateTime();
@@ -112,7 +111,7 @@ namespace DragRacerGwil.Controls
             SizeGwil = a_SizeGwil;
             BackgroundColorGwil = a_BackgroundColorGwil;
             endOfRaceGwil = new DateTime();
-            racerNameGwil = "";
+            obRacerNameGwil = "";
             reachedFinshGwil = false;
             speedGwil = 1;
             startOfRaceGwil = new DateTime();
@@ -140,7 +139,7 @@ namespace DragRacerGwil.Controls
             SizeGwil = a_SizeGwil;
             BackgroundColorGwil = a_BackgroundColorGwil;
             endOfRaceGwil = new DateTime();
-            racerNameGwil = a_RacerNameGwil;
+            obRacerNameGwil = a_RacerNameGwil;
             reachedFinshGwil = false;
             speedGwil = 1;
             startOfRaceGwil = new DateTime();
@@ -175,8 +174,8 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public string RacerNameGwil
         {
-            get => racerNameGwil;
-            set => racerNameGwil = value;
+            get => obRacerNameGwil;
+            set => obRacerNameGwil = value;
         }
 
         /// <summary>
@@ -233,27 +232,27 @@ namespace DragRacerGwil.Controls
         /// <summary>
         /// Draws the racer on the graphics
         /// </summary>
-        /// <param name="grGwil">The graphic to draw on</param>
+        /// <param name="obGrGwil">The graphic to draw on</param>
         /// <param name="forceRedrawGwil">Force a redraw weather necessary or not</param>
-        public override void DrawGwil(Graphics grGwil, bool forceRedrawGwil = false)
+        public override void DrawGwil(Graphics obGrGwil, bool forceRedrawGwil = false)
         {
             if (changedSinceDrawGwil == true || forceRedrawGwil == true && Visible == true)
             {
                 //save settings graphics, than set our own
-                var prevSettingInterGwil = grGwil.InterpolationMode;
-                var prevSettingSmoothGwil = grGwil.SmoothingMode;
-                grGwil.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                grGwil.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                var prevSettingInterGwil = obGrGwil.InterpolationMode;
+                var prevSettingSmoothGwil = obGrGwil.SmoothingMode;
+                obGrGwil.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                obGrGwil.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
                 //draw a rectangle with color on the graphics as the racer
-                grGwil.FillRectangle(new SolidBrush(BackgroundColorGwil), new RectangleF(LocationGwil, SizeGwil));
+                obGrGwil.FillRectangle(new SolidBrush(BackgroundColorGwil), new RectangleF(LocationGwil, SizeGwil));
 
                 //put back the stored settings
-                grGwil.InterpolationMode = prevSettingInterGwil;
-                grGwil.SmoothingMode = prevSettingSmoothGwil;
+                obGrGwil.InterpolationMode = prevSettingInterGwil;
+                obGrGwil.SmoothingMode = prevSettingSmoothGwil;
 
                 //call base.draw so the base has a chance to draw it self again
-                base.DrawGwil(grGwil);
+                base.DrawGwil(obGrGwil);
 
                 //finish off drawing
                 changedSinceDrawGwil = false;
