@@ -33,6 +33,7 @@ namespace DragRacerGwil
                  };
             }
         }
+
         /// <summary>
         /// Remove the given form from the watch list
         /// </summary>
@@ -40,9 +41,7 @@ namespace DragRacerGwil
         public static void RemoveFormFromList(Form form)
         {
             if(obMessageFilterGwil.obTargetFormsGwil.Contains(form) == true)
-            {
                 obMessageFilterGwil.obTargetFormsGwil.Remove(form);
-            }
         }
 
         /// <summary>
