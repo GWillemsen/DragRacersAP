@@ -16,5 +16,14 @@ namespace DragRacerGwil
         {
             InitializeComponent();
         }
+
+        public void LogMessageGwil(string messageGwil, int textColorGwil = -16777216)
+        {            
+            Color textColorFormatedGwil = Color.FromArgb(textColorGwil);
+            richTextBox1.SelectionColor = textColorFormatedGwil;
+            richTextBox1.AppendText((messageGwil.EndsWith("\n") == false) ? 
+                messageGwil + '\n' : messageGwil);
+            richTextBox1.ScrollToCaret();
+        }
     }
 }
