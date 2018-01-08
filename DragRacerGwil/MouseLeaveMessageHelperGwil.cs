@@ -12,6 +12,8 @@ namespace DragRacerGwil
         //the message filter/listener
         private static MouseLeaveMessageFilterGwil obMessageFilterGwil = new MouseLeaveMessageFilterGwil();
 
+        //weather the filter is initialized
+        private static bool initedGwil = false;
         #endregion Fields
 
         #region Methods
@@ -22,6 +24,12 @@ namespace DragRacerGwil
         /// <param name="obParentFormGwil">The form to add</param>
         public static void AddMessageFilterGwil(Form obParentFormGwil)
         {
+            
+            if(initedGwil == false)
+            {
+                initedGwil = true;
+                Application.AddMessageFilter(obMessageFilterGwil);
+            }
 
             //add the form to the watch list if it is not null
             if (obParentFormGwil != null)
@@ -29,7 +37,7 @@ namespace DragRacerGwil
                 obMessageFilterGwil.obTargetFormsGwil.Add(obParentFormGwil);
                 obParentFormGwil.FormClosed += (obSenderGwil, obEGwil) =>
                  {
-                     MouseLeaveMessageHelperGwil.RemoveFormFromList((Form)obSenderGwil);
+                     RemoveFormFromList((Form)obSenderGwil);
                  };
             }
         }
@@ -60,19 +68,18 @@ namespace DragRacerGwil
     }
 
     internal class MouseLeaveMessageFilterGwil : IMessageFilter
-    {
+    {       
         public MouseLeaveMessageFilterGwil()
         {
             obTargetFormsGwil = new List<dynamic>();
         }
-
         #region Properties
 
         //serialMonitor
-        public dynamic obFrmSerialMonitorGwil { get; set; }
+        internal dynamic obFrmSerialMonitorGwil { get; set; }
 
         //list of form to update on message
-        public List<dynamic> obTargetFormsGwil { get; set; }
+        internal List<dynamic> obTargetFormsGwil { get; set; }
 
         #endregion Properties
 
@@ -91,7 +98,10 @@ namespace DragRacerGwil
                         foreach (csBasicControlGwil obControlGwil in obTargetGwil.obControlsGwil)
                         {
                             if (obControlGwil.mouseEnteredGwil == true)
+                            {
                                 obControlGwil.MouseLeaveGwil(obTargetGwil, new MouseEventArgs(MouseButtons.None, 0, -1, -1, 0));
+                                obFrmSerialMonitorGwil?.LogMessageGwil("Raised mouse leave event on: " + obControlGwil.NameGwil);
+                            }
                         }
                     }
                 }
