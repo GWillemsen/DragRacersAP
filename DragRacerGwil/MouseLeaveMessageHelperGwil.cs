@@ -23,8 +23,7 @@ namespace DragRacerGwil
         /// </summary>
         /// <param name="obParentFormGwil">The form to add</param>
         public static void AddMessageFilterGwil(Form obParentFormGwil)
-        {
-            
+        {            
             if(initedGwil == false)
             {
                 initedGwil = true;
@@ -32,7 +31,7 @@ namespace DragRacerGwil
             }
 
             //add the form to the watch list if it is not null
-            if (obParentFormGwil != null)
+            if (obParentFormGwil != null && obMessageFilterGwil.obTargetFormsGwil.Contains(obParentFormGwil) == false)
             {
                 obMessageFilterGwil.obTargetFormsGwil.Add(obParentFormGwil);
                 obParentFormGwil.FormClosed += (obSenderGwil, obEGwil) =>
