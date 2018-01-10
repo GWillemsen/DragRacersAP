@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace DragRacerGwil
 {
-    public static class MouseLeaveMessageHelperGwil
+    public static class MessageHelperGwil
     {
         #region Fields
 
@@ -63,6 +63,17 @@ namespace DragRacerGwil
                 obMessageFilterGwil.obFrmSerialMonitorGwil = obSerialMonitorGwil;
         }
 
+        /// <summary>
+        /// Log the message to the set serial monitor(if it is set) and also to the debugger
+        /// </summary>
+        /// <param name="messageToLogGwil">The message to send to the monitor and debugger</param>
+        public static void LogMessage(string messageToLogGwil)
+        {
+            if(obMessageFilterGwil.obFrmSerialMonitorGwil != null)
+                obMessageFilterGwil.obFrmSerialMonitorGwil.LogMessageGwil(messageToLogGwil);
+            System.Diagnostics.Debug.WriteLine(messageToLogGwil);
+        }
+
         #endregion Methods
     }
 
@@ -89,10 +100,11 @@ namespace DragRacerGwil
             //check the message if it is for us
             if (m.Msg == 0x02A3 /*WM_MOUSELEAVE*/)
             {
-                try
+                foreach (dynamic obTargetGwil in obTargetFormsGwil)
                 {
-                    foreach (dynamic obTargetGwil in obTargetFormsGwil)
+                    try
                     {
+
                         //raise mouse leave events on all controls that think the mouse is still there
                         foreach (csBasicControlGwil obControlGwil in obTargetGwil.obControlsGwil)
                         {
@@ -103,11 +115,11 @@ namespace DragRacerGwil
                             }
                         }
                     }
-                }
-                catch (Exception obExGwil)
-                {
-                    System.Diagnostics.Debug.WriteLine("A error occurred while trying to raise the event that the mouse left the form. Details: " + obExGwil.ToString());
-                    obFrmSerialMonitorGwil?.LogMessageGwil("A error occurred while trying to raise the event that the mouse left the form. Details: " + obExGwil.ToString());
+                    catch (Exception obExGwil)
+                    {
+                        System.Diagnostics.Debug.WriteLine("A error occurred while trying to raise the event that the mouse left the form. Details: " + obExGwil.ToString());
+                        obFrmSerialMonitorGwil?.LogMessageGwil("A error occurred while trying to raise the event that the mouse left the form. Details: " + obExGwil.ToString());
+                    }
                 }
             }
 

@@ -1,14 +1,18 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace DragRacerGwil.Controls
 {
-    public class csLabelGwil : csBasicControlGwil
+    public class csLabelGwil : csBasicControlGwil, IDisposable
     {
         #region Fields
+
+        // Flag: Has Dispose already been called?
+        private bool disposed = false;
+        private Color foregroundColorGwil = Color.Black;
         private string obContentGwil = "";
         private Brush obDrawBrushGwil = new SolidBrush(Color.Gray);
         private Font obFontGwil = new Font("Times New Roman", 11);
-        private Color foregroundColorGwil = Color.Black;
 
         #endregion Fields
 
@@ -118,6 +122,15 @@ namespace DragRacerGwil.Controls
         #region Methods
 
         /// <summary>
+        /// Free all occupied resources 
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
         /// Draws the label on the graphics
         /// </summary>
         /// <param name="grGwil">The graphic to draw on</param>
@@ -140,6 +153,23 @@ namespace DragRacerGwil.Controls
                 changedSinceDrawGwil = false;
                 base.DrawGwil(grGwil);
             }
+        }
+
+        // Protected implementation of Dispose pattern.
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
+            {
+                //Free managed objects
+                obFontGwil.Dispose();
+                obDrawBrushGwil.Dispose();
+            }
+
+            // Free any unmanaged objects here.
+            disposed = true;
         }
 
         #endregion Methods

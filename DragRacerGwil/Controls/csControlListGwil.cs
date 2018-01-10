@@ -26,7 +26,7 @@ namespace DragRacerGwil.Controls
         /// <summary>
         /// Adds the items to the list
         /// </summary>
-        /// <param name="itemGwil">The items to add to the list</param>
+        /// <param name="obItemsGwil">The items to add to the list</param>
         /// <returns>The items that where already in the list</returns>
         public List<csBasicControlGwil> AddRange(csBasicControlGwil[] obItemsGwil)
         {
@@ -63,10 +63,10 @@ namespace DragRacerGwil.Controls
     /// <summary>
     /// The custom class for the exception that shows that the name is the same for 2 items in the list
     /// </summary>
+    [Serializable]
     public class csItemHasNameThatExististGwil : Exception
     {
         #region Properties
-
         /// <summary>
         /// Override the message so it show the correct one now
         /// </summary>
@@ -78,6 +78,7 @@ namespace DragRacerGwil.Controls
     /// <summary>
     /// An class that modify's the exception to contain a list of item on which it has errors
     /// </summary>
+    [Serializable]
     public class csItemsHaveNameThatExististGwil : Exception
     {
         #region Fields

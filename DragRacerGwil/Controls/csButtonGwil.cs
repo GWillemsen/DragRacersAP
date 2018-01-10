@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 
 namespace DragRacerGwil.Controls
@@ -6,13 +7,14 @@ namespace DragRacerGwil.Controls
     /// <summary>
     /// The basis class for a click able button
     /// </summary>
-    public class csButtonGwil : csBasicControlGwil
+    public class csButtonGwil : csBasicControlGwil, IDisposable
     {
         #region Fields
         private static Color foregroundColorGwil = Color.Black;
         private Brush obDrawBrushGwil = new SolidBrush(Color.Gray);
         private Font obFontGwil = new Font("Times New Roman", 11);
-
+        // Flag: Has Dispose already been called?
+        private bool disposed = false;
         #endregion Fields
 
         #region Constructors
@@ -293,6 +295,33 @@ namespace DragRacerGwil.Controls
             }
         }
 
+        /// <summary>
+        /// Free all occupied resources 
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            System.GC.SuppressFinalize(this);
+        }
+
+        ///<summary>
+        ///Protected implementation of Dispose pattern.
+        ///</summary>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
+            {
+                //Free managed objects
+                obFontGwil.Dispose();
+                obDrawBrushGwil.Dispose();
+            }
+
+            // Free any unmanaged objects here.
+            disposed = true;
+        }
         #endregion Methods
     }
 }

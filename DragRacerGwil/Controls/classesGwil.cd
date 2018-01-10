@@ -18,9 +18,10 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>gAAgAAAAAAAAAAACiAAAAIAAAAAAAAAQCAAAAAAAAAA=</HashCode>
+      <HashCode>gAIgAAAAACAAAAACiAAAAIAAAAAAAAAQCAAAAAAAAAA=</HashCode>
       <FileName>Controls\csButtonGwil.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="DragRacerGwil.Controls.csLabelGwil">
     <Position X="4" Y="0.75" Width="2" />
@@ -33,9 +34,10 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>gAAgAAAAAAAAAAACiAAAAIAAAAAAAAAYCAAAAAAAAAA=</HashCode>
+      <HashCode>gAIgAAAAACAAAAACiAAAAIAAAAAAAAAYCAAAAAAAAAA=</HashCode>
       <FileName>Controls\csLabelGwil.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="DragRacerGwil.Controls.csDragRacerGwil">
     <Position X="2" Y="0.75" Width="2" />

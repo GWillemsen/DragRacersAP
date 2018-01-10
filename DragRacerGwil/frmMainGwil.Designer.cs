@@ -22,6 +22,7 @@
             this.ClientSize = new System.Drawing.Size(733, 394);
             this.DoubleBuffered = true;
             this.Name = "frmMainGwil";
+            this.Load += new System.EventHandler(this.frmMainGwil_Load);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.frmMainGwil_MouseClick);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.frmMainGwil_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.frmMainGwil_MouseMove);

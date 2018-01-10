@@ -26,7 +26,7 @@ namespace DragRacerGwil
 
         public frmMainGwil()
         {
-            MouseLeaveMessageHelperGwil.AddMessageFilterGwil(this);
+            MessageHelperGwil.AddMessageFilterGwil(this);
             //initialize the normal form items
             InitializeComponent();
             double xPosGwil = 0;
@@ -48,14 +48,17 @@ namespace DragRacerGwil
                         downGwil = true;
                 }
             }
+            #region menu strip
 
             #region File menu
             //create the file panel
-            csPanelGwil obFileOptionsPanelGwil = new csPanelGwil("pnlFileOptionsGwil", new PointF(3, 25), new Size(60, 50));
+            csPanelGwil obFileOptionsPanelGwil = new csPanelGwil("pnlFileOptionsGwil", new PointF(3, 25), new Size(80, 80));
 
             //create new buttons
             csButtonGwil obFileButtonGwil = new csButtonGwil("btnFileGwil", new Point(3, 3), new Size(50, 20), "File");
-            csButtonGwil obAboutGwil = new csButtonGwil("btnAboutGwil", new PointF(3, 3), new Size(50, 20), "About");
+            csButtonGwil obAboutGwil = new csButtonGwil("btnAboutGwil", new PointF(3, 3), new Size(70, 20), "About");
+            csButtonGwil obLocateBtnGwil = new csButtonGwil("btnLocateGwil", new PointF(3, 27), new Size(70, 20), "Location");
+            csButtonGwil obExitBtnGwil = new csButtonGwil("btnExitGwil", new PointF(3, 53), new Size(70, 20), "Exit");
 
             #region file button
             //add the on click event
@@ -74,20 +77,53 @@ namespace DragRacerGwil
             #endregion file button
 
             #region about button
-            obAboutGwil.OnClickGwil += (senderGwil, argGwil) => { MessageBox.Show("The is a simple game "); };
+            obAboutGwil.OnClickGwil += (senderGwil, argGwil) => 
+            {
+                string obAboutTextGwil = "The is a simple game ";
+                MessageHelperGwil.LogMessage("Show the about message box with the text: " + obAboutTextGwil);
+                MessageBox.Show(obAboutTextGwil);
+            };
             obFileOptionsPanelGwil.ChildsListGwil.Add(obAboutGwil);
-
             #endregion about button
 
-            //add the panel to the controls
+            #region Location button
+            obLocateBtnGwil.OnClickGwil += (senderGwil, argGwil) =>
+            {
+                MessageHelperGwil.LogMessage("The location of the application is: " + Application.StartupPath);
+                if(MessageBox.Show("The location of the application is: " + Application.StartupPath + "\n\n Do you want to open this location in file explorer?", "Location", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    System.Diagnostics.Process obApplicationPathGwil = new System.Diagnostics.Process();
+                    obApplicationPathGwil.StartInfo.FileName = Application.StartupPath;
+                    obApplicationPathGwil.Start();
+                }
+            };
+            obFileOptionsPanelGwil.ChildsListGwil.Add(obLocateBtnGwil);
+            #endregion
+
+            #region Exit button
+            obExitBtnGwil.OnClickGwil += (senderGwil, argsGwil) =>
+            {
+                if(MessageBox.Show("Are you sure you want to exit the game?", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    tmrKeepEmRacingGwil.Enabled = false;
+                    obControlsGwil.Clear();
+                    this.Invalidate();
+                    Application.Exit();
+                }
+            };
+            obFileOptionsPanelGwil.ChildsListGwil.Add(obExitBtnGwil);
+            #endregion
+
+            //prepare the file options panel and add to the control list
+            obFileOptionsPanelGwil.Visible = false;
             obControlsGwil.Add(obFileOptionsPanelGwil);
 
             #endregion File menu
 
+            #endregion
             #region racers
 
-            //start the timer for a regular form update
-            tmrKeepEmRacingGwil.Enabled = true;
+
             //create an new panel, add 4 racers to it and add it to the form
             csPanelGwil obMainRacerPanelGwil = new csPanelGwil("pnlRacersGwil", new PointF(100, 0), new Size(400, 300));
             obMainRacerPanelGwil.BackgroundColorGwil = Color.Red;
@@ -107,7 +143,7 @@ namespace DragRacerGwil
                 obMainRacerPanelGwil.ChildsListGwil.Add(racerGwil);
                 System.Threading.Thread.Sleep(30);
             }
-            //obControlsGwil.Add(mainPanelGwil);
+            obControlsGwil.Add(obMainRacerPanelGwil);
 
             #endregion racers
         }
@@ -130,8 +166,9 @@ namespace DragRacerGwil
                 //also if it thinks the mouse is down than tell it otherwise
                 if ((currentPosMouseGwil.X > Width || currentPosMouseGwil.Y > Height) && obControlGwil.mouseDownGwil)
                     obControlGwil.MouseUpRaiseGwil(this, new MouseEventArgs(MouseButtons.None, 0, currentPosMouseGwil.X, currentPosMouseGwil.Y, 0));
-                //force draw the control on the graphic
-                obControlGwil.DrawGwil(obGrGwil, true);
+                //force draw the control on the graphic if it is visible
+                if(obControlGwil.Visible == true)
+                    obControlGwil.DrawGwil(obGrGwil, true);
             }
             /*send message to the original on-paint that it can do its job
              * (we are first and than the original on-paint(that handles toolbox items etc.)
@@ -175,6 +212,9 @@ namespace DragRacerGwil
 
         private void frmMainGwil_MouseClick(object sender, MouseEventArgs e)
         {
+            //control to preform click on
+            csBasicControlGwil obControlToClickGwil = null;
+
             foreach (csBasicControlGwil obControlGwil in obControlsGwil)
             {
                 //check if the mouse is in the control bounds
@@ -184,15 +224,23 @@ namespace DragRacerGwil
                     if (e.Y >= obControlGwil.LocationGwil.Y + graphicsOffsetGwil.Y &&
                          e.Y <= obControlGwil.LocationGwil.Y + obControlGwil.SizeGwil.Height + graphicsOffsetGwil.Y)
                     {
-                        //raise the controls click event
-                        obControlGwil.ClickGwil(this, e);
+                        //if z index is lower than make it the new object to preform on
+                        if (obControlToClickGwil == null || obControlToClickGwil.Z_indexGwil > obControlGwil.Z_indexGwil)
+                            obControlToClickGwil = obControlGwil;
                     }
                 }
             }
+
+            //raise the controls click event
+            if (obControlToClickGwil?.Visible == true)
+                obControlToClickGwil?.ClickGwil(this, e);
         }
 
         private void frmMainGwil_MouseDown(object sender, MouseEventArgs e)
         {
+            //control to preform mouse down on
+            csBasicControlGwil obDownEventGwil = null;
+
             foreach (csBasicControlGwil obControlGwil in obControlsGwil)
             {
                 //check if mouse is in the control
@@ -202,8 +250,9 @@ namespace DragRacerGwil
                     if (e.Y >= obControlGwil.LocationGwil.Y + graphicsOffsetGwil.Y &&
                          e.Y <= obControlGwil.LocationGwil.Y + obControlGwil.SizeGwil.Height + graphicsOffsetGwil.Y)
                     {
-                        //raise the mouse down event
-                        obControlGwil.MouseDownRaiseGwil(this, e);
+                        //if z index is lower than make it the new object to preform on
+                        if (obDownEventGwil == null || obDownEventGwil.Z_indexGwil > obControlGwil.Z_indexGwil)
+                            obDownEventGwil = obControlGwil;
                     }
                     else
                     {
@@ -225,12 +274,18 @@ namespace DragRacerGwil
                     }
                 }
             }
+
+            //raise the mouse down event
+            obDownEventGwil?.MouseDownRaiseGwil(this, e);
         }
 
         private void frmMainGwil_MouseMove(object sender, MouseEventArgs e)
         {
             //boolean the use when we want the invalidate our form
             bool somethingChangedGwil = false;
+
+            //object to preform move on
+            csBasicControlGwil obMoveControlGwil = null;
 
             //loop through all controls
             foreach (csBasicControlGwil obControlGwil in obControlsGwil)
@@ -242,11 +297,9 @@ namespace DragRacerGwil
                     if (e.Y >= obControlGwil.LocationGwil.Y + graphicsOffsetGwil.Y &&
                          e.Y <= obControlGwil.LocationGwil.Y + obControlGwil.SizeGwil.Height + graphicsOffsetGwil.Y)
                     {
-                        //if the mouse was not in the control before, raise the entered event first
-                        if (obControlGwil.mouseEnteredGwil == false)
-                            obControlGwil.MouseEnterRaiseGwil(sender, e);
-                        //if so click a move event
-                        obControlGwil.MouseMoveRaiseGwil(this, e);
+                        //if z index is lower than make it the new object to preform on
+                        if (obMoveControlGwil == null || obMoveControlGwil.Z_indexGwil > obControlGwil.Z_indexGwil)
+                            obMoveControlGwil = obControlGwil;
                     }
                     else if (obControlGwil.mouseEnteredGwil == true)
                         //otherwise raise leave events
@@ -263,6 +316,12 @@ namespace DragRacerGwil
                 if (obControlGwil.changedSinceDrawGwil == true)
                     somethingChangedGwil = true;//set our boolean to true so the form will invalidate
             }
+
+            //if the mouse was not in the control before, raise the entered event first
+            if (obMoveControlGwil?.mouseEnteredGwil == false)
+                obMoveControlGwil.MouseEnterRaiseGwil(sender, e);
+            //if so click a move event
+            obMoveControlGwil?.MouseMoveRaiseGwil(this, e);
 
             //if we changed something invalidate the form
             if (somethingChangedGwil == true)
@@ -335,7 +394,13 @@ namespace DragRacerGwil
         }
 
         #endregion Methods
+
+        private void frmMainGwil_Load(object sender, EventArgs e)
+        {
+            MessageHelperGwil.AddMessageFilterGwil(this);
+            frmSerialMonitor serialMGwil = new frmSerialMonitor();
+            MessageHelperGwil.SetSerialMonitorGwil(serialMGwil);
+            serialMGwil.Show();
+        }
     }
-
-
 }
