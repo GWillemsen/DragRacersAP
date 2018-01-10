@@ -8,7 +8,7 @@ namespace DragRacerGwil.Controls
     public class csPanelGwil : csBasicControlGwil
     {
         #region Fields
-        private System.Collections.Generic.List<csBasicControlGwil> obChildsGwil = new System.Collections.Generic.List<csBasicControlGwil>();
+        private List<csBasicControlGwil> obChildsGwil = new List<csBasicControlGwil>();
 
         #endregion Fields
 
