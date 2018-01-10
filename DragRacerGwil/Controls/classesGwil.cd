@@ -69,13 +69,13 @@
         <Point X="9.312" Y="0.75" />
         <Point X="9.312" Y="0.327" />
         <Point X="0.125" Y="0.327" />
-        <Point X="0.125" Y="5.761" />
-        <Point X="1.25" Y="5.761" />
-        <Point X="1.25" Y="5.386" />
+        <Point X="0.125" Y="6.146" />
+        <Point X="1.25" Y="6.146" />
+        <Point X="1.25" Y="5.771" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAgBAAAIAAAAEAAAgAAAAAAAAAAEAQAAAAAAgCAAAA=</HashCode>
+      <HashCode>ABAgBAAAIAAAAEAAAgAAAAAAAAAAEAQAEAAAAgCAAAA=</HashCode>
       <FileName>Controls\csPanelGwil.cs</FileName>
     </TypeIdentifier>
   </Class>

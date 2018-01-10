@@ -3,11 +3,25 @@ using System.Collections.Generic;
 
 namespace DragRacerGwil.Controls
 {
-    /// <summary>
-    /// A list that filters items.
+    // <summary>
+    /// A list that filters items so it cannot contain 2 controls with the same name 
     /// </summary>
     public class csControlListGwil : List<csBasicControlGwil>
     {
+        /// <summary>
+        /// Creates a new list that filters items so it cannot contain 2 controls with the same name 
+        /// </summary>
+        public csControlListGwil() { }
+
+        /// <summary>
+        /// Creates a new list that filters items so it cannot contain 2 controls with the same name 
+        /// </summary>
+        /// <param name="obBaseListGwil">The list to add the new list, double items will be dropped.</param>
+        public csControlListGwil(List<csBasicControlGwil> obBaseListGwil)
+        {
+            this.AddRange(obBaseListGwil);
+        }
+
         #region Methods
 
         /// <summary>
@@ -46,12 +60,25 @@ namespace DragRacerGwil.Controls
         /// </summary>
         /// <param name="obNameGwil">The name of the control to return</param>
         /// <returns>The matched control, or null when not found</returns>
-        public csBasicControlGwil GetByNameGwil(string obNameGwil)
+        public csBasicControlGwil GetByNameGwil(string obNameGwil, bool obUseDeepSearch = true)
         {
+            int countNumberGwil = Count;
             //loop through all the items in the list and match for names, if found than return that item
-            for (int indexGwil = Count - 1; indexGwil > 0; indexGwil--)
+            for (int indexGwil = 0; indexGwil < countNumberGwil; indexGwil++)
+            {
                 if (this[indexGwil].NameGwil == obNameGwil)
                     return this[indexGwil];
+                else if (obUseDeepSearch == true)
+                {
+                    if(this[indexGwil].GetType() == typeof(csPanelGwil))
+                    {
+                        object panelToScanGwil = this[indexGwil];
+                        csBasicControlGwil obReturnResultGwil = ((csPanelGwil)panelToScanGwil).ChildsListGwil.GetByNameGwil(obNameGwil);
+                        if (obReturnResultGwil != null)
+                            return obReturnResultGwil;
+                    }
+                }
+            }
 
             //if no match found return null
             return null;

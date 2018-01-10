@@ -8,8 +8,8 @@ namespace DragRacerGwil.Controls
     public class csPanelGwil : csBasicControlGwil
     {
         #region Fields
-        private List<csBasicControlGwil> obChildsGwil = new List<csBasicControlGwil>();
-
+        private csControlListGwil obChildsGwil = new csControlListGwil();
+        private bool hidesOnOutsideClickGwil = false;
         #endregion Fields
 
         #region Constructors
@@ -122,7 +122,7 @@ namespace DragRacerGwil.Controls
             LocationGwil = a_LocationGwil;
             NameGwil = a_NameGwil;
             SizeGwil = a_SizeGwil;
-            obChildsGwil = a_ChildsGwil;
+            obChildsGwil = new csControlListGwil(a_ChildsGwil);
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace DragRacerGwil.Controls
             LocationGwil = a_LocationGwil;
             NameGwil = a_NameGwil;
             SizeGwil = a_SizeGwil;
-            obChildsGwil = a_ChildsGwil.ToList();
+            obChildsGwil =  new csControlListGwil(a_ChildsGwil.ToList());
         }
 
         #endregion Constructors
@@ -156,10 +156,20 @@ namespace DragRacerGwil.Controls
         /// <summary>
         /// The controls in the panel as an list
         /// </summary>
-        public List<csBasicControlGwil> ChildsListGwil
+        public csControlListGwil ChildsListGwil
         {
             get => obChildsGwil;
             set => obChildsGwil = value;
+        }
+
+        /// <summary>
+        /// If this boolean is true the control will set visibility to false when there was a mouse click outside this control
+        /// </summary>
+        public bool HidesWhenClickedOutsideControlGwil
+        {
+            //get and set the boolean
+            get => hidesOnOutsideClickGwil;
+            set => hidesOnOutsideClickGwil = value;
         }
 
         #endregion Properties
@@ -235,12 +245,12 @@ namespace DragRacerGwil.Controls
                          obMouseEventGwil.Y <= obControlGwil.LocationGwil.Y + obControlGwil.SizeGwil.Height)
                     {
                         //check if the new control is closer to the 0 index than the last one
-                        if (obClickControlGwil == null || obControlGwil.Z_indexGwil < obClickControlGwil.Z_indexGwil)
+                        if ((obClickControlGwil == null || obControlGwil.Z_indexGwil < obClickControlGwil.Z_indexGwil) && obControlGwil.Visible == true)
                             obClickControlGwil = obControlGwil;
                     }
                 }
             }
-
+            
             //raise the controls click event
             obClickControlGwil?.ClickGwil(obSender, obMouseEventGwil);
         }
@@ -269,7 +279,8 @@ namespace DragRacerGwil.Controls
                     if (obMouseEventGwil.Y >= obControlGwil.LocationGwil.Y &&
                          obMouseEventGwil.Y <= obControlGwil.LocationGwil.Y + obControlGwil.SizeGwil.Height)
                     {
-                        if (obMouseDownControlGwil == null || obControlGwil.Z_indexGwil < obMouseDownControlGwil.Z_indexGwil)
+                        //if the mouseDown control is not null and the z index is higher(further to the background)
+                        if ((obMouseDownControlGwil == null || obControlGwil.Z_indexGwil < obMouseDownControlGwil.Z_indexGwil) && obControlGwil.Visible == true)
                             obMouseDownControlGwil = obControlGwil;
                     }
                     else
@@ -323,7 +334,7 @@ namespace DragRacerGwil.Controls
                     if (obMouseEventGwil.Y >= obControlGwil.LocationGwil.Y &&
                          obMouseEventGwil.Y <= obControlGwil.LocationGwil.Y + obControlGwil.SizeGwil.Height)
                     {
-                        if (obMouseMoveControlGwil == null || obControlGwil.Z_indexGwil < obMouseMoveControlGwil.Z_indexGwil)
+                        if ((obMouseMoveControlGwil == null || obControlGwil.Z_indexGwil < obMouseMoveControlGwil.Z_indexGwil) && obControlGwil.Visible == true)
                         {
                             obMouseMoveControlGwil = obControlGwil;
                         }
