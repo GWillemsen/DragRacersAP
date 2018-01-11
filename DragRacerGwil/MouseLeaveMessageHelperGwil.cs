@@ -9,11 +9,12 @@ namespace DragRacerGwil
     {
         #region Fields
 
+        //weather the filter is initialized
+        private static bool initedGwil = false;
+
         //the message filter/listener
         private static MouseLeaveMessageFilterGwil obMessageFilterGwil = new MouseLeaveMessageFilterGwil();
 
-        //weather the filter is initialized
-        private static bool initedGwil = false;
         #endregion Fields
 
         #region Methods
@@ -23,8 +24,8 @@ namespace DragRacerGwil
         /// </summary>
         /// <param name="obParentFormGwil">The form to add</param>
         public static void AddMessageFilterGwil(Form obParentFormGwil)
-        {            
-            if(initedGwil == false)
+        {
+            if (initedGwil == false)
             {
                 initedGwil = true;
                 Application.AddMessageFilter(obMessageFilterGwil);
@@ -42,12 +43,23 @@ namespace DragRacerGwil
         }
 
         /// <summary>
+        /// Log the message to the set serial monitor(if it is set) and also to the debugger
+        /// </summary>
+        /// <param name="messageToLogGwil">The message to send to the monitor and debugger</param>
+        public static void LogMessage(string messageToLogGwil, bool extensiveLogItem = false)
+        {
+            if (obMessageFilterGwil.obFrmSerialMonitorGwil != null && extensiveLogItem == false)
+                obMessageFilterGwil.obFrmSerialMonitorGwil.LogMessageGwil(messageToLogGwil);
+            System.Diagnostics.Debug.WriteLine(messageToLogGwil);
+        }
+
+        /// <summary>
         /// Remove the given form from the watch list
         /// </summary>
         /// <param name="form">Form the remove</param>
         public static void RemoveFormFromList(Form form)
         {
-            if(obMessageFilterGwil.obTargetFormsGwil.Contains(form) == true)
+            if (obMessageFilterGwil.obTargetFormsGwil.Contains(form) == true)
                 obMessageFilterGwil.obTargetFormsGwil.Remove(form);
         }
 
@@ -63,26 +75,20 @@ namespace DragRacerGwil
                 obMessageFilterGwil.obFrmSerialMonitorGwil = obSerialMonitorGwil;
         }
 
-        /// <summary>
-        /// Log the message to the set serial monitor(if it is set) and also to the debugger
-        /// </summary>
-        /// <param name="messageToLogGwil">The message to send to the monitor and debugger</param>
-        public static void LogMessage(string messageToLogGwil)
-        {
-            if(obMessageFilterGwil.obFrmSerialMonitorGwil != null)
-                obMessageFilterGwil.obFrmSerialMonitorGwil.LogMessageGwil(messageToLogGwil);
-            System.Diagnostics.Debug.WriteLine(messageToLogGwil);
-        }
-
         #endregion Methods
     }
 
     internal class MouseLeaveMessageFilterGwil : IMessageFilter
-    {       
+    {
+        #region Constructors
+
         public MouseLeaveMessageFilterGwil()
         {
             obTargetFormsGwil = new List<dynamic>();
         }
+
+        #endregion Constructors
+
         #region Properties
 
         //serialMonitor
@@ -104,7 +110,6 @@ namespace DragRacerGwil
                 {
                     try
                     {
-
                         //raise mouse leave events on all controls that think the mouse is still there
                         foreach (csBasicControlGwil obControlGwil in obTargetGwil.obControlsGwil)
                         {

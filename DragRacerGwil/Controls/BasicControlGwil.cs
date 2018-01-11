@@ -12,6 +12,7 @@ namespace DragRacerGwil.Controls
         private bool allowAutoResizeGwil = false;
         private Color backgroundColorGwil = Color.LightGray;
         private string contentGwil = "";
+        private bool hidesOnOutsideClickGwil = false;
         private PointF locationGwil = new PointF(0, 0);
         private string nameGwil = "";
         private SizeF sizeGwil = new SizeF(0, 0);
@@ -182,6 +183,17 @@ namespace DragRacerGwil.Controls
         }
 
         /// <summary>
+        /// If this boolean is true the control will set visibility to false when there was a mouse
+        /// click outside this control
+        /// </summary>
+        public bool HidesWhenClickedOutsideControlGwil
+        {
+            //get and set the boolean
+            get => hidesOnOutsideClickGwil;
+            set => hidesOnOutsideClickGwil = value;
+        }
+
+        /// <summary>
         /// Location on which to draw on
         /// </summary>
         public PointF LocationGwil
@@ -271,7 +283,7 @@ namespace DragRacerGwil.Controls
         }
 
         /// <summary>
-        /// Raise the event that the button is clicked
+        /// Raise the event that the control is clicked
         /// </summary>
         /// <param name="senderGwil">The sender of the event</param>
         /// <param name="eGwil">The extra info of the event</param>
@@ -283,7 +295,7 @@ namespace DragRacerGwil.Controls
         /// <summary>
         /// Draw the control
         /// </summary>
-        /// <param name="grGwil">Graphics to draw the button on</param>
+        /// <param name="grGwil">Graphics to draw the control on</param>
         public virtual void DrawGwil(Graphics grGwil, bool forceRedrawGwil = false) { }
 
         /// <summary>

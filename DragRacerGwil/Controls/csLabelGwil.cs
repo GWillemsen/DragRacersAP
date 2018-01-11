@@ -9,6 +9,7 @@ namespace DragRacerGwil.Controls
 
         // Flag: Has Dispose already been called?
         private bool disposed = false;
+
         private Color foregroundColorGwil = Color.Black;
         private string obContentGwil = "";
         private Brush obDrawBrushGwil = new SolidBrush(Color.Gray);
@@ -122,7 +123,7 @@ namespace DragRacerGwil.Controls
         #region Methods
 
         /// <summary>
-        /// Free all occupied resources 
+        /// Free all occupied resources
         /// </summary>
         public void Dispose()
         {

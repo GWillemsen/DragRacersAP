@@ -8,8 +8,9 @@ namespace DragRacerGwil.Controls
         #region Fields
         private DateTime endOfRaceGwil = new DateTime();
         private bool knowItsFinishedGwil = false;
+        private csLabelGwil obFinishTimeLabel = new csLabelGwil();
         private string obRacerNameGwil = "";
-        private bool reachedFinshGwil = false;
+        private bool reachedFinishGwil = false;
         private double speedGwil = 1;
         private DateTime startOfRaceGwil = new DateTime();
         private double traveldRouteGwil = 0;
@@ -36,8 +37,8 @@ namespace DragRacerGwil.Controls
             //make everything default except the text
             NameGwil = a_NameGwil;
             endOfRaceGwil = new DateTime();
-            obRacerNameGwil = "";
-            reachedFinshGwil = false;
+            obRacerNameGwil = a_NameGwil;
+            reachedFinishGwil = false;
             speedGwil = 1;
             startOfRaceGwil = new DateTime();
             traveldRouteGwil = 0;
@@ -59,8 +60,8 @@ namespace DragRacerGwil.Controls
             NameGwil = a_NameGwil;
             LocationGwil = a_LocationGwil;
             endOfRaceGwil = new DateTime();
-            obRacerNameGwil = "";
-            reachedFinshGwil = false;
+            obRacerNameGwil = a_NameGwil;
+            reachedFinishGwil = false;
             speedGwil = 1;
             startOfRaceGwil = new DateTime();
             traveldRouteGwil = 0;
@@ -84,8 +85,8 @@ namespace DragRacerGwil.Controls
             LocationGwil = a_LocationGwil;
             SizeGwil = a_SizeGwil;
             endOfRaceGwil = new DateTime();
-            obRacerNameGwil = "";
-            reachedFinshGwil = false;
+            obRacerNameGwil = a_NameGwil;
+            reachedFinishGwil = false;
             speedGwil = 1;
             startOfRaceGwil = new DateTime();
             traveldRouteGwil = 0;
@@ -111,8 +112,8 @@ namespace DragRacerGwil.Controls
             SizeGwil = a_SizeGwil;
             BackgroundColorGwil = a_BackgroundColorGwil;
             endOfRaceGwil = new DateTime();
-            obRacerNameGwil = "";
-            reachedFinshGwil = false;
+            obRacerNameGwil = a_NameGwil;
+            reachedFinishGwil = false;
             speedGwil = 1;
             startOfRaceGwil = new DateTime();
             traveldRouteGwil = 0;
@@ -140,7 +141,7 @@ namespace DragRacerGwil.Controls
             BackgroundColorGwil = a_BackgroundColorGwil;
             endOfRaceGwil = new DateTime();
             obRacerNameGwil = a_RacerNameGwil;
-            reachedFinshGwil = false;
+            reachedFinishGwil = false;
             speedGwil = 1;
             startOfRaceGwil = new DateTime();
             traveldRouteGwil = 0;
@@ -156,7 +157,7 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public bool FinishedGwil
         {
-            get => reachedFinshGwil;//return true if finished
+            get => reachedFinishGwil;//return true if finished
         }
 
         /// <summary>
@@ -167,6 +168,15 @@ namespace DragRacerGwil.Controls
             //get or set the boolean
             get => knowItsFinishedGwil;
             set => knowItsFinishedGwil = value;
+        }
+
+        /// <summary>
+        /// The label that is associated with this racer to show its end time
+        /// </summary>
+        public csLabelGwil PersonalTextLabel
+        {
+            get => obFinishTimeLabel;
+            set => obFinishTimeLabel = value;
         }
 
         /// <summary>
@@ -225,7 +235,7 @@ namespace DragRacerGwil.Controls
                     LocationGwil = new PointF(tracsGwil[(int)traveldRouteGwil].X + offset.X, tracsGwil[(int)traveldRouteGwil].Y + offset.Y);
                 }
                 else
-                    reachedFinshGwil = true;
+                    reachedFinishGwil = true;
             }
         }
 
@@ -262,9 +272,11 @@ namespace DragRacerGwil.Controls
         /// <summary>
         /// Set the end time of the racer
         /// </summary>
-        public void EndRaceGwil()
+        public void EndRaceGwil(ref int obPlaceGwil)
         {
             endOfRaceGwil = DateTime.Now;
+            if (obFinishTimeLabel != null)
+                obFinishTimeLabel.ContentGwil = "Racer " + obRacerNameGwil + " has ended " + obPlaceGwil + " with a total time of " + endOfRaceGwil.Subtract(startOfRaceGwil).ToString();
         }
 
         /// <summary>
@@ -275,7 +287,7 @@ namespace DragRacerGwil.Controls
         public void ResetRacerToStartGwil(PointF startPointGwil, PointF offsetGwil)
         {
             LocationGwil = new PointF() { X = startPointGwil.X + offsetGwil.X, Y = startPointGwil.Y + offsetGwil.Y }; //reset the location of the racer
-            reachedFinshGwil = false;//reset the finished boolean
+            reachedFinishGwil = false;//reset the finished boolean
             //reset the time when the race started and stopped
             startOfRaceGwil = new DateTime();
             endOfRaceGwil = new DateTime();
@@ -289,6 +301,15 @@ namespace DragRacerGwil.Controls
         public void StartRaceGwil()
         {
             startOfRaceGwil = DateTime.Now;
+        }
+
+        /// <summary>
+        /// Return the most important information show as a string
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return "{" + string.Format("{0}, {1}; {3} at {2}", NameGwil, SpeedGwil, LocationGwil, SizeGwil) + "}";
         }
 
         #endregion Methods

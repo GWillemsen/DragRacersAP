@@ -4,23 +4,26 @@ using System.Collections.Generic;
 namespace DragRacerGwil.Controls
 {
     // <summary>
-    /// A list that filters items so it cannot contain 2 controls with the same name 
-    /// </summary>
+    /// A list that filters items so it cannot contain 2 controls with the same name </summary>
     public class csControlListGwil : List<csBasicControlGwil>
     {
+        #region Constructors
+
         /// <summary>
-        /// Creates a new list that filters items so it cannot contain 2 controls with the same name 
+        /// Creates a new list that filters items so it cannot contain 2 controls with the same name
         /// </summary>
         public csControlListGwil() { }
 
         /// <summary>
-        /// Creates a new list that filters items so it cannot contain 2 controls with the same name 
+        /// Creates a new list that filters items so it cannot contain 2 controls with the same name
         /// </summary>
         /// <param name="obBaseListGwil">The list to add the new list, double items will be dropped.</param>
         public csControlListGwil(List<csBasicControlGwil> obBaseListGwil)
         {
             this.AddRange(obBaseListGwil);
         }
+
+        #endregion Constructors
 
         #region Methods
 
@@ -70,7 +73,7 @@ namespace DragRacerGwil.Controls
                     return this[indexGwil];
                 else if (obUseDeepSearch == true)
                 {
-                    if(this[indexGwil].GetType() == typeof(csPanelGwil))
+                    if (this[indexGwil].GetType() == typeof(csPanelGwil))
                     {
                         object panelToScanGwil = this[indexGwil];
                         csBasicControlGwil obReturnResultGwil = ((csPanelGwil)panelToScanGwil).ChildsListGwil.GetByNameGwil(obNameGwil);
@@ -84,6 +87,28 @@ namespace DragRacerGwil.Controls
             return null;
         }
 
+        /// <summary>
+        /// Creates an list of all controls including its child items
+        /// </summary>
+        /// <param name="obParentControlGwil">
+        /// The control the check for child's and add itself to the control list
+        /// </param>
+        /// <returns>The control it self and its child's</returns>
+        public List<csBasicControlGwil> GetRawListOfAllControlGwil(csBasicControlGwil obParentControlGwil)
+        {
+            //create an return list and add parent control to it
+            List<csBasicControlGwil> obReturnListGwil = new List<csBasicControlGwil>();//only return this item
+            obReturnListGwil.Add(obParentControlGwil);
+            //if the parent control is a panel, loop through the child's controls and add them to the returnList
+            if (typeof(csPanelGwil) == obParentControlGwil.GetType())
+            {
+                for (int indexChildControlGwil = 0; indexChildControlGwil < ((csPanelGwil)obParentControlGwil).ChildsListGwil.Count; indexChildControlGwil++)
+                    obReturnListGwil.AddRange(GetRawListOfAllControlGwil(((csPanelGwil)obParentControlGwil).ChildsListGwil[indexChildControlGwil]));
+                return obReturnListGwil;
+            }
+            return obReturnListGwil;
+        }
+
         #endregion Methods
     }
 
@@ -94,6 +119,7 @@ namespace DragRacerGwil.Controls
     public class csItemHasNameThatExististGwil : Exception
     {
         #region Properties
+
         /// <summary>
         /// Override the message so it show the correct one now
         /// </summary>
