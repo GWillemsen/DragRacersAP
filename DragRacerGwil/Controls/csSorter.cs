@@ -17,6 +17,7 @@ namespace DragRacerGwil.Controls
         /// <returns></returns>
         public int Compare(csBasicControlGwil obControlAGwil, csBasicControlGwil obControlBGwil)
         {
+            //check what number we need to return(this i not my choice, it defined by IComparer)
             if (obControlAGwil.Z_indexGwil < obControlBGwil.Z_indexGwil)
                 return 1;
             else if (obControlAGwil.Z_indexGwil > obControlBGwil.Z_indexGwil)
