@@ -42,13 +42,13 @@ namespace DragRacerGwil
                 trackGwil[trackNumberPointGwil] = new PointF((float)xPosGwil, (float)trackNumberPointGwil / 10);
                 if (downGwil == true)
                 {
-                    xPosGwil -= 1F;
+                    xPosGwil -= 0.3F;
                     if (xPosGwil <= 0)
                         downGwil = false;
                 }
                 else
                 {
-                    xPosGwil += 1F; ;
+                    xPosGwil += 0.3F; ;
                     if (xPosGwil >= 200)
                         downGwil = true;
                 }
@@ -58,11 +58,11 @@ namespace DragRacerGwil
 
             #region menu strip
             //creating a new menu strip
-            csPanelGwil obPanelGwil = new csPanelGwil("msrMainGwil", new PointF(3, 3), new Size(this.Width - 10, 26), Color.Red);
+            csPanelGwil obPanelGwil = new csPanelGwil("msrMainGwil", new PointF(0, 0), new Size(this.Width - 10, 26), Color.Red);
 
             #region File menu
             //create the file panel
-            csPanelGwil obFileOptionsPanelGwil = new csPanelGwil("pnlFileOptionsGwil", new PointF(3, 30), new Size(80, 80));
+            csPanelGwil obFileOptionsPanelGwil = new csPanelGwil("pnlFileOptionsGwil", new PointF(3, 27), new Size(80, 80));
             obFileOptionsPanelGwil.HidesWhenClickedOutsideControlGwil = true;
 
             //create new buttons
@@ -84,10 +84,11 @@ namespace DragRacerGwil
                         this.Invalidate();
                 }
                 if (obFilePanelGwil.Visible == true)
-                    MessageHelperGwil.LogMessage("Opening file tab");
+                    MessageHelperGwil.LogMessage("Opening file tab",false);
                 else
-                    MessageHelperGwil.LogMessage("Closing file tab");
+                    MessageHelperGwil.LogMessage("Closing file tab", false);
             };
+            
             //add it to the controls
             obPanelGwil.ChildsListGwil.Add(obFileButtonGwil);
 
@@ -99,7 +100,7 @@ namespace DragRacerGwil
             obAboutGwil.OnClickGwil += (senderGwil, argGwil) =>
             {
                 string obAboutTextGwil = "The is a simple game ";
-                MessageHelperGwil.LogMessage("Show the about message box with the text: " + obAboutTextGwil);
+                MessageHelperGwil.LogMessage("Show the about message box with the text: " + obAboutTextGwil, false);
                 MessageBox.Show(obAboutTextGwil);
             };
             obFileOptionsPanelGwil.ChildsListGwil.Add(obAboutGwil);
@@ -109,7 +110,7 @@ namespace DragRacerGwil
             #region Location button
             obLocateBtnGwil.OnClickGwil += (senderGwil, argGwil) =>
             {
-                MessageHelperGwil.LogMessage("The location of the application is: " + Application.StartupPath);
+                MessageHelperGwil.LogMessage("The location of the application is: " + Application.StartupPath, false);
                 if (MessageBox.Show("The location of the application is: " + Application.StartupPath + "\n\n Do you want to open this location in file explorer?", "Location", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     System.Diagnostics.Process obApplicationPathGwil = new System.Diagnostics.Process();
@@ -126,7 +127,7 @@ namespace DragRacerGwil
             {
                 if (MessageBox.Show("Are you sure you want to exit the game?", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    MessageHelperGwil.LogMessage("Exiting game.");
+                    MessageHelperGwil.LogMessage("Exiting game.", false);
                     //clearing the controls for a safe shutdown
                     tmrKeepEmRacingGwil.Enabled = false;
                     obControlsGwil.Clear();
@@ -156,7 +157,7 @@ namespace DragRacerGwil
             #region racing panel
             MessageHelperGwil.LogMessage("Creating race main view panel", true);
             //the main panel for the race
-            csPanelGwil obRacerPanelGwil = new csPanelGwil("pnlRaceOverviewGwil", new PointF(30, 80), new Size(this.Width - 10, this.Height - 30));
+            csPanelGwil obRacerPanelGwil = new csPanelGwil("pnlRaceOverviewGwil", new PointF(3, 28), new Size(this.Width - 22, this.Height - 30));
             obRacerPanelGwil.Z_indexGwil = 2;
 
             MessageHelperGwil.LogMessage("Creating the race panel with its racers", true);
@@ -183,20 +184,19 @@ namespace DragRacerGwil
                 System.Threading.Thread.Sleep(30);
             }
             obRacersListGwil = obRacersGwil.ChildsListGwil;
-
             obRacerPanelGwil.ChildsListGwil.Add(obRacersGwil);
 
             #endregion racers
 
             #region racer start
             //creating the start/stop race button
-            csButtonGwil obRaceStartStopGwil = new csButtonGwil("btnStartStopGwil", new PointF(10, 200), new Size(80, 26));
+            csButtonGwil obRaceStartStopGwil = new csButtonGwil("btnStartStopGwil", new PointF(10, 200), new Size(80, 26), "Start race");
 
             obRaceStartStopGwil.OnClickGwil += (senderGwil, argsGwil) =>
             {
                 if (tmrKeepEmRacingGwil.Enabled == false)
                 {
-                    MessageHelperGwil.LogMessage("Starting race...");
+                    MessageHelperGwil.LogMessage("Starting race...", false);
                     obRaceStartStopGwil.ContentGwil = "Racing";
                     foreach (csDragRacerGwil obRacerGwil in obRacersGwil.ChildsListGwil)
                     {
@@ -208,7 +208,7 @@ namespace DragRacerGwil
                     }
                     placeOfRacer = 1;
                     tmrKeepEmRacingGwil.Enabled = true;
-                    MessageHelperGwil.LogMessage("Started race");
+                    MessageHelperGwil.LogMessage("Started race", false);
                 }
             };
 
@@ -529,7 +529,7 @@ namespace DragRacerGwil
                             (float)(obControlGwil.SizeGwil.Height * resizerHeightGwil));
                     }
                 }
-                MessageHelperGwil.LogMessage("Invalidating form so controls appear");
+                MessageHelperGwil.LogMessage("Invalidating form so controls appear", false);
                 this.Invalidate();
                 lastKnowSizeGwil = Size;
             }
@@ -565,9 +565,10 @@ namespace DragRacerGwil
             }
             if (allRacersFinished == true)
             {
+                MessageHelperGwil.LogMessage("Race has ended.", false);
                 tmrKeepEmRacingGwil.Enabled = false;
                 csButtonGwil obRaceBtnGwil = (csButtonGwil)obControlsGwil.GetByNameGwil("btnStartStopGwil");
-                obRaceBtnGwil.ContentGwil = "Start";
+                obRaceBtnGwil.ContentGwil = "Start race";
             }
         }
 
