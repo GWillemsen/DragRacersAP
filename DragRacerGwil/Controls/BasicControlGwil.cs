@@ -6,10 +6,12 @@ namespace DragRacerGwil.Controls
     public class csBasicControlGwil
     {
         #region Fields
+
         public bool changedSinceDrawGwil = false;
         public bool mouseDownGwil = false;
         public bool mouseEnteredGwil = false;
-        private bool allowAutoResizeGwil = false;
+        private bool allowAutoResizeWidthGwil = true;
+        private bool allowAutoResizeHeightGwil = true;
         private Color backgroundColorGwil = Color.LightGray;
         private string contentGwil = "";
         private bool hidesOnOutsideClickGwil = false;
@@ -143,12 +145,21 @@ namespace DragRacerGwil.Controls
         #region Properties
 
         /// <summary>
-        /// Weather the control will resize automatically with the parent control
+        /// Weather the controls width will resize automatically with the parent control
         /// </summary>
-        public bool AutoResizeGwil
+        public bool AutoResizeWidthGwil
         {
-            get => allowAutoResizeGwil;
-            set => allowAutoResizeGwil = value;
+            get => allowAutoResizeWidthGwil;
+            set => allowAutoResizeWidthGwil = value;
+        }
+
+        /// <summary>
+        /// Weather the controls height will resize automatically with the parent control
+        /// </summary>
+        public bool AutoResizeHeightGwil
+        {
+            get => allowAutoResizeHeightGwil;
+            set => allowAutoResizeHeightGwil = value;
         }
 
         /// <summary>
@@ -302,54 +313,54 @@ namespace DragRacerGwil.Controls
         /// Raise the event that the mouse button is pressed down
         /// </summary>
         /// <param name="senderGwil">The sender of the event</param>
-        /// <param name="argGwil">The extra info of the event</param>
-        public void MouseDownRaiseGwil(object senderGwil, System.Windows.Forms.MouseEventArgs argGwil)
+        /// <param name="obArgGwil">The extra info of the event</param>
+        public void MouseDownRaiseGwil(object senderGwil, System.Windows.Forms.MouseEventArgs obArgGwil)
         {
             mouseDownGwil = true;//say the mouse button is down
-            OnMouseDownGwil?.Invoke(senderGwil, argGwil);//raise the event handler if it not null
+            OnMouseDownGwil?.Invoke(senderGwil, obArgGwil);//raise the event handler if it not null
         }
 
         /// <summary>
         /// Raise the event that the mouse entered this control
         /// </summary>
         /// <param name="senderGwil"></param>
-        /// <param name="argGwil"></param>
-        public void MouseEnterRaiseGwil(object senderGwil, System.Windows.Forms.MouseEventArgs argGwil)
+        /// <param name="obArgGwil"></param>
+        public void MouseEnterRaiseGwil(object senderGwil, System.Windows.Forms.MouseEventArgs obArgGwil)
         {
             mouseEnteredGwil = true;//set to true, so it know the mouse has entered
-            OnMouseEnterGwil?.Invoke(senderGwil, argGwil);//if the event handler is not null raise it
+            OnMouseEnterGwil?.Invoke(senderGwil, obArgGwil);//if the event handler is not null raise it
         }
 
         /// <summary>
         /// Raise the event that the mouse left the control
         /// </summary>
         /// <param name="senderGwil">The sender of the event</param>
-        /// <param name="argGwil">The extra info of the event</param>
-        public void MouseLeaveGwil(object senderGwil, System.Windows.Forms.MouseEventArgs argGwil)
+        /// <param name="obArgGwil">The extra info of the event</param>
+        public void MouseLeaveGwil(object senderGwil, System.Windows.Forms.MouseEventArgs obArgGwil)
         {
             mouseEnteredGwil = false;//say the mouse is not in the control
-            OnMouseLeaveGwil?.Invoke(senderGwil, argGwil);//raise the mouse left event if it is not null
+            OnMouseLeaveGwil?.Invoke(senderGwil, obArgGwil);//raise the mouse left event if it is not null
         }
 
         /// <summary>
         /// Raise the event that the mouse was moved
         /// </summary>
         /// <param name="senderGwil">The sender of the event</param>
-        /// <param name="argGwil">The extra info of the event</param>
-        public void MouseMoveRaiseGwil(object senderGwil, System.Windows.Forms.MouseEventArgs argGwil)
+        /// <param name="obArgGwil">The extra info of the event</param>
+        public void MouseMoveRaiseGwil(object senderGwil, System.Windows.Forms.MouseEventArgs obArgGwil)
         {
-            OnMouseMoveGwil?.Invoke(senderGwil, argGwil);//raise the mouse moved event if it is not null
+            OnMouseMoveGwil?.Invoke(senderGwil, obArgGwil);//raise the mouse moved event if it is not null
         }
 
         /// <summary>
         /// Raise the event that the button of the mouse was released
         /// </summary>
         /// <param name="senderGwil">The sender of the event</param>
-        /// <param name="argGwil">The extra info of the event</param>
-        public void MouseUpRaiseGwil(object senderGwil, System.Windows.Forms.MouseEventArgs argGwil)
+        /// <param name="obArgGwil">The extra info of the event</param>
+        public void MouseUpRaiseGwil(object senderGwil, System.Windows.Forms.MouseEventArgs obArgGwil)
         {
             mouseDownGwil = false;//say the mouse if not down
-            OnMouseUpGwil?.Invoke(senderGwil, argGwil);//raise the event handler if it is not null
+            OnMouseUpGwil?.Invoke(senderGwil, obArgGwil);//raise the event handler if it is not null
         }
 
         /// <summary>

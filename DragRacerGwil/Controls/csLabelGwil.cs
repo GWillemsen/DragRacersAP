@@ -140,7 +140,8 @@ namespace DragRacerGwil.Controls
         {
             if (changedSinceDrawGwil == true || forceRedrawGwil == true && Visible == true)
             {
-                //just draw a straight forward rectangle with basic color
+                //just draw a straight forward rectangle with a background color
+                obDrawBrushGwil = new SolidBrush(BackgroundColorGwil);
                 grGwil.FillRectangle(obDrawBrushGwil, new RectangleF(LocationGwil, SizeGwil));
 
                 //measure how many lines and characters will fit in the button

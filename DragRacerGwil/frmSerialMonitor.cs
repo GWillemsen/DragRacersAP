@@ -6,6 +6,7 @@ namespace DragRacerGwil
 {
     public partial class frmSerialMonitor : Form
     {
+        private System.Collections.Generic.List<string> obDebugLogGwil = new System.Collections.Generic.List<string>();
         #region Constructors
 
         public frmSerialMonitor()
@@ -17,16 +18,28 @@ namespace DragRacerGwil
 
         #region Methods
 
-        public void LogMessageGwil(string messageGwil, int textColorGwil = -16777216)
+        public void LogMessageGwil(string messageGwil, bool extensizeItemGwil, int textColorGwil = -16777216)
         {
             try
             {
+
                 //set the color of the next text and append the log message to it
                 Color textColorFormatedGwil = Color.FromArgb(textColorGwil);
-                richTextBox1.SelectionColor = textColorFormatedGwil;
-                richTextBox1.AppendText("[" + DateTime.Now.ToString() + ":" + DateTime.Now.Millisecond + "] " +
+
+                //set the color of the next text and append the log message to it
+                rtbAdvancedLogGwil.SelectionColor = textColorFormatedGwil;
+                rtbAdvancedLogGwil.AppendText("[" + DateTime.Now.ToString() + ":" + DateTime.Now.Millisecond + "] " +
                     ((messageGwil.EndsWith("\n") == false) ? messageGwil + '\n' : messageGwil));
-                richTextBox1.ScrollToCaret();
+                rtbAdvancedLogGwil.ScrollToCaret();
+
+                //if the item is an advaned item don't show in simple log
+                if (extensizeItemGwil == false)
+                {
+                    rtbSimpleLogGwil.SelectionColor = textColorFormatedGwil;
+                    rtbSimpleLogGwil.AppendText("[" + DateTime.Now.ToString() + ":" + DateTime.Now.Millisecond + "] " +
+                        ((messageGwil.EndsWith("\n") == false) ? messageGwil + '\n' : messageGwil));
+                    rtbSimpleLogGwil.ScrollToCaret();
+                }
             }
             catch (Exception obExGwil)
             {
@@ -37,5 +50,21 @@ namespace DragRacerGwil
         }
 
         #endregion Methods
+
+        private void frmSerialMonitor_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //cancel close event
+            e.Cancel = true;
+            //make it hide so we can continue the monitor once shown again
+            this.Hide();
+        }
+
+        private void cbkAdvancedLogGwil_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbkAdvancedLogGwil.Checked == true)
+                rtbAdvancedLogGwil.BringToFront();
+            else
+                rtbAdvancedLogGwil.SendToBack();
+        }
     }
 }

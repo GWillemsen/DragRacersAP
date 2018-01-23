@@ -181,7 +181,8 @@ namespace DragRacerGwil.Controls
                 //create graphics objects for the drawing
                 Bitmap obThePanelGwil = new Bitmap((int)SizeGwil.Width, ((int)SizeGwil.Height));
                 Graphics obPanelGrGwil = Graphics.FromImage(obThePanelGwil);
-
+                obPanelGrGwil.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
+                obPanelGrGwil.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Low;
                 //clear the bitmap with the background color
                 obPanelGrGwil.Clear(BackgroundColorGwil);
                 //draw each individual control on the graphics

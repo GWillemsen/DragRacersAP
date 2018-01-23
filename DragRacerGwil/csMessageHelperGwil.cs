@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace DragRacerGwil
 {
-    public static class MessageHelperGwil
+    public static class csMessageHelperGwil
     {
         #region Fields
 
@@ -13,7 +13,7 @@ namespace DragRacerGwil
         private static bool initedGwil = false;
 
         //the message filter/listener
-        private static MouseLeaveMessageFilterGwil obMessageFilterGwil = new MouseLeaveMessageFilterGwil();
+        private static csMouseLeaveMessageFilterGwil obMessageFilterGwil = new csMouseLeaveMessageFilterGwil();
 
         #endregion Fields
 
@@ -46,10 +46,10 @@ namespace DragRacerGwil
         /// Log the message to the set serial monitor(if it is set) and also to the debugger
         /// </summary>
         /// <param name="messageToLogGwil">The message to send to the monitor and debugger</param>
-        public static void LogMessage(string messageToLogGwil, bool extensiveLogItem = false)
+        public static void LogMessage(string messageToLogGwil, bool extensiveLogItem = false, int textColorGwil = -16777216)
         {
-            if (obMessageFilterGwil.obFrmSerialMonitorGwil != null && extensiveLogItem == false)
-                obMessageFilterGwil.obFrmSerialMonitorGwil.LogMessageGwil(messageToLogGwil);
+            if (obMessageFilterGwil.obFrmSerialMonitorGwil != null)
+                obMessageFilterGwil.obFrmSerialMonitorGwil.LogMessageGwil(messageToLogGwil, extensiveLogItem, textColorGwil);
             System.Diagnostics.Debug.WriteLine(messageToLogGwil);
         }
 
@@ -75,14 +75,22 @@ namespace DragRacerGwil
                 obMessageFilterGwil.obFrmSerialMonitorGwil = obSerialMonitorGwil;
         }
 
+        /// <summary>
+        /// Get the serial monitor
+        /// </summary>
+        /// <returns>The currently set serial monitor</returns>
+        public static Form GetSerialMonitorGwil()
+        {
+            return obMessageFilterGwil.obFrmSerialMonitorGwil;
+        }
         #endregion Methods
     }
 
-    internal class MouseLeaveMessageFilterGwil : IMessageFilter
+    internal class csMouseLeaveMessageFilterGwil : IMessageFilter
     {
         #region Constructors
 
-        public MouseLeaveMessageFilterGwil()
+        public csMouseLeaveMessageFilterGwil()
         {
             obTargetFormsGwil = new List<dynamic>();
         }
@@ -116,14 +124,13 @@ namespace DragRacerGwil
                             if (obControlGwil.mouseEnteredGwil == true)
                             {
                                 obControlGwil.MouseLeaveGwil(obTargetGwil, new MouseEventArgs(MouseButtons.None, 0, -1, -1, 0));
-                                obFrmSerialMonitorGwil?.LogMessageGwil("Raised mouse leave event on: " + obControlGwil.NameGwil);
                             }
                         }
                     }
                     catch (Exception obExGwil)
                     {
                         System.Diagnostics.Debug.WriteLine("A error occurred while trying to raise the event that the mouse left the form. Details: " + obExGwil.ToString());
-                        obFrmSerialMonitorGwil?.LogMessageGwil("A error occurred while trying to raise the event that the mouse left the form. Details: " + obExGwil.ToString());
+                        obFrmSerialMonitorGwil?.LogMessageGwil("A error occurred while trying to raise the event that the mouse left the form. Details: " + obExGwil.ToString(), true);
                     }
                 }
             }
