@@ -7,13 +7,14 @@ namespace DragRacerGwil.Controls
     {
         #region Fields
         private DateTime endOfRaceGwil = new DateTime();
+        private int finishPositionGwil = 0;
         private bool knowItsFinishedGwil = false;
         private string obRacerNameGwil = "";
         private bool reachedFinishGwil = false;
         private double speedGwil = 1;
         private DateTime startOfRaceGwil = new DateTime();
         private double traveldRouteGwil = 0;
-        private int finishPositionGwil = 0;
+
         #endregion Fields
 
         #region Constructors
@@ -152,20 +153,20 @@ namespace DragRacerGwil.Controls
         #region Properties
 
         /// <summary>
+        /// indication weather the racer has reached the finish
+        /// </summary>
+        public bool FinishedGwil
+        {
+            get => reachedFinishGwil;//return true if finished
+        }
+
+        /// <summary>
         /// The position at which this racer has finished
         /// </summary>
         public int FinishPositionGwil
         {
             get => finishPositionGwil;
             set => finishPositionGwil = value;
-        }
-
-        /// <summary>
-        /// indication weather the racer has reached the finish
-        /// </summary>
-        public bool FinishedGwil
-        {
-            get => reachedFinishGwil;//return true if finished
         }
 
         /// <summary>
@@ -212,14 +213,43 @@ namespace DragRacerGwil.Controls
         /// <summary>
         /// Creates an random speed for the current racer
         /// </summary>
-        public void CreateRandomSpeedGwil()
+        /// <param name="obOptionalPublicRandomGwil">The random to use in case the use of a public static(shared vb) is preferred</param>
+        public void CreateRandomSpeedGwil(Random obOptionalPublicRandomGwil = null)
         {
-            //create random class
-            System.Random rndGwil = new System.Random();
-            //get a new random for the speed
-            speedGwil = rndGwil.Next(5, 56);
+            //check if we need to use the pulic random
+            if (obOptionalPublicRandomGwil == null)
+            {
+                //create random class
+                System.Random rndGwil = new System.Random();
+                //get a new random for the speed
+                speedGwil = rndGwil.Next(5, 56);
+            }
+            else
+            {
+                byte[] longDataGwil = new byte[8];
+                obOptionalPublicRandomGwil.NextBytes(longDataGwil);
+                ulong rawNumberGwil = BitConverter.ToUInt64(longDataGwil, 0);
+                double scaleGwil = (double)(56 - 5) / UInt64.MaxValue;
+                speedGwil = (5 + (rawNumberGwil * scaleGwil));                
+            }
         }
 
+        /// <summary>
+        /// Creates an random speed for the current racer
+        /// </summary>
+        /// <param name="obOptionalPublicRandomGwil">The random to use in case the use of a public static(shared vb) is preferred</param>
+        public void CreateRandomSpeedGwil(System.Security.Cryptography.RandomNumberGenerator obOptionalPublicRandomGwil)
+        {
+            //create the 8 bytes for the 64 bit ulong
+            byte[] longDataGwil = new byte[8];
+            obOptionalPublicRandomGwil.GetBytes(longDataGwil);
+            //convert the 8 bytes to an ulong
+            ulong rawNumberGwil = BitConverter.ToUInt64(longDataGwil, 0);
+            //calc the scale for the conversion
+            double scaleGwil = (double)(56 - 5) / UInt64.MaxValue;
+            //set the new number
+            speedGwil = (5 + (rawNumberGwil * scaleGwil));
+        }
         /// <summary>
         /// Move the racer further
         /// </summary>
@@ -273,14 +303,15 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public void EndRaceGwil()
         {
+            //set end of race to now
             endOfRaceGwil = DateTime.Now;
         }
 
         /// <summary>
         /// Reset racer to the start
         /// </summary>
-        /// <param name="startPointGwil"></param>
-        /// <param name="offset"></param>
+        /// <param name="startPointGwil">The point at which the race starts as a base point</param>
+        /// <param name="offset">The amount of pixels the offset from the base point is</param>
         public void ResetRacerToStartGwil(PointF startPointGwil, PointF offsetGwil)
         {
             LocationGwil = new PointF() { X = startPointGwil.X + offsetGwil.X, Y = startPointGwil.Y + offsetGwil.Y }; //reset the location of the racer

@@ -6,7 +6,11 @@ namespace DragRacerGwil
 {
     public partial class frmSerialMonitor : Form
     {
+        #region Fields
         private System.Collections.Generic.List<string> obDebugLogGwil = new System.Collections.Generic.List<string>();
+
+        #endregion Fields
+
         #region Constructors
 
         public frmSerialMonitor()
@@ -22,7 +26,6 @@ namespace DragRacerGwil
         {
             try
             {
-
                 //set the color of the next text and append the log message to it
                 Color textColorFormatedGwil = Color.FromArgb(textColorGwil);
 
@@ -32,7 +35,7 @@ namespace DragRacerGwil
                     ((messageGwil.EndsWith("\n") == false) ? messageGwil + '\n' : messageGwil));
                 rtbAdvancedLogGwil.ScrollToCaret();
 
-                //if the item is an advaned item don't show in simple log
+                //if the item is an advanced item don't show in simple log
                 if (extensizeItemGwil == false)
                 {
                     rtbSimpleLogGwil.SelectionColor = textColorFormatedGwil;
@@ -49,7 +52,13 @@ namespace DragRacerGwil
             }
         }
 
-        #endregion Methods
+        private void cbkAdvancedLogGwil_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbkAdvancedLogGwil.Checked == true)
+                rtbAdvancedLogGwil.BringToFront();
+            else
+                rtbAdvancedLogGwil.SendToBack();
+        }
 
         private void frmSerialMonitor_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -59,12 +68,6 @@ namespace DragRacerGwil
             this.Hide();
         }
 
-        private void cbkAdvancedLogGwil_CheckedChanged(object sender, EventArgs e)
-        {
-            if (cbkAdvancedLogGwil.Checked == true)
-                rtbAdvancedLogGwil.BringToFront();
-            else
-                rtbAdvancedLogGwil.SendToBack();
-        }
+        #endregion Methods
     }
 }

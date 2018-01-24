@@ -10,18 +10,26 @@ namespace DragRacerGwil
     {
         #region Fields
 
+        #region Fields
+
         //list of controls to draw
         public csControlListGwil obControlsGwil = new csControlListGwil();
+
         public List<PointF> obNewTrackGwil = new List<PointF>(6000000);
-        
+
         //offset of the graphics on the screen
         private Point graphicsOffsetGwil = new Point(0, 0);
+
         private Size lastKnowSizeGwil = new Size(0, 0);
         private csControlListGwil obRacersListGwil = new csControlListGwil();
         private int placeOfRacerGwil = 1;
         private PointF[] trackGwil = new PointF[4000];
-        
+
         #endregion Fields
+
+        #endregion Fields
+
+        #region Constructors
 
         #region Constructors
 
@@ -54,9 +62,11 @@ namespace DragRacerGwil
             csMessageHelperGwil.LogMessage("Creating objects for the layout with their properties", true);
 
             #region menu strip
-            //creating a new menu strip
+            //creating a new menu strip with buttons in it
             csPanelGwil obPanelGwil = new csPanelGwil("msrMainGwil", new PointF(0, 0), new Size(this.Width - 10, 26), Color.Red);
+            csButtonGwil obSerialMonitorGwil = new csButtonGwil("btnSerialMonitorGwil", new PointF(55, 3), new Size(50, 20), "Serial");
             obPanelGwil.AutoResizeHeightGwil = false;
+            
             #region File menu
             //create the file panel
             csPanelGwil obFileOptionsPanelGwil = new csPanelGwil("pnlFileOptionsGwil", new PointF(3, 27), new Size(80, 80));
@@ -64,18 +74,10 @@ namespace DragRacerGwil
 
             //create new buttons
             csButtonGwil obFileButtonGwil = new csButtonGwil("btnFileGwil", new Point(3, 3), new Size(50, 20), "File");
-            csButtonGwil obSerialMonitorGwil = new csButtonGwil("btnSerialMonitorGwil", new PointF(55, 3), new Size(50, 20), "Serial");
             csButtonGwil obAboutGwil = new csButtonGwil("btnAboutGwil", new PointF(3, 3), new Size(70, 20), "About");
             csButtonGwil obLocateBtnGwil = new csButtonGwil("btnLocateGwil", new PointF(3, 27), new Size(70, 20), "Location");
             csButtonGwil obExitBtnGwil = new csButtonGwil("btnExitGwil", new PointF(3, 53), new Size(70, 20), "Exit");
 
-            #region Serial monitor
-            obSerialMonitorGwil.OnClickGwil += (obSenderGwil, obArgGwl) =>
-            {
-                csMessageHelperGwil.GetSerialMonitorGwil().Show();
-            };
-            obPanelGwil.ChildsListGwil.Add(obSerialMonitorGwil);
-            #endregion
 
             #region file button
             csMessageHelperGwil.LogMessage("Adding the click event for the file options visibility panel and adding the button the menu strip", true);
@@ -90,11 +92,11 @@ namespace DragRacerGwil
                         this.Invalidate();
                 }
                 if (obFilePanelGwil.Visible == true)
-                    csMessageHelperGwil.LogMessage("Opening file tab",false);
+                    csMessageHelperGwil.LogMessage("Opening file tab", false);
                 else
                     csMessageHelperGwil.LogMessage("Closing file tab", false);
             };
-            
+
             //add it to the controls
             obPanelGwil.ChildsListGwil.Add(obFileButtonGwil);
 
@@ -165,8 +167,15 @@ namespace DragRacerGwil
 
             #endregion File menu
 
-            #region
-            #endregion
+            #region Serial monitor
+            obSerialMonitorGwil.OnClickGwil += (obSenderGwil, obArgGwl) =>
+            {
+                csMessageHelperGwil.GetSerialMonitorGwil().Show();
+            };
+            obPanelGwil.ChildsListGwil.Add(obSerialMonitorGwil);
+            #endregion Serial monitor
+
+            //log init of menu strip and add the control to the contol list
             csMessageHelperGwil.LogMessage("Adding the menu strip to the control list", true);
             obControlsGwil.Add(obPanelGwil);
 
@@ -182,7 +191,7 @@ namespace DragRacerGwil
 
             //create an new panel, add 4 racers to it and add it to the form
             csPanelGwil obRacersGwil = new csPanelGwil("pnlRacersGwil", new PointF(100, 0), new Size(400, 200));
-            
+
             #region racers
             obRacersGwil.BackgroundColorGwil = Color.Red;
 
@@ -190,18 +199,21 @@ namespace DragRacerGwil
             System.Security.Cryptography.RandomNumberGenerator obRndGwil = System.Security.Cryptography.RandomNumberGenerator.Create();
             for (int dragracerCountGwil = 0; dragracerCountGwil < 4; dragracerCountGwil++)
             {
+                //create new label that belongs to a certain label with the name, correct color and a font
                 csLabelGwil obRacerLabel = new csLabelGwil("lblRacer" + dragracerCountGwil + "DataGwil", new Point(100, 210 + (dragracerCountGwil * 22)), new Size(500, 20));
                 obRacerLabel.BackgroundColorGwil = Color.Transparent;
-                obRacerLabel.TextGwil = "hello s";
+                obRacerLabel.TextGwil = "";
                 obRacerLabel.FontGwil = new Font("Times New Roman", 8);
+                //add the label to the control list
                 obRacerPanelGwil.ChildsListGwil.Add(obRacerLabel);
 
                 var obRacerGwil = new csDragRacerGwil("dragRacer" + dragracerCountGwil.ToString() + "Gwil", new PointF(dragracerCountGwil * 50, 0), new Size(40, 40), Color.Red);
-                obRacerGwil.CreateRandomSpeedGwil();
-                //create random colors using cryptography random to avoid repeating numbers
+                obRacerGwil.CreateRandomSpeedGwil(obRndGwil);
+
+                //create random colors using cryptography random to avoid repeating numbers and pseudo random generators(long story)
                 byte[] newColorGwil = new byte[4];
                 obRndGwil.GetBytes(newColorGwil);
-                Color rndColor = Color.FromArgb(255, newColorGwil[1], newColorGwil[2], newColorGwil[3]);// rnd.Next(0, byte.MaxValue + 1), rnd.Next(0, byte.MaxValue + 1), rnd.Next(0, byte.MaxValue + 1));
+                Color rndColor = Color.FromArgb(255, newColorGwil[1], newColorGwil[2], newColorGwil[3]);
                 obRacerGwil.BackgroundColorGwil = rndColor;
                 obRacersGwil.ChildsListGwil.Add(obRacerGwil);
                 csMessageHelperGwil.LogMessage("Created racer " + obRacerGwil.ToString(), true);
@@ -225,7 +237,7 @@ namespace DragRacerGwil
                     foreach (csDragRacerGwil obRacerGwil in obRacersGwil.ChildsListGwil)
                     {
                         obRacerGwil.ResetRacerToStartGwil(trackGwil[0], new PointF(0, 0));
-                        obRacerGwil.CreateRandomSpeedGwil();
+                        obRacerGwil.CreateRandomSpeedGwil(obRndGwil);
                         obRacerGwil.StartRaceGwil();
                         csMessageHelperGwil.LogMessage("Reset racer: " + obRacerGwil.RacerNameGwil, true);
                         System.Threading.Thread.Sleep(30);
@@ -236,7 +248,7 @@ namespace DragRacerGwil
                 }
             };
 
-            #endregion racer stats
+            #endregion racer start
 
             obRacerPanelGwil.ChildsListGwil.Add(obRaceStartStopGwil);
             obControlsGwil.Add(obRacerPanelGwil);
@@ -246,6 +258,10 @@ namespace DragRacerGwil
 
         #endregion Constructors
 
+        #endregion Constructors
+
+        #region Methods
+
         #region Methods
 
         protected override void OnPaint(PaintEventArgs e)
@@ -254,7 +270,7 @@ namespace DragRacerGwil
             Graphics obGrGwil = e.Graphics;
             obGrGwil.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
             obGrGwil.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Low;
-            
+
             obGrGwil.Clear(this.BackColor);//clear it with the set background color of the form
 
             obControlsGwil.Sort(new csSorter());
@@ -277,6 +293,61 @@ namespace DragRacerGwil
              */
 
             base.OnPaint(e);
+        }
+
+        /// <summary>
+        /// Loop through all controls and sub control of the control list and find the racers to
+        /// preform the MakeMove() on
+        /// </summary>
+        /// <param name="obParentControlGwil">The parent control list to check for child's</param>
+        /// <param name="controlCountGwil">The integer that counts the total child's found</param>
+        /// <param name="updateScreenGwil">The boolean if we need to invalidate the form once done</param>
+        /// <param name="obParentGwil">(Optional)The parent control from which the control is</param>
+        private void CheckChildsForRaceGwil(List<csBasicControlGwil> obParentControlGwil, ref int controlCountGwil, ref bool updateScreenGwil, csPanelGwil obParentGwil = null)
+        {
+            //check if parent control is not null
+            if (obParentControlGwil != null)
+            {
+                for (int indexControlsGwil = 0; indexControlsGwil < obParentControlGwil.Count; indexControlsGwil++)
+                {
+                    csBasicControlGwil obControlGwil = obParentControlGwil[indexControlsGwil];
+                    //check if current control is not null
+                    if (obControlGwil != null)
+                    {
+                        //check if the type of the control if a racer, panel or something else
+                        Type obTypeOfControlGwil = obControlGwil.GetType();
+                        if (obTypeOfControlGwil == typeof(csDragRacerGwil))
+                        {
+                            //if its a racer make call the DoMovementGwil()
+                            csDragRacerGwil obRacerGwil = ((csDragRacerGwil)obControlGwil);
+                            obRacerGwil.DoMovementGwil(trackGwil, new Point(controlCountGwil * 50, 0));
+
+                            controlCountGwil++;
+                            //if the racer finished, and we did not know before that it finished,
+                            //let it know tat we know it finished but also and end the race. And finally log that the racer crossed the finish
+                            if (obRacerGwil.KnowIsFinishedGwil == false && obRacerGwil.FinishedGwil == true)
+                            {
+                                obRacerGwil.KnowIsFinishedGwil = true;
+                                obRacerGwil.EndRaceGwil();
+                                obRacerGwil.FinishPositionGwil = placeOfRacerGwil;
+                                csMessageHelperGwil.LogMessage(string.Format("Racer {0} has ended as {1} with as total racing time {2} seconds", obRacerGwil.RacerNameGwil, placeOfRacerGwil, Math.Floor(obRacerGwil.TimeRacedGwil.TotalSeconds)));
+                                csLabelGwil obRacerLabelGwil = (csLabelGwil)obControlsGwil.GetByNameGwil("lblRacer" + (placeOfRacerGwil - 1) + "DataGwil");
+                                if (obRacerLabelGwil != null)
+                                    obRacerLabelGwil.TextGwil = string.Format("Racer {0} has ended as {1} with racing time {2}:{3} seconds:milliseconds", obRacerGwil.RacerNameGwil, placeOfRacerGwil, Math.Floor(obRacerGwil.TimeRacedGwil.TotalSeconds), obRacerGwil.TimeRacedGwil.Milliseconds);
+                                placeOfRacerGwil++;
+                            }
+                        }
+                        else if (obTypeOfControlGwil == typeof(csPanelGwil))
+                        {
+                            //if the type is a panel than check the child's of the panel
+                            CheckChildsForRaceGwil(((csPanelGwil)obControlGwil).ChildsListGwil, ref controlCountGwil, ref updateScreenGwil, (csPanelGwil)obControlGwil);
+                        }
+                        //if we changed something during the check so the control requires and draw update make the parent control know
+                        if (obControlGwil.changedSinceDrawGwil == true)
+                            updateScreenGwil = true;
+                    }
+                }
+            }
         }
 
         private void frmMainGwil_Load(object sender, EventArgs e)
@@ -311,7 +382,7 @@ namespace DragRacerGwil
                         if (obControlToClickGwil == null || obControlToClickGwil.Z_indexGwil > obControlGwil.Z_indexGwil)
                             obControlToClickGwil = obControlGwil;
                     }
-                }                
+                }
                 //if the control needs to redraw set the redraw bool to true
                 if (obControlGwil.changedSinceDrawGwil == true)
                     invalidateFormGwil = true;
@@ -339,7 +410,7 @@ namespace DragRacerGwil
             bool invalidateFormGwil = false;
 
             csMessageHelperGwil.LogMessage("Loop through all control check if mouse down press event should be raised on it", true);
-            for(int indexControlsGwil=0; indexControlsGwil < obControlsGwil.Count; indexControlsGwil++)
+            for (int indexControlsGwil = 0; indexControlsGwil < obControlsGwil.Count; indexControlsGwil++)
             {
                 csBasicControlGwil obControlGwil = obControlsGwil[indexControlsGwil];
                 //check if mouse is in the control
@@ -356,9 +427,9 @@ namespace DragRacerGwil
                     else if (obControlGwil.mouseDownGwil == true || obControlGwil.mouseEnteredGwil == true)
                     {
                         //if mouse is down or mouse is entered, but the mouse is not actually there reset to properties
-                        if (obControlGwil.mouseDownGwil == true) obControlGwil.MouseUpRaiseGwil(this,e);
-                        if (obControlGwil.mouseEnteredGwil == true) obControlGwil.MouseLeaveGwil(this, e);                        
-                    }                    
+                        if (obControlGwil.mouseDownGwil == true) obControlGwil.MouseUpRaiseGwil(this, e);
+                        if (obControlGwil.mouseEnteredGwil == true) obControlGwil.MouseLeaveGwil(this, e);
+                    }
                 }
                 else if (obControlGwil.mouseDownGwil == true || obControlGwil.mouseEnteredGwil == true)
                 {
@@ -456,7 +527,6 @@ namespace DragRacerGwil
                         if (obControlGwil.mouseDownGwil == true)
                             //raise the mouse up event
                             obControlGwil.MouseUpRaiseGwil(this, e);
-                            
                     }
                     else if (obControlGwil.mouseDownGwil == true || obControlGwil.mouseEnteredGwil == true)
                     {
@@ -503,7 +573,7 @@ namespace DragRacerGwil
                         if (obControlGwil.AutoResizeWidthGwil == true)
                         {
                             obControlGwil.SizeGwil = new SizeF(
-                                (float)(obControlGwil.SizeGwil.Width * resizerWidthGwil),obControlGwil.SizeGwil.Height);
+                                (float)(obControlGwil.SizeGwil.Width * resizerWidthGwil), obControlGwil.SizeGwil.Height);
                         }
 
                         if (obControlGwil.AutoResizeHeightGwil == true)
@@ -516,9 +586,8 @@ namespace DragRacerGwil
                 this.Invalidate();
                 double newSizeFormGwil = Size.Width * Size.Height;
                 double standartSizeFormGwil = 400000;
-                double multiplyerGwil = ((standartSizeFormGwil / newSizeFormGwil ) * 10);
-                tmrKeepEmRacingGwil.Interval = (int)((10D * multiplyerGwil) / 10  );
-                
+                double multiplyerGwil = ((standartSizeFormGwil / newSizeFormGwil) * 10);
+                tmrKeepEmRacingGwil.Interval = (int)((10D * multiplyerGwil) / 10);
 
                 lastKnowSizeGwil = Size;
             }
@@ -538,10 +607,9 @@ namespace DragRacerGwil
             //move the racers across the track and check if they finished
             foreach (csDragRacerGwil obRacerGwil in obRacersListGwil)
             {
-               // obRacerGwil.DoMovementGwil(trackGwil, new Point(racerCountGwil++ * 50, 0));
+                // obRacerGwil.DoMovementGwil(trackGwil, new Point(racerCountGwil++ * 50, 0));
                 //if the racer finished, and we did not know before that it finished,
                 //let it know tat we know it finished but also and end the race. And finally log that the racer crossed the finish
-
                 if (obRacerGwil.FinishedGwil == true)
                     racersFinishedGwil++;
             }
@@ -554,60 +622,7 @@ namespace DragRacerGwil
             }
         }
 
-        /// <summary>
-        /// Loop through all controls and sub control of the control list and find the racers to
-        /// preform the MakeMove() on
-        /// </summary>
-        /// <param name="obParentControlGwil">The parent control list to check for child's</param>
-        /// <param name="controlCountGwil">The integer that counts the total child's found</param>
-        /// <param name="updateScreenGwil">The boolean if we need to invalidate the form once done</param>
-        /// <param name="obParentGwil">(Optional)The parent control from which the control is</param>
-        private void CheckChildsForRaceGwil(List<csBasicControlGwil> obParentControlGwil, ref int controlCountGwil, ref bool updateScreenGwil, csPanelGwil obParentGwil = null)
-        {
-            //check if parent control is not null
-            if (obParentControlGwil != null)
-            {
-                for (int indexControlsGwil = 0; indexControlsGwil < obParentControlGwil.Count; indexControlsGwil++)
-                {
-                    csBasicControlGwil obControlGwil = obParentControlGwil[indexControlsGwil];
-                    //check if current control is not null
-                    if (obControlGwil != null)
-                    {
-                        //check if the type of the control if a racer, panel or something else
-                        Type obTypeOfControlGwil = obControlGwil.GetType();
-                        if (obTypeOfControlGwil == typeof(csDragRacerGwil))
-                        {
-                            //if its a racer make call the DoMovementGwil()
-                            csDragRacerGwil obRacerGwil = ((csDragRacerGwil)obControlGwil);
-                            obRacerGwil.DoMovementGwil(trackGwil, new Point(controlCountGwil * 50, 0));
-
-                            controlCountGwil++;
-                            //if the racer finished, and we did not know before that it finished,
-                            //let it know tat we know it finished but also and end the race. And finally log that the racer crossed the finish
-                            if (obRacerGwil.KnowIsFinishedGwil == false && obRacerGwil.FinishedGwil == true)
-                            {
-                                obRacerGwil.KnowIsFinishedGwil = true;
-                                obRacerGwil.EndRaceGwil();
-                                obRacerGwil.FinishPositionGwil = placeOfRacerGwil;
-                                csMessageHelperGwil.LogMessage(string.Format("Racer {0} has ended as {1} with as total racing time {2} seconds", obRacerGwil.RacerNameGwil, placeOfRacerGwil, Math.Floor(obRacerGwil.TimeRacedGwil.TotalSeconds)));
-                                csLabelGwil obRacerLabelGwil = (csLabelGwil)obControlsGwil.GetByNameGwil("lblRacer" + (placeOfRacerGwil - 1) + "DataGwil");
-                                if(obRacerLabelGwil != null)
-                                    obRacerLabelGwil.TextGwil = string.Format("Racer {0} has ended as {1} with racing time {2} seconds", obRacerGwil.RacerNameGwil, placeOfRacerGwil , Math.Floor(obRacerGwil.TimeRacedGwil.TotalSeconds));
-                                placeOfRacerGwil++;
-                            }
-                        }
-                        else if (obTypeOfControlGwil == typeof(csPanelGwil))
-                        {
-                            //if the type is a panel than check the child's of the panel
-                            CheckChildsForRaceGwil(((csPanelGwil)obControlGwil).ChildsListGwil, ref controlCountGwil, ref updateScreenGwil, (csPanelGwil)obControlGwil);
-                        }
-                        //if we changed something during the check so the control requires and draw update make the parent control know
-                        if (obControlGwil.changedSinceDrawGwil == true)
-                            updateScreenGwil = true;
-                    }
-                }
-            }
-        }
+        #endregion Methods
 
         #endregion Methods
     }

@@ -6,12 +6,11 @@ namespace DragRacerGwil.Controls
     public class csBasicControlGwil
     {
         #region Fields
-
         public bool changedSinceDrawGwil = false;
         public bool mouseDownGwil = false;
         public bool mouseEnteredGwil = false;
-        private bool allowAutoResizeWidthGwil = true;
         private bool allowAutoResizeHeightGwil = true;
+        private bool allowAutoResizeWidthGwil = true;
         private Color backgroundColorGwil = Color.LightGray;
         private string contentGwil = "";
         private bool hidesOnOutsideClickGwil = false;
@@ -145,21 +144,21 @@ namespace DragRacerGwil.Controls
         #region Properties
 
         /// <summary>
-        /// Weather the controls width will resize automatically with the parent control
-        /// </summary>
-        public bool AutoResizeWidthGwil
-        {
-            get => allowAutoResizeWidthGwil;
-            set => allowAutoResizeWidthGwil = value;
-        }
-
-        /// <summary>
         /// Weather the controls height will resize automatically with the parent control
         /// </summary>
         public bool AutoResizeHeightGwil
         {
             get => allowAutoResizeHeightGwil;
             set => allowAutoResizeHeightGwil = value;
+        }
+
+        /// <summary>
+        /// Weather the controls width will resize automatically with the parent control
+        /// </summary>
+        public bool AutoResizeWidthGwil
+        {
+            get => allowAutoResizeWidthGwil;
+            set => allowAutoResizeWidthGwil = value;
         }
 
         /// <summary>

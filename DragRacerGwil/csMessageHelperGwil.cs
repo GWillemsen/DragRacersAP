@@ -43,6 +43,15 @@ namespace DragRacerGwil
         }
 
         /// <summary>
+        /// Get the serial monitor
+        /// </summary>
+        /// <returns>The currently set serial monitor</returns>
+        public static Form GetSerialMonitorGwil()
+        {
+            return obMessageFilterGwil.obFrmSerialMonitorGwil;
+        }
+
+        /// <summary>
         /// Log the message to the set serial monitor(if it is set) and also to the debugger
         /// </summary>
         /// <param name="messageToLogGwil">The message to send to the monitor and debugger</param>
@@ -75,14 +84,6 @@ namespace DragRacerGwil
                 obMessageFilterGwil.obFrmSerialMonitorGwil = obSerialMonitorGwil;
         }
 
-        /// <summary>
-        /// Get the serial monitor
-        /// </summary>
-        /// <returns>The currently set serial monitor</returns>
-        public static Form GetSerialMonitorGwil()
-        {
-            return obMessageFilterGwil.obFrmSerialMonitorGwil;
-        }
         #endregion Methods
     }
 
