@@ -10,8 +10,6 @@ namespace DragRacerGwil
     {
         #region Fields
 
-        #region Fields
-
         //list of controls to draw
         public csControlListGwil obControlsGwil = new csControlListGwil();
 
@@ -27,10 +25,6 @@ namespace DragRacerGwil
 
         #endregion Fields
 
-        #endregion Fields
-
-        #region Constructors
-
         #region Constructors
 
         public frmMainGwil()
@@ -38,26 +32,28 @@ namespace DragRacerGwil
             csMessageHelperGwil.AddMessageFilterGwil(this);
             //initialize the normal form items
             InitializeComponent();
-            double xPosGwil = 0;
-            bool downGwil = false;
-            //generate the track
-            for (int trackNumberPointGwil = 0; trackNumberPointGwil < trackGwil.Length; trackNumberPointGwil += 1)
-            {
-                trackGwil[trackNumberPointGwil] = new PointF((float)xPosGwil, (float)trackNumberPointGwil / 40);
-                if (downGwil == true)
-                {
-                    xPosGwil -= 0.3F;
-                    if (xPosGwil <= 0)
-                        downGwil = false;
-                }
-                else
-                {
-                    xPosGwil += 0.3F; ;
-                    if (xPosGwil >= 200)
-                        downGwil = true;
-                }
-                //trackGwil[trackNumberPointGwil] = new PointF((float)trackNumberPointGwil / 10, 20);
-            }
+            CreateTrackGwil(1.0);
+
+            //double xPosGwil = 0;
+            //bool downGwil = false;
+            ////generate the track
+            //for (int trackNumberPointGwil = 0; trackNumberPointGwil < trackGwil.Length; trackNumberPointGwil += 1)
+            //{
+            //    trackGwil[trackNumberPointGwil] = new PointF(75 + (float)xPosGwil, 75 + ((float)trackNumberPointGwil / 40));
+            //    if (downGwil == true)
+            //    {
+            //        xPosGwil -= 0.3F;
+            //        if (xPosGwil <= 0)
+            //            downGwil = false;
+            //    }
+            //    else
+            //    {
+            //        xPosGwil += 0.3F; ;
+            //        if (xPosGwil >= 200)
+            //            downGwil = true;
+            //    }
+            //    //trackGwil[trackNumberPointGwil] = new PointF((float)trackNumberPointGwil / 10, 20);
+            //}
 
             csMessageHelperGwil.LogMessage("Creating objects for the layout with their properties", true);
 
@@ -65,19 +61,23 @@ namespace DragRacerGwil
             //creating a new menu strip with buttons in it
             csPanelGwil obPanelGwil = new csPanelGwil("msrMainGwil", new PointF(0, 0), new Size(this.Width - 10, 26), Color.Red);
             csButtonGwil obSerialMonitorGwil = new csButtonGwil("btnSerialMonitorGwil", new PointF(55, 3), new Size(50, 20), "Serial");
+            //set resize property's
             obPanelGwil.AutoResizeHeightGwil = false;
-            
+            obPanelGwil.IsFormWidthGwil = true;
+            obPanelGwil.SubstractFromFormWidthGwil = 20;
+
             #region File menu
             //create the file panel
             csPanelGwil obFileOptionsPanelGwil = new csPanelGwil("pnlFileOptionsGwil", new PointF(3, 27), new Size(80, 80));
-            obFileOptionsPanelGwil.HidesWhenClickedOutsideControlGwil = true;
+            //set resize property's
+            obFileOptionsPanelGwil.AutoResizeHeightGwil = false;
+            obFileOptionsPanelGwil.AutoResizeWidthGwil = false;
 
             //create new buttons
             csButtonGwil obFileButtonGwil = new csButtonGwil("btnFileGwil", new Point(3, 3), new Size(50, 20), "File");
             csButtonGwil obAboutGwil = new csButtonGwil("btnAboutGwil", new PointF(3, 3), new Size(70, 20), "About");
             csButtonGwil obLocateBtnGwil = new csButtonGwil("btnLocateGwil", new PointF(3, 27), new Size(70, 20), "Location");
             csButtonGwil obExitBtnGwil = new csButtonGwil("btnExitGwil", new PointF(3, 53), new Size(70, 20), "Exit");
-
 
             #region file button
             csMessageHelperGwil.LogMessage("Adding the click event for the file options visibility panel and adding the button the menu strip", true);
@@ -170,9 +170,20 @@ namespace DragRacerGwil
             #region Serial monitor
             obSerialMonitorGwil.OnClickGwil += (obSenderGwil, obArgGwl) =>
             {
-                csMessageHelperGwil.GetSerialMonitorGwil().Show();
+                frmSerialMonitor obSerialGwil = ((frmSerialMonitor)csMessageHelperGwil.GetSerialMonitorGwil());
+                if (obSerialGwil.IsShownGwil == false)
+                {
+                    csMessageHelperGwil.LogMessage("Opening serial monitor");
+                    ((frmSerialMonitor)csMessageHelperGwil.GetSerialMonitorGwil()).ShowFormGwil();
+                }
+                else
+                {
+                    csMessageHelperGwil.LogMessage("Closing serial monitor");
+                    csMessageHelperGwil.GetSerialMonitorGwil().Close();
+                }
             };
             obPanelGwil.ChildsListGwil.Add(obSerialMonitorGwil);
+
             #endregion Serial monitor
 
             //log init of menu strip and add the control to the contol list
@@ -187,10 +198,18 @@ namespace DragRacerGwil
             csPanelGwil obRacerPanelGwil = new csPanelGwil("pnlRaceOverviewGwil", new PointF(3, 28), new Size(this.Width - 22, this.Height - 70));
             obRacerPanelGwil.Z_indexGwil = 2;
 
+            //set resize property's
+            obRacerPanelGwil.IsFormWidthGwil = true;
+            obRacerPanelGwil.IsFormHeightGwil = true;
+            obRacerPanelGwil.SubstractFromFormHeightGwil = 70;
+            obRacerPanelGwil.SubstractFromFormWidthGwil = 22;
+
             csMessageHelperGwil.LogMessage("Creating the race panel with its racers", true);
 
             //create an new panel, add 4 racers to it and add it to the form
             csPanelGwil obRacersGwil = new csPanelGwil("pnlRacersGwil", new PointF(100, 0), new Size(400, 200));
+            obRacerPanelGwil.AutoResizeWidthGwil = true;
+            obRacerPanelGwil.AutoResizeHeightGwil = true;
 
             #region racers
             obRacersGwil.BackgroundColorGwil = Color.Red;
@@ -207,7 +226,7 @@ namespace DragRacerGwil
                 //add the label to the control list
                 obRacerPanelGwil.ChildsListGwil.Add(obRacerLabel);
 
-                var obRacerGwil = new csDragRacerGwil("dragRacer" + dragracerCountGwil.ToString() + "Gwil", new PointF(dragracerCountGwil * 50, 0), new Size(40, 40), Color.Red);
+                var obRacerGwil = new csDragRacerGwil("dragRacer" + dragracerCountGwil.ToString() + "Gwil", new PointF(dragracerCountGwil * 75, 0), new Size(-70, -70), Color.Red);
                 obRacerGwil.CreateRandomSpeedGwil(obRndGwil);
 
                 //create random colors using cryptography random to avoid repeating numbers and pseudo random generators(long story)
@@ -217,7 +236,7 @@ namespace DragRacerGwil
                 obRacerGwil.BackgroundColorGwil = rndColor;
                 obRacersGwil.ChildsListGwil.Add(obRacerGwil);
                 csMessageHelperGwil.LogMessage("Created racer " + obRacerGwil.ToString(), true);
-                System.Threading.Thread.Sleep(30);
+                System.Threading.Thread.Sleep(20);
             }
             obRacersListGwil = obRacersGwil.ChildsListGwil;
             obRacerPanelGwil.ChildsListGwil.Add(obRacersGwil);
@@ -234,11 +253,15 @@ namespace DragRacerGwil
                 {
                     csMessageHelperGwil.LogMessage("Starting race...", false);
                     obRaceStartStopGwil.ContentGwil = "Racing";
+                    int racerCountGwil = 1;
                     foreach (csDragRacerGwil obRacerGwil in obRacersGwil.ChildsListGwil)
                     {
                         obRacerGwil.ResetRacerToStartGwil(trackGwil[0], new PointF(0, 0));
                         obRacerGwil.CreateRandomSpeedGwil(obRndGwil);
                         obRacerGwil.StartRaceGwil();
+                        csLabelGwil obRacerLabelGwil = (csLabelGwil)obControlsGwil.GetByNameGwil("lblRacer" + (racerCountGwil++ - 1) + "DataGwil");
+                        if (obRacerLabelGwil != null)
+                            obRacerLabelGwil.TextGwil = "";
                         csMessageHelperGwil.LogMessage("Reset racer: " + obRacerGwil.RacerNameGwil, true);
                         System.Threading.Thread.Sleep(30);
                     }
@@ -247,6 +270,9 @@ namespace DragRacerGwil
                     csMessageHelperGwil.LogMessage("Started race", false);
                 }
             };
+
+            obRaceStartStopGwil.AutoResizeHeightGwil = false;
+            obRaceStartStopGwil.AutoResizeWidthGwil = false;
 
             #endregion racer start
 
@@ -257,10 +283,6 @@ namespace DragRacerGwil
         }
 
         #endregion Constructors
-
-        #endregion Constructors
-
-        #region Methods
 
         #region Methods
 
@@ -320,7 +342,7 @@ namespace DragRacerGwil
                         {
                             //if its a racer make call the DoMovementGwil()
                             csDragRacerGwil obRacerGwil = ((csDragRacerGwil)obControlGwil);
-                            obRacerGwil.DoMovementGwil(trackGwil, new Point(controlCountGwil * 50, 0));
+                            obRacerGwil.DoMovementGwil(trackGwil, new Point(controlCountGwil * 80, 0));
 
                             controlCountGwil++;
                             //if the racer finished, and we did not know before that it finished,
@@ -347,6 +369,31 @@ namespace DragRacerGwil
                             updateScreenGwil = true;
                     }
                 }
+            }
+        }
+
+        private void CreateTrackGwil(double scaleGwil = 1.0)
+        {
+            double xPosGwil = 0;
+            bool downGwil = false;
+            //generate the track
+            int extraSpacingGwil = (int)(75 * (scaleGwil));
+            for (int trackNumberPointGwil = 0; trackNumberPointGwil < trackGwil.Length; trackNumberPointGwil += 1)
+            {
+                trackGwil[trackNumberPointGwil] = new PointF(extraSpacingGwil + (float)xPosGwil, extraSpacingGwil + (float)((trackNumberPointGwil / 40) * scaleGwil));
+                if (downGwil == true)
+                {
+                    xPosGwil -= 0.3F;
+                    if (xPosGwil <= 0)
+                        downGwil = false;
+                }
+                else
+                {
+                    xPosGwil += 0.3F; ;
+                    if (xPosGwil >= 200)
+                        downGwil = true;
+                }
+                //trackGwil[trackNumberPointGwil] = new PointF((float)trackNumberPointGwil / 10, 20);
             }
         }
 
@@ -559,9 +606,12 @@ namespace DragRacerGwil
                 csMessageHelperGwil.LogMessage("The size of the form change, resizing controls", true);
                 double resizerWidthGwil = Size.Width / (double)lastKnowSizeGwil.Width;
                 double resizerHeightGwil = Size.Height / (double)lastKnowSizeGwil.Height;
+                //loop through all controls and resize them
                 for (int indexControlsGwil = 0; indexControlsGwil < obControlsGwil.Count; indexControlsGwil++)
                 {
+                    //first set the auto resize and than the form widths because this way the form widths override the auto resize
                     csBasicControlGwil obControlGwil = obControlsGwil[indexControlsGwil];
+                    SizeF oldSizeCurrentControlGwil = obControlGwil.SizeGwil;
                     if (obControlGwil.AutoResizeHeightGwil == true && obControlGwil.AutoResizeWidthGwil == true)
                     {
                         obControlGwil.SizeGwil = new SizeF(
@@ -582,13 +632,52 @@ namespace DragRacerGwil
                                 obControlGwil.SizeGwil.Width, (float)(obControlGwil.SizeGwil.Height * resizerHeightGwil));
                         }
                     }
+
+                    //set the to form heights
+                    if (obControlGwil.IsFormHeightGwil == true && obControlGwil.IsFormWidthGwil == true)
+                    {
+                        obControlGwil.SizeGwil = new SizeF(
+                            this.Width - obControlGwil.SubstractFromFormWidthGwil,
+                            this.Height - obControlGwil.SubstractFromFormHeightGwil);
+                    }
+                    else
+                    {
+                        if (obControlGwil.IsFormHeightGwil == true)
+                            obControlGwil.SizeGwil = new SizeF(
+                                obControlGwil.SizeGwil.Width,
+                                this.Height - obControlGwil.SubstractFromFormHeightGwil);
+
+                        if (obControlGwil.IsFormWidthGwil == true)
+                            obControlGwil.SizeGwil = new SizeF(
+                                this.Width - obControlGwil.SubstractFromFormWidthGwil,
+                                obControlGwil.SizeGwil.Height);
+                    }
+                    csResizeEventgwil resizingEventGwil = new csResizeEventgwil(
+                        resizerWidthGwil, resizerHeightGwil, lastKnowSizeGwil, Size, Width, Height, oldSizeCurrentControlGwil);
+                    obControlGwil.RaiseResizeEventGwil(this, resizingEventGwil);
                 }
+
+                //redraw the form
                 this.Invalidate();
+
+                //calc new the new timer tick
                 double newSizeFormGwil = Size.Width * Size.Height;
                 double standartSizeFormGwil = 400000;
                 double multiplyerGwil = ((standartSizeFormGwil / newSizeFormGwil) * 10);
                 tmrKeepEmRacingGwil.Interval = (int)((10D * multiplyerGwil) / 10);
 
+                try
+                {
+                    //create an new track wich is scaled
+                    double racerGrewScaleGwil = (obRacersListGwil[0].SizeGwil.Width / 70);
+                    CreateTrackGwil(-racerGrewScaleGwil);
+                }
+                catch (Exception exGwil)
+                {
+                    csMessageHelperGwil.LogMessage(exGwil.ToString(), true, Color.Red.ToArgb());
+                }
+
+                //set the last size to new value
                 lastKnowSizeGwil = Size;
             }
         }
@@ -621,8 +710,6 @@ namespace DragRacerGwil
                 obRaceBtnGwil.ContentGwil = "Start race";
             }
         }
-
-        #endregion Methods
 
         #endregion Methods
     }

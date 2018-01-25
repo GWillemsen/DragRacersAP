@@ -7,6 +7,7 @@ namespace DragRacerGwil
     public partial class frmSerialMonitor : Form
     {
         #region Fields
+        public bool IsShownGwil = false;
         private System.Collections.Generic.List<string> obDebugLogGwil = new System.Collections.Generic.List<string>();
 
         #endregion Fields
@@ -43,6 +44,22 @@ namespace DragRacerGwil
                         ((messageGwil.EndsWith("\n") == false) ? messageGwil + '\n' : messageGwil));
                     rtbSimpleLogGwil.ScrollToCaret();
                 }
+
+                //check if we need to clean up lines
+                int maxLinesPerPageGwil = (int)(this.Height / (rtbAdvancedLogGwil.Font.Height + 1.5));
+                if (rtbAdvancedLogGwil.Lines.Length > maxLinesPerPageGwil)
+                    while (rtbAdvancedLogGwil.Lines.Length > maxLinesPerPageGwil)
+                    {
+                        rtbAdvancedLogGwil.Select(0, rtbAdvancedLogGwil.GetFirstCharIndexFromLine(1)); // select the first line
+                        rtbAdvancedLogGwil.SelectedText = "";
+                    }
+
+                if (rtbSimpleLogGwil.Lines.Length > maxLinesPerPageGwil)
+                    while (rtbSimpleLogGwil.Lines.Length > maxLinesPerPageGwil)
+                    {
+                        rtbSimpleLogGwil.Select(0, rtbSimpleLogGwil.GetFirstCharIndexFromLine(1)); // select the first line
+                        rtbSimpleLogGwil.SelectedText = "";
+                    }
             }
             catch (Exception obExGwil)
             {
@@ -52,8 +69,20 @@ namespace DragRacerGwil
             }
         }
 
+        /// <summary>
+        /// Show the serial monitor
+        /// </summary>
+        public void ShowFormGwil()
+        {
+            //show the form itself
+            this.Show();
+            //let others know
+            IsShownGwil = true;
+        }
+
         private void cbkAdvancedLogGwil_CheckedChanged(object sender, EventArgs e)
         {
+            //if it is check show th advanced log, otherwise hide it
             if (cbkAdvancedLogGwil.Checked == true)
                 rtbAdvancedLogGwil.BringToFront();
             else
@@ -66,6 +95,7 @@ namespace DragRacerGwil
             e.Cancel = true;
             //make it hide so we can continue the monitor once shown again
             this.Hide();
+            IsShownGwil = false;
         }
 
         #endregion Methods

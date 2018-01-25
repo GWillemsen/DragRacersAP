@@ -46,6 +46,8 @@
             // cbkAdvancedLogGwil
             // 
             this.cbkAdvancedLogGwil.AutoSize = true;
+            this.cbkAdvancedLogGwil.Checked = true;
+            this.cbkAdvancedLogGwil.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbkAdvancedLogGwil.Dock = System.Windows.Forms.DockStyle.Top;
             this.cbkAdvancedLogGwil.Location = new System.Drawing.Point(0, 0);
             this.cbkAdvancedLogGwil.Name = "cbkAdvancedLogGwil";

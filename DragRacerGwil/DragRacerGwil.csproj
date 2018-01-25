@@ -53,6 +53,7 @@
     <Compile Include="Controls\csDragRacerGwil.cs" />
     <Compile Include="Controls\csPanelGwil.cs" />
     <Compile Include="Controls\csControlListGwil.cs" />
+    <Compile Include="Controls\csResizeEventgwil.cs" />
     <Compile Include="frmMainGwil.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,7 +85,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="Controls\classesGwil.cd" />
+    <None Include="Controls\RacerRelatedClassesGwil.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

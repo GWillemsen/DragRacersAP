@@ -14,9 +14,13 @@ namespace DragRacerGwil.Controls
         private Color backgroundColorGwil = Color.LightGray;
         private string contentGwil = "";
         private bool hidesOnOutsideClickGwil = false;
+        private bool isFormHeightGwil = false;
+        private bool isFormWidthGwil = false;
         private PointF locationGwil = new PointF(0, 0);
         private string nameGwil = "";
         private SizeF sizeGwil = new SizeF(0, 0);
+        private int toSubstractFromHeigthGwil = 0;
+        private int toSubstractFromWidthGwil = 0;
         private bool visibleGwil = true;
         private int zIndexGwil = 0;
 
@@ -139,6 +143,11 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public event EventHandler OnMouseUpGwil;
 
+        /// <summary>
+        /// Gets raised when the control resized
+        /// </summary>
+        public event EventHandler OnResizeGwil;
+
         #endregion Events
 
         #region Properties
@@ -157,6 +166,7 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public bool AutoResizeWidthGwil
         {
+            //set or get weather the control will resize with the parent
             get => allowAutoResizeWidthGwil;
             set => allowAutoResizeWidthGwil = value;
         }
@@ -204,6 +214,28 @@ namespace DragRacerGwil.Controls
         }
 
         /// <summary>
+        /// If the control should be resized to the form full height
+        /// </summary>
+        public bool IsFormHeightGwil
+        {
+            //get the bool value
+            get => isFormHeightGwil;
+            //set the bool value to the given one
+            set => isFormHeightGwil = value;
+        }
+
+        /// <summary>
+        /// If the control should be resized to the form full width
+        /// </summary>
+        public bool IsFormWidthGwil
+        {
+            //get the bool value
+            get => isFormWidthGwil;
+            //set the booleans value to the given one
+            set => isFormWidthGwil = value;
+        }
+
+        /// <summary>
         /// Location on which to draw on
         /// </summary>
         public PointF LocationGwil
@@ -245,6 +277,38 @@ namespace DragRacerGwil.Controls
                 if (sizeGwil != value)
                     changedSinceDrawGwil = true;
                 sizeGwil = value;//update the size value
+            }
+        }
+
+        /// <summary>
+        /// The optional width to subtract from the forms height before drawing
+        /// </summary>
+        public int SubstractFromFormHeightGwil
+        {
+            get => toSubstractFromHeigthGwil;
+            set
+            {
+                //if the new value isn't the same update the control next draw
+                if (toSubstractFromHeigthGwil != value)
+                    changedSinceDrawGwil = true;
+                //set the new value
+                toSubstractFromHeigthGwil = value;
+            }
+        }
+
+        /// <summary>
+        /// The optional width to subtract from the forms width before drawing
+        /// </summary>
+        public int SubstractFromFormWidthGwil
+        {
+            get => toSubstractFromWidthGwil;
+            set
+            {
+                //if the new value isn't the same update the control next draw
+                if (toSubstractFromWidthGwil != value)
+                    changedSinceDrawGwil = true;
+                //set the new value
+                toSubstractFromWidthGwil = value;
             }
         }
 
@@ -360,6 +424,17 @@ namespace DragRacerGwil.Controls
         {
             mouseDownGwil = false;//say the mouse if not down
             OnMouseUpGwil?.Invoke(senderGwil, obArgGwil);//raise the event handler if it is not null
+        }
+
+        /// <summary>
+        /// Raises the resize event for the control
+        /// </summary>
+        /// <param name="senderGwil">The sender of the event</param>
+        /// <param name="argsGwil">Arguments for the event</param>
+        public void RaiseResizeEventGwil(object senderGwil, EventArgs argsGwil)
+        {
+            //if on resize is not null invoke it
+            OnResizeGwil?.Invoke(senderGwil, argsGwil);
         }
 
         /// <summary>

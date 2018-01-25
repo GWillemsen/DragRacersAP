@@ -6,9 +6,11 @@ namespace DragRacerGwil.Controls
     public class csDragRacerGwil : csBasicControlGwil
     {
         #region Fields
+        private Bitmap backgroundImageGwil = new Bitmap(1, 1);
         private DateTime endOfRaceGwil = new DateTime();
         private int finishPositionGwil = 0;
         private bool knowItsFinishedGwil = false;
+        private Font obFontGwil = new Font("Times New Roman", 8);
         private string obRacerNameGwil = "";
         private bool reachedFinishGwil = false;
         private double speedGwil = 1;
@@ -170,6 +172,21 @@ namespace DragRacerGwil.Controls
         }
 
         /// <summary>
+        /// The font to use when drawing the text
+        /// </summary>
+        public Font FontGwil
+        {
+            get => obFontGwil;//returns the current font
+            set => obFontGwil = value;//sets the new font
+        }
+
+        public Bitmap ImageGwil
+        {
+            get => backgroundImageGwil;
+            set => backgroundImageGwil = value;
+        }
+
+        /// <summary>
         /// (Optional) Weather the parent control know it has reached the end
         /// </summary>
         public bool KnowIsFinishedGwil
@@ -213,7 +230,9 @@ namespace DragRacerGwil.Controls
         /// <summary>
         /// Creates an random speed for the current racer
         /// </summary>
-        /// <param name="obOptionalPublicRandomGwil">The random to use in case the use of a public static(shared vb) is preferred</param>
+        /// <param name="obOptionalPublicRandomGwil">
+        /// The random to use in case the use of a public static(shared vb) is preferred
+        /// </param>
         public void CreateRandomSpeedGwil(Random obOptionalPublicRandomGwil = null)
         {
             //check if we need to use the pulic random
@@ -230,14 +249,16 @@ namespace DragRacerGwil.Controls
                 obOptionalPublicRandomGwil.NextBytes(longDataGwil);
                 ulong rawNumberGwil = BitConverter.ToUInt64(longDataGwil, 0);
                 double scaleGwil = (double)(56 - 5) / UInt64.MaxValue;
-                speedGwil = (5 + (rawNumberGwil * scaleGwil));                
+                speedGwil = (5 + (rawNumberGwil * scaleGwil));
             }
         }
 
         /// <summary>
         /// Creates an random speed for the current racer
         /// </summary>
-        /// <param name="obOptionalPublicRandomGwil">The random to use in case the use of a public static(shared vb) is preferred</param>
+        /// <param name="obOptionalPublicRandomGwil">
+        /// The random to use in case the use of a public static(shared vb) is preferred
+        /// </param>
         public void CreateRandomSpeedGwil(System.Security.Cryptography.RandomNumberGenerator obOptionalPublicRandomGwil)
         {
             //create the 8 bytes for the 64 bit ulong
@@ -250,6 +271,7 @@ namespace DragRacerGwil.Controls
             //set the new number
             speedGwil = (5 + (rawNumberGwil * scaleGwil));
         }
+
         /// <summary>
         /// Move the racer further
         /// </summary>
@@ -283,8 +305,25 @@ namespace DragRacerGwil.Controls
                 obGrGwil.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
                 obGrGwil.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
-                //draw a rectangle with color on the graphics as the racer
-                obGrGwil.FillRectangle(new SolidBrush(BackgroundColorGwil), new RectangleF(LocationGwil, SizeGwil));
+                //check if location needs to be calculated first and thus calculat the new size
+                PointF drawLocGwil = LocationGwil;
+                SizeF drawSizeGwil = SizeGwil;
+                if (SizeGwil.Height < 0)
+                {
+                    drawLocGwil = new PointF(LocationGwil.X + SizeGwil.Width, LocationGwil.Y);
+                    drawSizeGwil = new SizeF(-drawSizeGwil.Width, drawSizeGwil.Height);
+                }
+
+                if (SizeGwil.Height < 0)
+                {
+                    drawLocGwil = new PointF(drawLocGwil.X, drawLocGwil.Y + SizeGwil.Height);
+                    drawSizeGwil = new SizeF(drawSizeGwil.Width, -drawSizeGwil.Height);
+                }
+
+                // draw a rectangle with color on the graphics as the racer
+                //obGrGwil.FillRectangle(new SolidBrush(BackgroundColorGwil), new RectangleF(drawLocGwil, drawSizeGwil));
+                obGrGwil.DrawImage(backgroundImageGwil, drawLocGwil.X, drawLocGwil.Y, drawSizeGwil.Width, drawSizeGwil.Height);
+                obGrGwil.DrawString(obRacerNameGwil, FontGwil, new SolidBrush(Color.Black), new PointF(drawLocGwil.X, drawLocGwil.Y + drawSizeGwil.Height));
 
                 //put back the stored settings
                 obGrGwil.InterpolationMode = prevSettingInterGwil;
