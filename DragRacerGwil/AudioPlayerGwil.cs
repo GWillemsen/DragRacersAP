@@ -2,7 +2,6 @@
 using NAudio.Wave.SampleProviders;
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 
 namespace DragRacerGwil
 {
@@ -15,11 +14,13 @@ namespace DragRacerGwil
 
         //generic variables
         public static bool shouldEndOrRestartGwil = true;
+
         private static MeteringSampleProvider obPostVolumeMeterGwil = null;
         private static WaveFileReader obReaderGwil = null;
 
         //providers for wave data
         private static SampleChannel obSampleChannelGwil = null;
+
         private static List<WaveFileReader> obStreamsToPlayGwil = new List<WaveFileReader>();
 
         //variables for play list
@@ -343,5 +344,4 @@ namespace DragRacerGwil
 
         #endregion Properties
     }
-
 }

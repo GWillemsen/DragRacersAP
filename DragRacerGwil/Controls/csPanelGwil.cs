@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -9,8 +8,9 @@ namespace DragRacerGwil.Controls
     public class csPanelGwil : csBasicControlGwil
     {
         #region Fields
-        private csControlListGwil obChildsGwil = new csControlListGwil();
         private Bitmap obBackgroundImage = new Bitmap(1, 1);
+        private csControlListGwil obChildsGwil = new csControlListGwil();
+
         #endregion Fields
 
         #region Constructors
@@ -155,15 +155,6 @@ namespace DragRacerGwil.Controls
         #region Properties
 
         /// <summary>
-        /// The controls in the panel as an list
-        /// </summary>
-        public csControlListGwil ChildsListGwil
-        {
-            get => obChildsGwil;
-            set => obChildsGwil = value;
-        }
-
-        /// <summary>
         /// The background image of the control
         /// </summary>
         public Bitmap BackgroundImageGwil
@@ -177,6 +168,16 @@ namespace DragRacerGwil.Controls
                 obBackgroundImage = value;//set the new bitmap
             }
         }
+
+        /// <summary>
+        /// The controls in the panel as an list
+        /// </summary>
+        public csControlListGwil ChildsListGwil
+        {
+            get => obChildsGwil;
+            set => obChildsGwil = value;
+        }
+
         #endregion Properties
 
         #region Methods
@@ -202,7 +203,7 @@ namespace DragRacerGwil.Controls
                 obPanelGrGwil.Clear(BackgroundColorGwil);
 
                 // Create rect for dest image.
-                RectangleF destRectGwil = new RectangleF(new Point(0,0), SizeGwil);
+                RectangleF destRectGwil = new RectangleF(new Point(0, 0), SizeGwil);
                 RectangleF srcRectGwil = new Rectangle(0, 0, BackgroundImageGwil.Width, BackgroundImageGwil.Height);
                 obPanelGrGwil.DrawImage(BackgroundImageGwil, destRectGwil, srcRectGwil, GraphicsUnit.Pixel);
 

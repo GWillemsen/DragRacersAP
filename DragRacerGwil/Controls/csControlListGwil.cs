@@ -59,6 +59,18 @@ namespace DragRacerGwil.Controls
         }
 
         /// <summary>
+        /// Creates an copy of the list without the referencing to the current one on the heap
+        /// </summary>
+        /// <returns></returns>
+        public csControlListGwil Clone()
+        {
+            csControlListGwil obNewlistGwil = new csControlListGwil();
+            foreach (csBasicControlGwil obBasicControlGwil in this)
+                obNewlistGwil.Add(obBasicControlGwil);
+            return obNewlistGwil;
+        }
+
+        /// <summary>
         /// Get an item in the list by its name
         /// </summary>
         /// <param name="obNameGwil">The name of the control to return</param>
@@ -107,18 +119,6 @@ namespace DragRacerGwil.Controls
                 return obReturnListGwil;
             }
             return obReturnListGwil;
-        }
-
-        /// <summary>
-        /// Creates an copy of the list without the referencing to the current one on the heap
-        /// </summary>
-        /// <returns></returns>
-        public csControlListGwil Clone()
-        {
-            csControlListGwil obNewlistGwil = new csControlListGwil();
-            foreach (csBasicControlGwil obBasicControlGwil in this)
-                obNewlistGwil.Add(obBasicControlGwil);
-            return obNewlistGwil;
         }
 
         #endregion Methods

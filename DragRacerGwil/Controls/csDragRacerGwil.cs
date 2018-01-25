@@ -13,11 +13,12 @@ namespace DragRacerGwil.Controls
         private bool knowItsFinishedGwil = false;
         private Font obFontGwil = new Font("Times New Roman", 8);
         private string obRacerNameGwil = "";
+        private bool passedHalfWayGwil = false;
         private bool reachedFinishGwil = false;
         private double speedGwil = 1;
         private DateTime startOfRaceGwil = new DateTime();
         private double traveldRouteGwil = 0;
-        private bool passedHalfWayGwil = false;        
+
         #endregion Fields
 
         #region Constructors
@@ -313,7 +314,7 @@ namespace DragRacerGwil.Controls
                 else
                     reachedFinishGwil = true;
 
-                if(traveldRouteGwil > tracsGwil.Length / 2 && passedHalfWayGwil == false)
+                if (traveldRouteGwil > tracsGwil.Length / 2 && passedHalfWayGwil == false)
                 {
                     passedHalfWayGwil = true;
                     CreateRandomSpeedGwil();
@@ -355,7 +356,7 @@ namespace DragRacerGwil.Controls
                 // draw a rectangle with color on the graphics as the racer
                 obGrGwil.FillRectangle(new SolidBrush(BackgroundColorGwil), new RectangleF(drawLocGwil, drawSizeGwil));
                 //obGrGwil.FillRectangle(new SolidBrush(BackgroundColorGwil), new RectangleF(drawLocGwil, drawSizeGwil));
-                obGrGwil.DrawImage(backgroundImageGwil, drawLocGwil.X, drawLocGwil.Y, drawSizeGwil.Width, drawSizeGwil.Height);                
+                obGrGwil.DrawImage(backgroundImageGwil, drawLocGwil.X, drawLocGwil.Y, drawSizeGwil.Width, drawSizeGwil.Height);
                 obGrGwil.DrawString(obRacerNameGwil, FontGwil, new SolidBrush(Color.Black), new PointF(drawLocGwil.X, drawLocGwil.Y + drawSizeGwil.Height));
 
                 //put back the stored settings

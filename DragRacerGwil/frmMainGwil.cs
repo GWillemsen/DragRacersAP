@@ -37,7 +37,6 @@ namespace DragRacerGwil
 
             csMessageHelperGwil.LogMessage("Creating objects for the layout with their properties", true);
 
-
             #region menu strip
             //creating a new menu strip with buttons in it
             csPanelGwil obPanelGwil = new csPanelGwil("msrMainGwil", new PointF(0, 0), new Size(this.Width - 10, 26), Color.MediumVioletRed);
@@ -60,7 +59,6 @@ namespace DragRacerGwil
             csButtonGwil obAboutGwil = new csButtonGwil("btnAboutGwil", new PointF(3, 3), new Size(70, 20), "About");
             csButtonGwil obLocateBtnGwil = new csButtonGwil("btnLocateGwil", new PointF(3, 27), new Size(70, 20), "Location");
             csButtonGwil obExitBtnGwil = new csButtonGwil("btnExitGwil", new PointF(3, 53), new Size(70, 20), "Exit");
-
 
             #region file button
             csMessageHelperGwil.LogMessage("Adding the click event for the file options visibility panel and adding the button the menu strip", true);
@@ -169,8 +167,6 @@ namespace DragRacerGwil
 
             #endregion Serial monitor
 
-
-
             //log init of menu strip and add the control to the control list
             csMessageHelperGwil.LogMessage("Adding the menu strip to the control list", true);
             obControlsGwil.Add(obPanelGwil);
@@ -190,7 +186,7 @@ namespace DragRacerGwil
             obRacerPanelGwil.SubstractFromFormWidthGwil = 22;
 
             csMessageHelperGwil.LogMessage("Creating the race panel with its racers", true);
-            
+
             //create an new panel, add 4 racers to it and add it to the form
             csPanelGwil obRacersGwil = new csPanelGwil("pnlRacersGwil", new PointF(0, 0), new Size(600, 230));
 
@@ -201,8 +197,8 @@ namespace DragRacerGwil
             obFinishLinePanel.AutoResizeHeightGwil = false;
             obFinishLinePanel.AutoResizeWidthGwil = false;
             obFinishLinePanel.Z_indexGwil = 1;
-            
-            #endregion
+
+            #endregion race circuit
 
             #region racers
 
@@ -235,7 +231,7 @@ namespace DragRacerGwil
             obRacersListGwil = obRacersGwil.ChildsListGwil.Clone();
             obRacersGwil.ChildsListGwil.Add(obFinishLinePanel);
             obRacersGwil.Z_indexGwil = 0;
-            obRacerPanelGwil.ChildsListGwil.Add(obRacersGwil);;
+            obRacerPanelGwil.ChildsListGwil.Add(obRacersGwil); ;
 
             #endregion racers
 
@@ -275,7 +271,6 @@ namespace DragRacerGwil
             obRacerPanelGwil.ChildsListGwil.Add(obRaceStartStopGwil);
             obControlsGwil.Add(obRacerPanelGwil);
 
-
             #endregion racing panel
 
             #region Racer options
@@ -293,11 +288,11 @@ namespace DragRacerGwil
 
             #region racer 1 options
             //create the panel with options for racer 1
-            csPanelGwil obOptionsRacer1Gwil = new csPanelGwil("pnlRacer1Gwil", new PointF(3, 10), new Size(100,100));
+            csPanelGwil obOptionsRacer1Gwil = new csPanelGwil("pnlRacer1Gwil", new PointF(3, 10), new Size(100, 100));
             obOptionsRacer1Gwil.BackgroundColorGwil = obRacersListGwil[0].BackgroundColorGwil;
             obOptionsRacer1Gwil.Z_indexGwil = 1;
 
-            csButtonGwil obChangeColorRacer1Gwil = new csButtonGwil("buttonChangeColorR1Gwil", new PointF(3,80), new Size(94, 18), "Color");
+            csButtonGwil obChangeColorRacer1Gwil = new csButtonGwil("buttonChangeColorR1Gwil", new PointF(3, 80), new Size(94, 18), "Color");
             obChangeColorRacer1Gwil.OnClickGwil += (obSenderGwil, argsGwil) =>
             {
                 csMessageHelperGwil.LogMessage("Show color options for racer" + obRacersListGwil[0].NameGwil);
@@ -325,7 +320,7 @@ namespace DragRacerGwil
                 //create new open file dialog and set its filters
                 OpenFileDialog fldImageChoserGwil = new OpenFileDialog();
                 fldImageChoserGwil.Filter = "Images|*.png;*.jpg;*.jpeg;*.bmp;*.gif|All files|*.*";
-                if(fldImageChoserGwil.ShowDialog() == DialogResult.OK)
+                if (fldImageChoserGwil.ShowDialog() == DialogResult.OK)
                 {
                     ((csDragRacerGwil)obRacersListGwil[0]).ImageGwil = new Bitmap(Image.FromFile(fldImageChoserGwil.FileName));
                     csMessageHelperGwil.LogMessage("The new image is set for racer: " + obRacersListGwil[0].NameGwil);
@@ -349,7 +344,7 @@ namespace DragRacerGwil
             obOptionsRacer1Gwil.ChildsListGwil.Add(obChangeColorRacer1Gwil);
             optionsPanelGwil.ChildsListGwil.Add(obOptionsRacer1Gwil);
 
-            #endregion
+            #endregion racer 1 options
 
             #region racer 2 options
             csPanelGwil obOptionsRacer2Gwil = new csPanelGwil("pnlRacer2Gwil", new PointF(110, 10), new Size(100, 100));
@@ -406,7 +401,7 @@ namespace DragRacerGwil
             obOptionsRacer2Gwil.ChildsListGwil.Add(obChangeColorRacer2Gwil);
             optionsPanelGwil.ChildsListGwil.Add(obOptionsRacer2Gwil);
 
-            #endregion
+            #endregion racer 2 options
 
             #region racer 3 options
 
@@ -463,7 +458,8 @@ namespace DragRacerGwil
             obOptionsRacer3Gwil.ChildsListGwil.Add(obImgChoserR3Gwil);
             obOptionsRacer3Gwil.ChildsListGwil.Add(obChangeColorRacer3Gwil);
             optionsPanelGwil.ChildsListGwil.Add(obOptionsRacer3Gwil);
-            #endregion
+
+            #endregion racer 3 options
 
             #region racer 4 options
 
@@ -521,12 +517,11 @@ namespace DragRacerGwil
             obOptionsRacer4Gwil.ChildsListGwil.Add(obChangeColorRacer4Gwil);
             optionsPanelGwil.ChildsListGwil.Add(obOptionsRacer4Gwil);
 
-
-            #endregion
+            #endregion racer 4 options
 
             obControlsGwil.Add(optionsPanelGwil);
 
-            #endregion
+            #endregion Racer options
 
             #region tab control
             //create a button that shows the racer panel instead of the options panel
@@ -563,13 +558,22 @@ namespace DragRacerGwil
             };
             obBtnOptionsPanel.Z_indexGwil = 2;
             obControlsGwil.Add(obBtnOptionsPanel);
-            #endregion
-            
+
+            #endregion tab control
         }
 
         #endregion Constructors
 
         #region Methods
+
+        public static PointF PointOnCircle(float radius, float angleInDegrees, PointF origin)
+        {
+            // Convert from degrees to radians via multiplication by PI/180
+            float x = (float)(radius * Math.Cos(angleInDegrees * Math.PI / 180F)) + origin.X;
+            float y = (float)(radius * Math.Sin(angleInDegrees * Math.PI / 180F)) + origin.Y;
+
+            return new PointF(x, y);
+        }
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -668,8 +672,6 @@ namespace DragRacerGwil
             for (int trackNumberPointGwil = 0; trackNumberPointGwil < trackGwil.Length; trackNumberPointGwil += 1)
             {
                 trackGwil[trackNumberPointGwil] = new PointF(extraSpacingGwil + (float)((trackNumberPointGwil / 8) * scaleGwil), extraSpacingGwil + (float)xPosGwil);
-
-
             }
             //List<PointF> obNewTrackGwil = new List<PointF>();
             //for(float angleGwil = 0; angleGwil < 360; angleGwil += 0.1F)
@@ -677,15 +679,6 @@ namespace DragRacerGwil
             //    obNewTrackGwil.Add(PointOnCircle(50, angleGwil, new PointF(100, 60)));
             //}
             //trackGwil = obNewTrackGwil.ToArray();
-        }
-
-        public static PointF PointOnCircle(float radius, float angleInDegrees, PointF origin)
-        {
-            // Convert from degrees to radians via multiplication by PI/180        
-            float x = (float)(radius * Math.Cos(angleInDegrees * Math.PI / 180F)) + origin.X;
-            float y = (float)(radius * Math.Sin(angleInDegrees * Math.PI / 180F)) + origin.Y;
-
-            return new PointF(x, y);
         }
 
         private void frmMainGwil_Load(object sender, EventArgs e)
@@ -717,7 +710,7 @@ namespace DragRacerGwil
                          e.Y <= obControlGwil.LocationGwil.Y + obControlGwil.SizeGwil.Height + graphicsOffsetGwil.Y)
                     {
                         //if z index is lower than make it the new object to preform on
-                        if ((obControlToClickGwil == null || obControlToClickGwil.Z_indexGwil > obControlGwil.Z_indexGwil ) && obControlGwil.Visible == true)
+                        if ((obControlToClickGwil == null || obControlToClickGwil.Z_indexGwil > obControlGwil.Z_indexGwil) && obControlGwil.Visible == true)
                             obControlToClickGwil = obControlGwil;
                     }
                 }
