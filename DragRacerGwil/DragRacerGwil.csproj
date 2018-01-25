@@ -35,6 +35,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="NAudio">
+      <HintPath>..\..\..\..\..\..\Downloads\NAudio-master\NAudio-master\NAudio\bin\Debug\NAudio.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AudioPlayerGwil.cs" />
     <Compile Include="Controls\BasicControlGwil.cs" />
     <Compile Include="Controls\csButtonGwil.cs" />
     <Compile Include="Controls\csLabelGwil.cs" />

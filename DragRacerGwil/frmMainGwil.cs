@@ -40,7 +40,7 @@ namespace DragRacerGwil
 
             #region menu strip
             //creating a new menu strip with buttons in it
-            csPanelGwil obPanelGwil = new csPanelGwil("msrMainGwil", new PointF(0, 0), new Size(this.Width - 10, 26), Color.Red);
+            csPanelGwil obPanelGwil = new csPanelGwil("msrMainGwil", new PointF(0, 0), new Size(this.Width - 10, 26), Color.MediumVioletRed);
             csButtonGwil obSerialMonitorGwil = new csButtonGwil("btnSerialMonitorGwil", new PointF(55, 3), new Size(50, 20), "Serial");
             //set resize property's
             obPanelGwil.AutoResizeHeightGwil = false;
@@ -284,7 +284,6 @@ namespace DragRacerGwil
             csPanelGwil optionsPanelGwil = new csPanelGwil("pnlRacerOptionsGwil", new PointF(3, 52), new Size(this.Width - 22, this.Height - 70));
             optionsPanelGwil.Z_indexGwil = 3;
             optionsPanelGwil.Visible = false;
-            optionsPanelGwil.BackgroundColorGwil = Color.Red;
 
             //set resize property's
             optionsPanelGwil.IsFormWidthGwil = true;
@@ -295,7 +294,9 @@ namespace DragRacerGwil
             #region racer 1 options
             //create the panel with options for racer 1
             csPanelGwil obOptionsRacer1Gwil = new csPanelGwil("pnlRacer1Gwil", new PointF(3, 10), new Size(100,100));
+            obOptionsRacer1Gwil.BackgroundColorGwil = obRacersListGwil[0].BackgroundColorGwil;
             obOptionsRacer1Gwil.Z_indexGwil = 1;
+
             csButtonGwil obChangeColorRacer1Gwil = new csButtonGwil("buttonChangeColorR1Gwil", new PointF(3,80), new Size(94, 18), "Color");
             obChangeColorRacer1Gwil.OnClickGwil += (obSenderGwil, argsGwil) =>
             {
@@ -352,6 +353,7 @@ namespace DragRacerGwil
 
             #region racer 2 options
             csPanelGwil obOptionsRacer2Gwil = new csPanelGwil("pnlRacer2Gwil", new PointF(110, 10), new Size(100, 100));
+            obOptionsRacer2Gwil.BackgroundColorGwil = obRacersListGwil[1].BackgroundColorGwil;
             obOptionsRacer2Gwil.Z_indexGwil = 1;
             csButtonGwil obChangeColorRacer2Gwil = new csButtonGwil("buttonChangeColorR2Gwil", new PointF(3, 80), new Size(94, 18), "Color");
             obChangeColorRacer2Gwil.OnClickGwil += (obSenderGwil, argsGwil) =>
@@ -409,6 +411,7 @@ namespace DragRacerGwil
             #region racer 3 options
 
             csPanelGwil obOptionsRacer3Gwil = new csPanelGwil("pnlRacer3Gwil", new PointF(3, 115), new Size(100, 100));
+            obOptionsRacer3Gwil.BackgroundColorGwil = obRacersListGwil[2].BackgroundColorGwil;
             obOptionsRacer3Gwil.Z_indexGwil = 1;
             csButtonGwil obChangeColorRacer3Gwil = new csButtonGwil("buttonChangeColorR3Gwil", new PointF(3, 80), new Size(94, 18), "Color");
             obChangeColorRacer3Gwil.OnClickGwil += (obSenderGwil, argsGwil) =>
@@ -465,6 +468,7 @@ namespace DragRacerGwil
             #region racer 4 options
 
             csPanelGwil obOptionsRacer4Gwil = new csPanelGwil("pnlRacer4Gwil", new PointF(110, 115), new Size(100, 100));
+            obOptionsRacer4Gwil.BackgroundColorGwil = obRacersListGwil[3].BackgroundColorGwil;
             obOptionsRacer4Gwil.Z_indexGwil = 1;
             csButtonGwil obChangeColorRacer4Gwil = new csButtonGwil("buttonChangeColorR3Gwil", new PointF(3, 80), new Size(94, 18), "Color");
             obChangeColorRacer4Gwil.OnClickGwil += (obSenderGwil, argsGwil) =>
