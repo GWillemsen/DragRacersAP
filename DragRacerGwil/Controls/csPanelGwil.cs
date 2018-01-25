@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -9,7 +10,7 @@ namespace DragRacerGwil.Controls
     {
         #region Fields
         private csControlListGwil obChildsGwil = new csControlListGwil();
-
+        private Bitmap obBackgroundImage = new Bitmap(1, 1);
         #endregion Fields
 
         #region Constructors
@@ -162,6 +163,20 @@ namespace DragRacerGwil.Controls
             set => obChildsGwil = value;
         }
 
+        /// <summary>
+        /// The background image of the control
+        /// </summary>
+        public Bitmap BackgroundImageGwil
+        {
+            get => obBackgroundImage;
+            set
+            {
+                //if new value is not old than update the control next draw
+                if (obBackgroundImage != value)
+                    changedSinceDrawGwil = true;
+                obBackgroundImage = value;//set the new bitmap
+            }
+        }
         #endregion Properties
 
         #region Methods
@@ -181,16 +196,21 @@ namespace DragRacerGwil.Controls
                 //create graphics objects for the drawing
                 Bitmap obThePanelGwil = new Bitmap((int)SizeGwil.Width, ((int)SizeGwil.Height));
                 Graphics obPanelGrGwil = Graphics.FromImage(obThePanelGwil);
-                obPanelGrGwil.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
-                obPanelGrGwil.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Low;
+                obPanelGrGwil.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.Default;
+                obPanelGrGwil.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
                 //clear the bitmap with the background color
                 obPanelGrGwil.Clear(BackgroundColorGwil);
+
+                // Create rect for dest image.
+                RectangleF destRectGwil = new RectangleF(new Point(0,0), SizeGwil);
+                RectangleF srcRectGwil = new Rectangle(0, 0, BackgroundImageGwil.Width, BackgroundImageGwil.Height);
+                obPanelGrGwil.DrawImage(BackgroundImageGwil, destRectGwil, srcRectGwil, GraphicsUnit.Pixel);
+
                 //draw each individual control on the graphics
                 foreach (csBasicControlGwil obChildGwil in obChildsGwil)
                     obChildGwil.DrawGwil(obPanelGrGwil, true);
-
                 //draw the panel on the graphics
-                obGrGwil.DrawImage(obThePanelGwil, LocationGwil.X, LocationGwil.Y, SizeGwil.Width, SizeGwil.Height);
+                obGrGwil.DrawImage(obThePanelGwil, LocationGwil);
                 //dispose of the local graphics and image
                 obPanelGrGwil.Dispose();
                 obThePanelGwil.Dispose();

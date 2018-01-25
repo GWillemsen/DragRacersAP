@@ -21,7 +21,7 @@ namespace DragRacerGwil
         private Size lastKnowSizeGwil = new Size(0, 0);
         private csControlListGwil obRacersListGwil = new csControlListGwil();
         private int placeOfRacerGwil = 1;
-        private PointF[] trackGwil = new PointF[4000];
+        private PointF[] trackGwil = new PointF[3900];
 
         #endregion Fields
 
@@ -32,30 +32,11 @@ namespace DragRacerGwil
             csMessageHelperGwil.AddMessageFilterGwil(this);
             //initialize the normal form items
             InitializeComponent();
+            //create the track
             CreateTrackGwil(1.0);
 
-            //double xPosGwil = 0;
-            //bool downGwil = false;
-            ////generate the track
-            //for (int trackNumberPointGwil = 0; trackNumberPointGwil < trackGwil.Length; trackNumberPointGwil += 1)
-            //{
-            //    trackGwil[trackNumberPointGwil] = new PointF(75 + (float)xPosGwil, 75 + ((float)trackNumberPointGwil / 40));
-            //    if (downGwil == true)
-            //    {
-            //        xPosGwil -= 0.3F;
-            //        if (xPosGwil <= 0)
-            //            downGwil = false;
-            //    }
-            //    else
-            //    {
-            //        xPosGwil += 0.3F; ;
-            //        if (xPosGwil >= 200)
-            //            downGwil = true;
-            //    }
-            //    //trackGwil[trackNumberPointGwil] = new PointF((float)trackNumberPointGwil / 10, 20);
-            //}
-
             csMessageHelperGwil.LogMessage("Creating objects for the layout with their properties", true);
+
 
             #region menu strip
             //creating a new menu strip with buttons in it
@@ -63,6 +44,7 @@ namespace DragRacerGwil
             csButtonGwil obSerialMonitorGwil = new csButtonGwil("btnSerialMonitorGwil", new PointF(55, 3), new Size(50, 20), "Serial");
             //set resize property's
             obPanelGwil.AutoResizeHeightGwil = false;
+            obPanelGwil.AutoResizeWidthGwil = false;
             obPanelGwil.IsFormWidthGwil = true;
             obPanelGwil.SubstractFromFormWidthGwil = 20;
 
@@ -78,6 +60,7 @@ namespace DragRacerGwil
             csButtonGwil obAboutGwil = new csButtonGwil("btnAboutGwil", new PointF(3, 3), new Size(70, 20), "About");
             csButtonGwil obLocateBtnGwil = new csButtonGwil("btnLocateGwil", new PointF(3, 27), new Size(70, 20), "Location");
             csButtonGwil obExitBtnGwil = new csButtonGwil("btnExitGwil", new PointF(3, 53), new Size(70, 20), "Exit");
+
 
             #region file button
             csMessageHelperGwil.LogMessage("Adding the click event for the file options visibility panel and adding the button the menu strip", true);
@@ -186,7 +169,9 @@ namespace DragRacerGwil
 
             #endregion Serial monitor
 
-            //log init of menu strip and add the control to the contol list
+
+
+            //log init of menu strip and add the control to the control list
             csMessageHelperGwil.LogMessage("Adding the menu strip to the control list", true);
             obControlsGwil.Add(obPanelGwil);
 
@@ -195,7 +180,7 @@ namespace DragRacerGwil
             #region racing panel
             csMessageHelperGwil.LogMessage("Creating race main view panel", true);
             //the main panel for the race
-            csPanelGwil obRacerPanelGwil = new csPanelGwil("pnlRaceOverviewGwil", new PointF(3, 28), new Size(this.Width - 22, this.Height - 70));
+            csPanelGwil obRacerPanelGwil = new csPanelGwil("pnlRaceOverviewGwil", new PointF(3, 52), new Size(this.Width - 22, this.Height - 70));
             obRacerPanelGwil.Z_indexGwil = 2;
 
             //set resize property's
@@ -205,28 +190,35 @@ namespace DragRacerGwil
             obRacerPanelGwil.SubstractFromFormWidthGwil = 22;
 
             csMessageHelperGwil.LogMessage("Creating the race panel with its racers", true);
-
+            
             //create an new panel, add 4 racers to it and add it to the form
-            csPanelGwil obRacersGwil = new csPanelGwil("pnlRacersGwil", new PointF(100, 0), new Size(400, 200));
-            obRacerPanelGwil.AutoResizeWidthGwil = true;
-            obRacerPanelGwil.AutoResizeHeightGwil = true;
+            csPanelGwil obRacersGwil = new csPanelGwil("pnlRacersGwil", new PointF(0, 0), new Size(600, 230));
+
+            #region race circuit
+            csPanelGwil obFinishLinePanel = new csPanelGwil("pnlFinishLineGwil", new PointF(420, 0), new Size(60, 300));
+            obFinishLinePanel.BackgroundImageGwil = new Bitmap(Bitmap.FromFile("..//..//img//finishline.jpg"));
+            obFinishLinePanel.BackgroundColorGwil = Color.Black;
+            obFinishLinePanel.AutoResizeHeightGwil = false;
+            obFinishLinePanel.AutoResizeWidthGwil = false;
+            obFinishLinePanel.Z_indexGwil = 1;
+            
+            #endregion
 
             #region racers
-            obRacersGwil.BackgroundColorGwil = Color.Red;
 
             // use the RNG from crypto to make it more random.
             System.Security.Cryptography.RandomNumberGenerator obRndGwil = System.Security.Cryptography.RandomNumberGenerator.Create();
             for (int dragracerCountGwil = 0; dragracerCountGwil < 4; dragracerCountGwil++)
             {
                 //create new label that belongs to a certain label with the name, correct color and a font
-                csLabelGwil obRacerLabel = new csLabelGwil("lblRacer" + dragracerCountGwil + "DataGwil", new Point(100, 210 + (dragracerCountGwil * 22)), new Size(500, 20));
+                csLabelGwil obRacerLabel = new csLabelGwil("lblRacer" + dragracerCountGwil + "DataGwil", new Point(100, 230 + (dragracerCountGwil * 22)), new Size(500, 20));
                 obRacerLabel.BackgroundColorGwil = Color.Transparent;
                 obRacerLabel.TextGwil = "";
                 obRacerLabel.FontGwil = new Font("Times New Roman", 8);
                 //add the label to the control list
                 obRacerPanelGwil.ChildsListGwil.Add(obRacerLabel);
 
-                var obRacerGwil = new csDragRacerGwil("dragRacer" + dragracerCountGwil.ToString() + "Gwil", new PointF(dragracerCountGwil * 75, 0), new Size(-70, -70), Color.Red);
+                var obRacerGwil = new csDragRacerGwil("dragRacer" + dragracerCountGwil.ToString() + "Gwil", new PointF(dragracerCountGwil * 35, 0), new Size(-30, -30), Color.Red);
                 obRacerGwil.CreateRandomSpeedGwil(obRndGwil);
 
                 //create random colors using cryptography random to avoid repeating numbers and pseudo random generators(long story)
@@ -234,18 +226,22 @@ namespace DragRacerGwil
                 obRndGwil.GetBytes(newColorGwil);
                 Color rndColor = Color.FromArgb(255, newColorGwil[1], newColorGwil[2], newColorGwil[3]);
                 obRacerGwil.BackgroundColorGwil = rndColor;
+                obRacerGwil.Z_indexGwil = 0;
                 obRacersGwil.ChildsListGwil.Add(obRacerGwil);
                 csMessageHelperGwil.LogMessage("Created racer " + obRacerGwil.ToString(), true);
                 System.Threading.Thread.Sleep(20);
             }
-            obRacersListGwil = obRacersGwil.ChildsListGwil;
-            obRacerPanelGwil.ChildsListGwil.Add(obRacersGwil);
+
+            obRacersListGwil = obRacersGwil.ChildsListGwil.Clone();
+            obRacersGwil.ChildsListGwil.Add(obFinishLinePanel);
+            obRacersGwil.Z_indexGwil = 0;
+            obRacerPanelGwil.ChildsListGwil.Add(obRacersGwil);;
 
             #endregion racers
 
             #region racer start
             //creating the start/stop race button
-            csButtonGwil obRaceStartStopGwil = new csButtonGwil("btnStartStopGwil", new PointF(10, 200), new Size(80, 26), "Start race");
+            csButtonGwil obRaceStartStopGwil = new csButtonGwil("btnStartStopGwil", new PointF(10, 270), new Size(80, 26), "Start race");
 
             obRaceStartStopGwil.OnClickGwil += (senderGwil, obArgGwil) =>
             {
@@ -254,7 +250,7 @@ namespace DragRacerGwil
                     csMessageHelperGwil.LogMessage("Starting race...", false);
                     obRaceStartStopGwil.ContentGwil = "Racing";
                     int racerCountGwil = 1;
-                    foreach (csDragRacerGwil obRacerGwil in obRacersGwil.ChildsListGwil)
+                    foreach (csDragRacerGwil obRacerGwil in obRacersListGwil)
                     {
                         obRacerGwil.ResetRacerToStartGwil(trackGwil[0], new PointF(0, 0));
                         obRacerGwil.CreateRandomSpeedGwil(obRndGwil);
@@ -279,7 +275,292 @@ namespace DragRacerGwil
             obRacerPanelGwil.ChildsListGwil.Add(obRaceStartStopGwil);
             obControlsGwil.Add(obRacerPanelGwil);
 
+
             #endregion racing panel
+
+            #region Racer options
+            csMessageHelperGwil.LogMessage("Creating race options panel", true);
+            //the main panel for the race
+            csPanelGwil optionsPanelGwil = new csPanelGwil("pnlRacerOptionsGwil", new PointF(3, 52), new Size(this.Width - 22, this.Height - 70));
+            optionsPanelGwil.Z_indexGwil = 3;
+            optionsPanelGwil.Visible = false;
+            optionsPanelGwil.BackgroundColorGwil = Color.Red;
+
+            //set resize property's
+            optionsPanelGwil.IsFormWidthGwil = true;
+            optionsPanelGwil.IsFormHeightGwil = true;
+            optionsPanelGwil.SubstractFromFormHeightGwil = 70;
+            optionsPanelGwil.SubstractFromFormWidthGwil = 22;
+
+            #region racer 1 options
+            //create the panel with options for racer 1
+            csPanelGwil obOptionsRacer1Gwil = new csPanelGwil("pnlRacer1Gwil", new PointF(3, 10), new Size(100,100));
+            obOptionsRacer1Gwil.Z_indexGwil = 1;
+            csButtonGwil obChangeColorRacer1Gwil = new csButtonGwil("buttonChangeColorR1Gwil", new PointF(3,80), new Size(94, 18), "Color");
+            obChangeColorRacer1Gwil.OnClickGwil += (obSenderGwil, argsGwil) =>
+            {
+                csMessageHelperGwil.LogMessage("Show color options for racer" + obRacersListGwil[0].NameGwil);
+                //creating new color choosing dialog
+                ColorDialog cldNewColorGwil = new ColorDialog();
+                cldNewColorGwil.Color = obRacersListGwil[0].BackgroundColorGwil;
+                //show dialog and the return result is oke than set the new color to the racer and options panel
+                if (cldNewColorGwil.ShowDialog() == DialogResult.OK)
+                {
+                    obRacersListGwil[0].BackgroundColorGwil = cldNewColorGwil.Color;
+                    obOptionsRacer1Gwil.BackgroundColorGwil = cldNewColorGwil.Color;
+                    csMessageHelperGwil.LogMessage("The new color for racer " + obRacersListGwil[0].NameGwil + " is color: " + cldNewColorGwil.Color.Name);
+                }
+                else
+                    csMessageHelperGwil.LogMessage("Canceled new color chosing for racer" + obRacersListGwil[0].NameGwil);
+
+                //release memory objects from color dialog
+                cldNewColorGwil.Dispose();
+            };
+
+            csButtonGwil obImgChoserR1Gwil = new csButtonGwil("btnChoseBackImgR1Gwil", new PointF(2, 55), new Size(94, 20), "Image");
+            obImgChoserR1Gwil.OnClickGwil += (obSenderGwil, argsGwil) =>
+            {
+                csMessageHelperGwil.LogMessage("Choosing new image for racer" + obRacersListGwil[0].NameGwil);
+                //create new open file dialog and set its filters
+                OpenFileDialog fldImageChoserGwil = new OpenFileDialog();
+                fldImageChoserGwil.Filter = "Images|*.png;*.jpg;*.jpeg;*.bmp;*.gif|All files|*.*";
+                if(fldImageChoserGwil.ShowDialog() == DialogResult.OK)
+                {
+                    ((csDragRacerGwil)obRacersListGwil[0]).ImageGwil = new Bitmap(Image.FromFile(fldImageChoserGwil.FileName));
+                    csMessageHelperGwil.LogMessage("The new image is set for racer: " + obRacersListGwil[0].NameGwil);
+                }
+                else
+                    csMessageHelperGwil.LogMessage("Canceled choosing new image" + obRacersListGwil[0].NameGwil);
+            };
+
+            csBasicControlGwil obNameEditorR1Gwil = new csButtonGwil("btnChooseNewNameR1Gwil", new PointF(2, 30), new Size(94, 20), "Edit name");
+            obNameEditorR1Gwil.OnClickGwil += (obSenderGwil, argGwil) =>
+            {
+                //create a message box like interface that ask for a input which is returned to the string and later set as the new racer name;
+                string obNewNameGwil = Microsoft.VisualBasic.Interaction.InputBox("What is the name of this racer:", "Edit name", ((csDragRacerGwil)obRacersListGwil[0]).RacerNameGwil);
+                csMessageHelperGwil.LogMessage("The racer with the old name: " + ((csDragRacerGwil)obRacersListGwil[0]).RacerNameGwil + " changed its name to: " + obNewNameGwil);
+                ((csDragRacerGwil)obRacersListGwil[0]).RacerNameGwil = obNewNameGwil;
+            };
+
+            //add the buttons and panel to the control list of their parent
+            obOptionsRacer1Gwil.ChildsListGwil.Add(obNameEditorR1Gwil);
+            obOptionsRacer1Gwil.ChildsListGwil.Add(obImgChoserR1Gwil);
+            obOptionsRacer1Gwil.ChildsListGwil.Add(obChangeColorRacer1Gwil);
+            optionsPanelGwil.ChildsListGwil.Add(obOptionsRacer1Gwil);
+
+            #endregion
+
+            #region racer 2 options
+            csPanelGwil obOptionsRacer2Gwil = new csPanelGwil("pnlRacer2Gwil", new PointF(110, 10), new Size(100, 100));
+            obOptionsRacer2Gwil.Z_indexGwil = 1;
+            csButtonGwil obChangeColorRacer2Gwil = new csButtonGwil("buttonChangeColorR2Gwil", new PointF(3, 80), new Size(94, 18), "Color");
+            obChangeColorRacer2Gwil.OnClickGwil += (obSenderGwil, argsGwil) =>
+            {
+                csMessageHelperGwil.LogMessage("Show color options for racer" + obRacersListGwil[1].NameGwil);
+                //creating new color choosing dialog
+                ColorDialog cldNewColorGwil = new ColorDialog();
+                cldNewColorGwil.Color = obRacersListGwil[1].BackgroundColorGwil;
+                //show dialog and the return result is oke than set the new color to the racer and options panel
+                if (cldNewColorGwil.ShowDialog() == DialogResult.OK)
+                {
+                    obRacersListGwil[1].BackgroundColorGwil = cldNewColorGwil.Color;
+                    obOptionsRacer2Gwil.BackgroundColorGwil = cldNewColorGwil.Color;
+                    csMessageHelperGwil.LogMessage("The new color for racer " + obRacersListGwil[1].NameGwil + " is color: " + cldNewColorGwil.Color.Name);
+                }
+                else
+                    csMessageHelperGwil.LogMessage("Canceled new color choosing for racer" + obRacersListGwil[1].NameGwil);
+                //release memory objects from color dialog
+                cldNewColorGwil.Dispose();
+            };
+
+            csButtonGwil obImgChoserR2Gwil = new csButtonGwil("btnChoseBackImgR2Gwil", new PointF(2, 55), new Size(94, 20), "Image");
+            obImgChoserR2Gwil.OnClickGwil += (obSenderGwil, argsGwil) =>
+            {
+                csMessageHelperGwil.LogMessage("Choosing new image for racer" + obRacersListGwil[0].NameGwil);
+                //create new open file dialog and set its filters
+                OpenFileDialog fldImageChoserGwil = new OpenFileDialog();
+                fldImageChoserGwil.Filter = "Images|*.png;*.jpg;*.jpeg;*.bmp;*.gif|All files|*.*";
+                if (fldImageChoserGwil.ShowDialog() == DialogResult.OK)
+                {
+                    ((csDragRacerGwil)obRacersListGwil[1]).ImageGwil = new Bitmap(Image.FromFile(fldImageChoserGwil.FileName));
+                    csMessageHelperGwil.LogMessage("The new image is set for racer: " + obRacersListGwil[1].NameGwil);
+                }
+                else
+                    csMessageHelperGwil.LogMessage("Canceled choosing new image" + obRacersListGwil[1].NameGwil);
+            };
+
+            csBasicControlGwil obNameEditorR2Gwil = new csButtonGwil("btnChooseNewNameR2Gwil", new PointF(2, 30), new Size(94, 20), "Edit name");
+            obNameEditorR2Gwil.OnClickGwil += (obSenderGwil, argGwil) =>
+            {
+                //create a message box like interface that ask for a input which is returned to the string and later set as the new racer name;
+                string obNewNameGwil = Microsoft.VisualBasic.Interaction.InputBox("What is the name of this racer:", "Edit name", ((csDragRacerGwil)obRacersListGwil[1]).RacerNameGwil);
+                csMessageHelperGwil.LogMessage("The racer with the old name: " + ((csDragRacerGwil)obRacersListGwil[1]).RacerNameGwil + " changed its name to: " + obNewNameGwil);
+                ((csDragRacerGwil)obRacersListGwil[1]).RacerNameGwil = obNewNameGwil;
+            };
+
+            //add the buttons and panel to the control list of their parent
+            obOptionsRacer2Gwil.ChildsListGwil.Add(obNameEditorR2Gwil);
+            obOptionsRacer2Gwil.ChildsListGwil.Add(obImgChoserR2Gwil);
+            obOptionsRacer2Gwil.ChildsListGwil.Add(obChangeColorRacer2Gwil);
+            optionsPanelGwil.ChildsListGwil.Add(obOptionsRacer2Gwil);
+
+            #endregion
+
+            #region racer 3 options
+
+            csPanelGwil obOptionsRacer3Gwil = new csPanelGwil("pnlRacer3Gwil", new PointF(3, 115), new Size(100, 100));
+            obOptionsRacer3Gwil.Z_indexGwil = 1;
+            csButtonGwil obChangeColorRacer3Gwil = new csButtonGwil("buttonChangeColorR3Gwil", new PointF(3, 80), new Size(94, 18), "Color");
+            obChangeColorRacer3Gwil.OnClickGwil += (obSenderGwil, argsGwil) =>
+            {
+                csMessageHelperGwil.LogMessage("Show color options for racer" + obRacersListGwil[2].NameGwil);
+                //creating new color choosing dialog
+                ColorDialog cldNewColorGwil = new ColorDialog();
+                cldNewColorGwil.Color = obRacersListGwil[1].BackgroundColorGwil;
+                //show dialog and the return result is oke than set the new color to the racer and options panel
+                if (cldNewColorGwil.ShowDialog() == DialogResult.OK)
+                {
+                    obRacersListGwil[2].BackgroundColorGwil = cldNewColorGwil.Color;
+                    obOptionsRacer3Gwil.BackgroundColorGwil = cldNewColorGwil.Color;
+                    csMessageHelperGwil.LogMessage("The new color for racer " + obRacersListGwil[2].NameGwil + " is color: " + cldNewColorGwil.Color.Name);
+                }
+                else
+                    csMessageHelperGwil.LogMessage("Canceled new color choosing for racer" + obRacersListGwil[2].NameGwil);
+                //release memory objects from color dialog
+                cldNewColorGwil.Dispose();
+            };
+
+            csButtonGwil obImgChoserR3Gwil = new csButtonGwil("btnChoseBackImgR3Gwil", new PointF(2, 55), new Size(94, 20), "Image");
+            obImgChoserR3Gwil.OnClickGwil += (obSenderGwil, argsGwil) =>
+            {
+                csMessageHelperGwil.LogMessage("Choosing new image for racer" + obRacersListGwil[0].NameGwil);
+                //create new open file dialog and set its filters
+                OpenFileDialog fldImageChoserGwil = new OpenFileDialog();
+                fldImageChoserGwil.Filter = "Images|*.png;*.jpg;*.jpeg;*.bmp;*.gif|All files|*.*";
+                if (fldImageChoserGwil.ShowDialog() == DialogResult.OK)
+                {
+                    ((csDragRacerGwil)obRacersListGwil[2]).ImageGwil = new Bitmap(Image.FromFile(fldImageChoserGwil.FileName));
+                    csMessageHelperGwil.LogMessage("The new image is set for racer: " + obRacersListGwil[2].NameGwil);
+                }
+                else
+                    csMessageHelperGwil.LogMessage("Canceled choosing new image" + obRacersListGwil[2].NameGwil);
+            };
+
+            csBasicControlGwil obNameEditorR3Gwil = new csButtonGwil("btnChooseNewNameR3Gwil", new PointF(2, 30), new Size(94, 20), "Edit name");
+            obNameEditorR3Gwil.OnClickGwil += (obSenderGwil, argGwil) =>
+            {
+                //create a message box like interface that ask for a input which is returned to the string and later set as the new racer name;
+                string obNewNameGwil = Microsoft.VisualBasic.Interaction.InputBox("What is the name of this racer:", "Edit name", ((csDragRacerGwil)obRacersListGwil[2]).RacerNameGwil);
+                csMessageHelperGwil.LogMessage("The racer with the old name: " + ((csDragRacerGwil)obRacersListGwil[2]).RacerNameGwil + " changed its name to: " + obNewNameGwil);
+                ((csDragRacerGwil)obRacersListGwil[2]).RacerNameGwil = obNewNameGwil;
+            };
+
+            //add the buttons and panel to the control list of their parent
+            obOptionsRacer3Gwil.ChildsListGwil.Add(obNameEditorR3Gwil);
+            obOptionsRacer3Gwil.ChildsListGwil.Add(obImgChoserR3Gwil);
+            obOptionsRacer3Gwil.ChildsListGwil.Add(obChangeColorRacer3Gwil);
+            optionsPanelGwil.ChildsListGwil.Add(obOptionsRacer3Gwil);
+            #endregion
+
+            #region racer 4 options
+
+            csPanelGwil obOptionsRacer4Gwil = new csPanelGwil("pnlRacer4Gwil", new PointF(110, 115), new Size(100, 100));
+            obOptionsRacer4Gwil.Z_indexGwil = 1;
+            csButtonGwil obChangeColorRacer4Gwil = new csButtonGwil("buttonChangeColorR3Gwil", new PointF(3, 80), new Size(94, 18), "Color");
+            obChangeColorRacer4Gwil.OnClickGwil += (obSenderGwil, argsGwil) =>
+            {
+                csMessageHelperGwil.LogMessage("Show color options for racer" + obRacersListGwil[3].NameGwil);
+                //creating new color choosing dialog
+                ColorDialog cldNewColorGwil = new ColorDialog();
+                cldNewColorGwil.Color = obRacersListGwil[3].BackgroundColorGwil;
+                //show dialog and the return result is oke than set the new color to the racer and options panel
+                if (cldNewColorGwil.ShowDialog() == DialogResult.OK)
+                {
+                    obRacersListGwil[3].BackgroundColorGwil = cldNewColorGwil.Color;
+                    obOptionsRacer4Gwil.BackgroundColorGwil = cldNewColorGwil.Color;
+                    csMessageHelperGwil.LogMessage("The new color for racer " + obRacersListGwil[3].NameGwil + " is color: " + cldNewColorGwil.Color.Name);
+                }
+                else
+                    csMessageHelperGwil.LogMessage("Canceled new color choosing for racer" + obRacersListGwil[3].NameGwil);
+                //release memory objects from color dialog
+                cldNewColorGwil.Dispose();
+            };
+
+            csButtonGwil obImgChoserR4Gwil = new csButtonGwil("btnChoseBackImgR4Gwil", new PointF(2, 55), new Size(94, 20), "Image");
+            obImgChoserR4Gwil.OnClickGwil += (obSenderGwil, argsGwil) =>
+            {
+                csMessageHelperGwil.LogMessage("Choosing new image for racer" + obRacersListGwil[0].NameGwil);
+                //create new open file dialog and set its filters
+                OpenFileDialog fldImageChoserGwil = new OpenFileDialog();
+                fldImageChoserGwil.Filter = "Images|*.png;*.jpg;*.jpeg;*.bmp;*.gif|All files|*.*";
+                if (fldImageChoserGwil.ShowDialog() == DialogResult.OK)
+                {
+                    ((csDragRacerGwil)obRacersListGwil[3]).ImageGwil = new Bitmap(Image.FromFile(fldImageChoserGwil.FileName));
+                    csMessageHelperGwil.LogMessage("The new image is set for racer: " + obRacersListGwil[3].NameGwil);
+                }
+                else
+                    csMessageHelperGwil.LogMessage("Canceled choosing new image" + obRacersListGwil[3].NameGwil);
+            };
+
+            csBasicControlGwil obNameEditorR4Gwil = new csButtonGwil("btnChooseNewNameR4Gwil", new PointF(2, 30), new Size(94, 20), "Edit name");
+            obNameEditorR4Gwil.OnClickGwil += (obSenderGwil, argGwil) =>
+            {
+                //create a message box like interface that ask for a input which is returned to the string and later set as the new racer name;
+                string obNewNameGwil = Microsoft.VisualBasic.Interaction.InputBox("What is the name of this racer:", "Edit name", ((csDragRacerGwil)obRacersListGwil[3]).RacerNameGwil);
+                csMessageHelperGwil.LogMessage("The racer with the old name: " + ((csDragRacerGwil)obRacersListGwil[3]).RacerNameGwil + " changed its name to: " + obNewNameGwil);
+                ((csDragRacerGwil)obRacersListGwil[3]).RacerNameGwil = obNewNameGwil;
+            };
+
+            //add the buttons and panel to the control list of their parent
+            obOptionsRacer4Gwil.ChildsListGwil.Add(obNameEditorR4Gwil);
+            obOptionsRacer4Gwil.ChildsListGwil.Add(obImgChoserR4Gwil);
+            obOptionsRacer4Gwil.ChildsListGwil.Add(obChangeColorRacer4Gwil);
+            optionsPanelGwil.ChildsListGwil.Add(obOptionsRacer4Gwil);
+
+
+            #endregion
+
+            obControlsGwil.Add(optionsPanelGwil);
+
+            #endregion
+
+            #region tab control
+            //create a button that shows the racer panel instead of the options panel
+            csButtonGwil obBtnRacePanel = new csButtonGwil("btnShowRaceGwil", new PointF(3, 28), new Size(50, 20), "Race");
+            obBtnRacePanel.OnClickGwil += (obSenderGwil, argsGwil) =>
+            {
+                //search for the 2 panels in the control list
+                csPanelGwil obRacerPanelSearchGwil = (csPanelGwil)obControlsGwil.GetByNameGwil("pnlRaceOverviewGwil");
+                csPanelGwil obOptionsPanelSearchGwil = (csPanelGwil)obControlsGwil.GetByNameGwil("pnlRacerOptionsGwil");
+                //set the racer panels visibility to true if the search result isn't null
+                if (obRacerPanelGwil != null)
+                    obRacerPanelGwil.Visible = true;
+
+                //set the racer options panels visibility to false if the search result isn't null
+                if (obOptionsPanelSearchGwil != null)
+                    obOptionsPanelSearchGwil.Visible = false;
+            };
+            obBtnRacePanel.Z_indexGwil = 2;
+            obControlsGwil.Add(obBtnRacePanel);
+
+            csButtonGwil obBtnOptionsPanel = new csButtonGwil("btnShowOptionsGwil", new PointF(65, 28), new Size(50, 20), "Options");
+            obBtnOptionsPanel.OnClickGwil += (obSenderGwil, argsGwil) =>
+            {
+                //search for the 2 panels in the control list
+                csPanelGwil obRacerPanelSearchGwil = (csPanelGwil)obControlsGwil.GetByNameGwil("pnlRaceOverviewGwil");
+                csPanelGwil obOptionsPanelSearchGwil = (csPanelGwil)obControlsGwil.GetByNameGwil("pnlRacerOptionsGwil");
+                //set the racer panels visibility to true if the search result isn't null
+                if (obRacerPanelGwil != null)
+                    obRacerPanelGwil.Visible = false;
+
+                //set the racer options panels visibility to false if the search result isn't null
+                if (obOptionsPanelSearchGwil != null)
+                    obOptionsPanelSearchGwil.Visible = true;
+            };
+            obBtnOptionsPanel.Z_indexGwil = 2;
+            obControlsGwil.Add(obBtnOptionsPanel);
+            #endregion
+            
         }
 
         #endregion Constructors
@@ -311,7 +592,6 @@ namespace DragRacerGwil
             }
             /*send message to the original on-paint that it can do its job
              * (we are first and than the original on-paint(that handles toolbox items etc.)
-             * will do its run
              */
 
             base.OnPaint(e);
@@ -342,7 +622,7 @@ namespace DragRacerGwil
                         {
                             //if its a racer make call the DoMovementGwil()
                             csDragRacerGwil obRacerGwil = ((csDragRacerGwil)obControlGwil);
-                            obRacerGwil.DoMovementGwil(trackGwil, new Point(controlCountGwil * 80, 0));
+                            obRacerGwil.DoMovementGwil(trackGwil, new Point(0, controlCountGwil * 50));
 
                             controlCountGwil++;
                             //if the racer finished, and we did not know before that it finished,
@@ -372,29 +652,36 @@ namespace DragRacerGwil
             }
         }
 
+        /// <summary>
+        /// Creates the track for the racers
+        /// </summary>
+        /// <param name="scaleGwil">The scale to original size form</param>
         private void CreateTrackGwil(double scaleGwil = 1.0)
         {
             double xPosGwil = 0;
-            bool downGwil = false;
             //generate the track
-            int extraSpacingGwil = (int)(75 * (scaleGwil));
+            int extraSpacingGwil = (int)(35 * (scaleGwil));
             for (int trackNumberPointGwil = 0; trackNumberPointGwil < trackGwil.Length; trackNumberPointGwil += 1)
             {
-                trackGwil[trackNumberPointGwil] = new PointF(extraSpacingGwil + (float)xPosGwil, extraSpacingGwil + (float)((trackNumberPointGwil / 40) * scaleGwil));
-                if (downGwil == true)
-                {
-                    xPosGwil -= 0.3F;
-                    if (xPosGwil <= 0)
-                        downGwil = false;
-                }
-                else
-                {
-                    xPosGwil += 0.3F; ;
-                    if (xPosGwil >= 200)
-                        downGwil = true;
-                }
-                //trackGwil[trackNumberPointGwil] = new PointF((float)trackNumberPointGwil / 10, 20);
+                trackGwil[trackNumberPointGwil] = new PointF(extraSpacingGwil + (float)((trackNumberPointGwil / 8) * scaleGwil), extraSpacingGwil + (float)xPosGwil);
+
+
             }
+            //List<PointF> obNewTrackGwil = new List<PointF>();
+            //for(float angleGwil = 0; angleGwil < 360; angleGwil += 0.1F)
+            //{
+            //    obNewTrackGwil.Add(PointOnCircle(50, angleGwil, new PointF(100, 60)));
+            //}
+            //trackGwil = obNewTrackGwil.ToArray();
+        }
+
+        public static PointF PointOnCircle(float radius, float angleInDegrees, PointF origin)
+        {
+            // Convert from degrees to radians via multiplication by PI/180        
+            float x = (float)(radius * Math.Cos(angleInDegrees * Math.PI / 180F)) + origin.X;
+            float y = (float)(radius * Math.Sin(angleInDegrees * Math.PI / 180F)) + origin.Y;
+
+            return new PointF(x, y);
         }
 
         private void frmMainGwil_Load(object sender, EventArgs e)
@@ -426,7 +713,7 @@ namespace DragRacerGwil
                          e.Y <= obControlGwil.LocationGwil.Y + obControlGwil.SizeGwil.Height + graphicsOffsetGwil.Y)
                     {
                         //if z index is lower than make it the new object to preform on
-                        if (obControlToClickGwil == null || obControlToClickGwil.Z_indexGwil > obControlGwil.Z_indexGwil)
+                        if ((obControlToClickGwil == null || obControlToClickGwil.Z_indexGwil > obControlGwil.Z_indexGwil ) && obControlGwil.Visible == true)
                             obControlToClickGwil = obControlGwil;
                     }
                 }
@@ -696,7 +983,6 @@ namespace DragRacerGwil
             //move the racers across the track and check if they finished
             foreach (csDragRacerGwil obRacerGwil in obRacersListGwil)
             {
-                // obRacerGwil.DoMovementGwil(trackGwil, new Point(racerCountGwil++ * 50, 0));
                 //if the racer finished, and we did not know before that it finished,
                 //let it know tat we know it finished but also and end the race. And finally log that the racer crossed the finish
                 if (obRacerGwil.FinishedGwil == true)

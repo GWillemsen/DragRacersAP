@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace DragRacerGwil.Controls
 {
@@ -16,7 +17,7 @@ namespace DragRacerGwil.Controls
         private double speedGwil = 1;
         private DateTime startOfRaceGwil = new DateTime();
         private double traveldRouteGwil = 0;
-
+        private bool passedHalfWayGwil = false;        
         #endregion Fields
 
         #region Constructors
@@ -180,10 +181,34 @@ namespace DragRacerGwil.Controls
             set => obFontGwil = value;//sets the new font
         }
 
+        /// <summary>
+        /// The new background image of the racer
+        /// </summary>
         public Bitmap ImageGwil
         {
             get => backgroundImageGwil;
-            set => backgroundImageGwil = value;
+            set
+            {
+                //create an new bitmap with current racer size to put as background to minimize GPU overhead when drawing the form
+                Bitmap obNewBmpGwil = new Bitmap(
+                    ((int)SizeGwil.Width < 0) ? -((int)SizeGwil.Width) : (int)SizeGwil.Width,
+                    ((int)SizeGwil.Height < 0) ? -((int)SizeGwil.Height) : (int)SizeGwil.Height);
+                var destRectGwil = new Rectangle(0, 0, obNewBmpGwil.Width, obNewBmpGwil.Height);
+
+                using (var obGraphicsGwil = Graphics.FromImage(obNewBmpGwil))
+                {
+                    //set quality to highest result
+                    obGraphicsGwil.CompositingMode = CompositingMode.SourceCopy;
+                    obGraphicsGwil.CompositingQuality = CompositingQuality.HighQuality;
+                    obGraphicsGwil.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    obGraphicsGwil.SmoothingMode = SmoothingMode.HighQuality;
+                    obGraphicsGwil.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                    //resize the image and draw it
+                    obGraphicsGwil.DrawImage(value, destRectGwil, 0, 0, value.Width, value.Height, GraphicsUnit.Pixel);
+                }
+                //set the resized image as background
+                backgroundImageGwil = obNewBmpGwil;
+            }
         }
 
         /// <summary>
@@ -287,6 +312,13 @@ namespace DragRacerGwil.Controls
                 }
                 else
                     reachedFinishGwil = true;
+
+                if(traveldRouteGwil > tracsGwil.Length / 2 && passedHalfWayGwil == false)
+                {
+                    passedHalfWayGwil = true;
+                    CreateRandomSpeedGwil();
+                    csMessageHelperGwil.LogMessage("Creating new speed for racer: " + obRacerNameGwil, false);
+                }
             }
         }
 
@@ -305,7 +337,7 @@ namespace DragRacerGwil.Controls
                 obGrGwil.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
                 obGrGwil.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
-                //check if location needs to be calculated first and thus calculat the new size
+                //check if location needs to be calculated first and thus calculate the new size
                 PointF drawLocGwil = LocationGwil;
                 SizeF drawSizeGwil = SizeGwil;
                 if (SizeGwil.Height < 0)
@@ -321,8 +353,9 @@ namespace DragRacerGwil.Controls
                 }
 
                 // draw a rectangle with color on the graphics as the racer
+                obGrGwil.FillRectangle(new SolidBrush(BackgroundColorGwil), new RectangleF(drawLocGwil, drawSizeGwil));
                 //obGrGwil.FillRectangle(new SolidBrush(BackgroundColorGwil), new RectangleF(drawLocGwil, drawSizeGwil));
-                obGrGwil.DrawImage(backgroundImageGwil, drawLocGwil.X, drawLocGwil.Y, drawSizeGwil.Width, drawSizeGwil.Height);
+                obGrGwil.DrawImage(backgroundImageGwil, drawLocGwil.X, drawLocGwil.Y, drawSizeGwil.Width, drawSizeGwil.Height);                
                 obGrGwil.DrawString(obRacerNameGwil, FontGwil, new SolidBrush(Color.Black), new PointF(drawLocGwil.X, drawLocGwil.Y + drawSizeGwil.Height));
 
                 //put back the stored settings
@@ -360,6 +393,7 @@ namespace DragRacerGwil.Controls
             endOfRaceGwil = new DateTime();
             KnowIsFinishedGwil = false;
             traveldRouteGwil = 0;
+            passedHalfWayGwil = false;
         }
 
         /// <summary>
