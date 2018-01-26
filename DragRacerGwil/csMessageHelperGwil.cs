@@ -7,7 +7,6 @@ namespace DragRacerGwil
 {
     public static class csMessageHelperGwil
     {
-
         #region Fields
 
         //weather the filter is initialized

@@ -17,15 +17,17 @@ namespace DragRacerGwil
 
         //offset of the graphics on the screen
         private Point graphicsOffsetGwil = new Point(0, 0);
+
         private Size lastKnowSizeGwil = new Size(0, 0);
-        
+
         //keep track of race and racers
         private csControlListGwil obRacersListGwil = new csControlListGwil();
-        private int placeOfRacerGwil = 1;
-        private PointF[] trackGwil = new PointF[3900];
-        private System.Media.SoundPlayer obSoundPlayerGwil = new System.Media.SoundPlayer();
-        private int raceCountGwil = 0;
 
+        private System.Media.SoundPlayer obSoundPlayerGwil = new System.Media.SoundPlayer();
+        private int placeOfRacerGwil = 1;
+        private int raceCountGwil = 0;
+        private PointF[] trackGwil = new PointF[3900];
+        private int trackTypeGwil = 0;
         #endregion Fields
 
         #region Constructors
@@ -201,7 +203,7 @@ namespace DragRacerGwil
 
             //create an new panel, add 4 racers to it and add it to the form
             csPanelGwil obRacersGwil = new csPanelGwil("pnlRacersGwil", new PointF(0, 0), new Size(600, 230));
-            
+
             csPanelGwil obFinishLinePanel = new csPanelGwil("pnlFinishLineGwil", new PointF(420, 0), new Size(60, 300))
             {
                 BackgroundImageGwil = new Bitmap(Bitmap.FromFile("..//..//img//finishline.jpg")),
@@ -214,7 +216,7 @@ namespace DragRacerGwil
 
             #region racers
 
-            // use the random 
+            // use the random
             System.Random obRndGwil = new Random();
             for (int dragracerCountGwil = 0; dragracerCountGwil < 4; dragracerCountGwil++)
             {
@@ -226,7 +228,7 @@ namespace DragRacerGwil
                 //add the label to the control list
                 obRacerPanelGwil.ChildsListGwil.Add(obRacerLabel);
 
-                var obRacerGwil = new csDragRacerGwil("dragRacer" + dragracerCountGwil.ToString() + "Gwil", new PointF(0, dragracerCountGwil * 35), new Size(-30, -30), Color.Red);
+                var obRacerGwil = new csDragRacerGwil("dragRacer" + dragracerCountGwil.ToString() + "Gwil", new PointF(0, dragracerCountGwil * 30), new Size(-15, -15), Color.Red);
                 obRacerGwil.CreateRandomSpeedGwil(obRndGwil);
 
                 //create random colors using cryptography random to avoid repeating numbers and pseudo random generators(long story)
@@ -256,9 +258,14 @@ namespace DragRacerGwil
                 //start race if it isn't already racing
                 if (tmrKeepEmRacingGwil.Enabled == false)
                 {
+                    int racerCounterGwil = 0;
+                    foreach (csDragRacerGwil obRacerGwil in obRacersListGwil)
+                    {
+                        obRacerGwil.ResetRacerToStartGwil(trackGwil[0], new PointF(0, racerCounterGwil++ * 30));
+                    }
                     obSoundPlayerGwil.SoundLocation = (Application.StartupPath + "\\..\\..\\snd\\startEffect.wav");
                     obSoundPlayerGwil.Load();
-                    obSoundPlayerGwil.Play(); 
+                    obSoundPlayerGwil.Play();
                     csMessageHelperGwil.LogMessage("Starting race...", false);
                     obRaceStartStopGwil.ContentGwil = "Racing";
                     int racerCountGwil = 1;
@@ -269,7 +276,7 @@ namespace DragRacerGwil
                         Application.DoEvents();
                         msWaitedGwil += 1;
                     }
-                    
+
                     foreach (csDragRacerGwil obRacerGwil in obRacersListGwil)
                     {
                         obRacerGwil.ResetRacerToStartGwil(trackGwil[0], new PointF(0, 0));
@@ -291,7 +298,7 @@ namespace DragRacerGwil
                 else
                     csMessageHelperGwil.LogMessage("Race has already begun, ignoring click to start race");
             };
-            
+
             //set resize property's
             obRaceStartStopGwil.AutoResizeHeightGwil = false;
             obRaceStartStopGwil.AutoResizeWidthGwil = false;
@@ -364,7 +371,7 @@ namespace DragRacerGwil
                     csMessageHelperGwil.LogMessage("Canceled choosing new image" + obRacersListGwil[0].NameGwil);
             };
 
-            csLabelGwil obNameLabelR1Gwil = new csLabelGwil("lblNameR1Gwil", new Point(2,2), new Size(94, 20), ((csDragRacerGwil)obRacersListGwil[0]).RacerNameGwil);
+            csLabelGwil obNameLabelR1Gwil = new csLabelGwil("lblNameR1Gwil", new Point(2, 2), new Size(94, 20), ((csDragRacerGwil)obRacersListGwil[0]).RacerNameGwil);
             obNameLabelR1Gwil.BackgroundColorGwil = Color.Transparent;
 
             csButtonGwil obNameEditorR1Gwil = new csButtonGwil("btnChooseNewNameR1Gwil", new PointF(2, 30), new Size(94, 20), "Edit name");
@@ -376,7 +383,7 @@ namespace DragRacerGwil
                 if (obNewNameGwil != string.Empty)
                     ((csDragRacerGwil)obRacersListGwil[0]).RacerNameGwil = obNewNameGwil;
                 csBasicControlGwil obLabelSearchedGwil = obControlsGwil.GetByNameGwil("lblNameR1Gwil");
-                if(obLabelSearchedGwil != null)
+                if (obLabelSearchedGwil != null)
                     obLabelSearchedGwil.ContentGwil = ((csDragRacerGwil)obRacersListGwil[0]).RacerNameGwil;
                 UpdateStatsGwil();
             };
@@ -434,7 +441,7 @@ namespace DragRacerGwil
                     csMessageHelperGwil.LogMessage("Canceled choosing new image" + obRacersListGwil[1].NameGwil);
             };
 
-            csLabelGwil obNameLabelR2Gwil = new csLabelGwil("lblNameR2Gwil", new Point(2,2), new Size(94, 20), ((csDragRacerGwil)obRacersListGwil[1]).RacerNameGwil);
+            csLabelGwil obNameLabelR2Gwil = new csLabelGwil("lblNameR2Gwil", new Point(2, 2), new Size(94, 20), ((csDragRacerGwil)obRacersListGwil[1]).RacerNameGwil);
             obNameLabelR2Gwil.BackgroundColorGwil = Color.Transparent;
 
             csBasicControlGwil obNameEditorR2Gwil = new csButtonGwil("btnChooseNewNameR2Gwil", new PointF(2, 30), new Size(94, 20), "Edit name");
@@ -503,8 +510,8 @@ namespace DragRacerGwil
                 else
                     csMessageHelperGwil.LogMessage("Canceled choosing new image" + obRacersListGwil[2].NameGwil);
             };
-            
-            csLabelGwil obNameLabelR3Gwil = new csLabelGwil("lblNameR3Gwil", new Point(2,2), new Size(94, 20), ((csDragRacerGwil)obRacersListGwil[3]).RacerNameGwil);
+
+            csLabelGwil obNameLabelR3Gwil = new csLabelGwil("lblNameR3Gwil", new Point(2, 2), new Size(94, 20), ((csDragRacerGwil)obRacersListGwil[3]).RacerNameGwil);
             obNameLabelR3Gwil.BackgroundColorGwil = Color.Transparent;
 
             csBasicControlGwil obNameEditorR3Gwil = new csButtonGwil("btnChooseNewNameR3Gwil", new PointF(2, 30), new Size(94, 20), "Edit name");
@@ -600,6 +607,39 @@ namespace DragRacerGwil
 
             #endregion racer 4 options
 
+            #region toggle trackmode
+            csButtonGwil obButtonGwil = new csButtonGwil("btnToggleTrackModeGwil", new PointF(300, 5), new Size(200, 50), "Toggle track mode\n(round vs straight)");
+            obButtonGwil.OnClickGwil += (obSenderGwil, argsGwil) =>
+            {
+                if (trackTypeGwil == 0)
+                {
+                    csMessageHelperGwil.LogMessage("Createing a round track");
+                    //regen the track
+                    trackTypeGwil = 1;
+                    CreateTrackGwil();
+                    //move finish line
+                    csBasicControlGwil obPanelSearchGwil = obControlsGwil.GetByNameGwil("pnlFinishLineGwil");
+                    obPanelSearchGwil.LocationGwil = new PointF(340, 100);
+                    obPanelSearchGwil.SizeGwil = new Size(30, 300);
+                    Invalidate();
+                }
+                else
+                {
+                    csMessageHelperGwil.LogMessage("Createing a round track");
+                    //regenerate the track
+                    trackTypeGwil = 0;
+                    CreateTrackGwil();
+
+                    //move finish line
+                    csBasicControlGwil obPanelSearchGwil = obControlsGwil.GetByNameGwil("pnlFinishLineGwil");
+                    obPanelSearchGwil.LocationGwil = new PointF(420, 0);
+                    obPanelSearchGwil.SizeGwil = new Size(60, 300);
+                    Invalidate();
+                }
+            };
+                obOptionsPanelGwil.ChildsListGwil.Add(obButtonGwil);
+            #endregion
+
             obControlsGwil.Add(obOptionsPanelGwil);
 
             #endregion Racer options
@@ -622,19 +662,20 @@ namespace DragRacerGwil
             csLabelGwil obRacer2StatGwil = new csLabelGwil("lblR2StatsGwil", new Point(10, 32), new Size(400, 22), "Racer 2 has 0 wins from 0 races", Color.Black);
             csLabelGwil obRacer3StatGwil = new csLabelGwil("lblR3StatsGwil", new Point(10, 54), new Size(400, 22), "Racer 3 has 0 wins from 0 races", Color.Black);
             csLabelGwil obRacer4StatGwil = new csLabelGwil("lblR4StatsGwil", new Point(10, 76), new Size(400, 22), "Racer 4 has 0 wins from 0 races", Color.Black);
-            
+
             obStatsPanelGwil.ChildsListGwil.Add(obRacer1StatGwil);
             obStatsPanelGwil.ChildsListGwil.Add(obRacer2StatGwil);
             obStatsPanelGwil.ChildsListGwil.Add(obRacer3StatGwil);
             obStatsPanelGwil.ChildsListGwil.Add(obRacer4StatGwil);
 
             obControlsGwil.Add(obStatsPanelGwil);
+
             #endregion stats
 
             #region tab control
             //create a button that shows the racer panel instead of the options panel
             csButtonGwil obBtnRacePanel = new csButtonGwil("btnShowRaceGwil", new PointF(3, 28), new Size(50, 20), "Race");
-            obBtnRacePanel.OnClickGwil += (obSenderGwil, argsGwil) =>
+            obBtnRacePanel.OnClickGwil += (obSenGwil, argsGwil) =>
             {
                 //search for the 2 panels in the control list
                 csPanelGwil obRacerPanelSearchGwil = (csPanelGwil)obControlsGwil.GetByNameGwil("pnlRaceOverviewGwil");
@@ -728,6 +769,29 @@ namespace DragRacerGwil
             return new PointF(x, y);
         }
 
+        /// <summary>
+        /// Updates the statistics of the racers
+        /// </summary>
+        public void UpdateStatsGwil()
+        {
+            //get the labels and update the text in the labels
+            csLabelGwil obR1statsGwil = (csLabelGwil)obControlsGwil.GetByNameGwil("lblR1StatsGwil");
+            if (obR1statsGwil != null)
+                obR1statsGwil.TextGwil = ((csDragRacerGwil)obRacersListGwil[0]).RacerNameGwil + " has won " + ((csDragRacerGwil)obRacersListGwil[0]).WinsGwil + " from " + raceCountGwil + " races";
+
+            csLabelGwil obR2statsGwil = (csLabelGwil)obControlsGwil.GetByNameGwil("lblR2StatsGwil");
+            if (obR2statsGwil != null)
+                obR2statsGwil.TextGwil = ((csDragRacerGwil)obRacersListGwil[1]).RacerNameGwil + " has won " + ((csDragRacerGwil)obRacersListGwil[1]).WinsGwil + " from " + raceCountGwil + " races";
+
+            csLabelGwil obR3statsGwil = (csLabelGwil)obControlsGwil.GetByNameGwil("lblR3StatsGwil");
+            if (obR3statsGwil != null)
+                obR3statsGwil.TextGwil = ((csDragRacerGwil)obRacersListGwil[2]).RacerNameGwil + " has won " + ((csDragRacerGwil)obRacersListGwil[2]).WinsGwil + " from " + raceCountGwil + " races";
+
+            csLabelGwil obR4statsGwil = (csLabelGwil)obControlsGwil.GetByNameGwil("lblR4StatsGwil");
+            if (obR4statsGwil != null)
+                obR4statsGwil.TextGwil = ((csDragRacerGwil)obRacersListGwil[3]).RacerNameGwil + " has won " + ((csDragRacerGwil)obRacersListGwil[3]).WinsGwil + " from " + raceCountGwil + " races";
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             //create an new graphics object from the existing e.graphics
@@ -783,8 +847,8 @@ namespace DragRacerGwil
                         {
                             //if its a racer make call the DoMovementGwil()
                             csDragRacerGwil obRacerGwil = ((csDragRacerGwil)obControlGwil);
-                            obRacerGwil.DoMovementGwil(trackGwil, new Point(0, controlCountGwil * 50));
-
+                            obRacerGwil.DoMovementGwil(trackGwil, new Point(0, controlCountGwil * 30));
+                            
                             controlCountGwil++;
                             //if the racer finished, and we did not know before that it finished,
                             //let it know tat we know it finished but also and end the race. And finally log that the racer crossed the finish
@@ -793,14 +857,14 @@ namespace DragRacerGwil
                                 obRacerGwil.KnowIsFinishedGwil = true;
                                 obRacerGwil.EndRaceGwil();
                                 obRacerGwil.FinishPositionGwil = placeOfRacerGwil;
-                                
+
                                 csMessageHelperGwil.LogMessage(string.Format("Racer {0} has ended as {1} with as total racing time {2} seconds", obRacerGwil.RacerNameGwil, placeOfRacerGwil, Math.Floor(obRacerGwil.TimeRacedGwil.TotalSeconds)));
                                 csLabelGwil obRacerLabelGwil = (csLabelGwil)obControlsGwil.GetByNameGwil("lblRacer" + (placeOfRacerGwil - 1) + "DataGwil");
                                 if (obRacerLabelGwil != null)
                                     obRacerLabelGwil.TextGwil = string.Format("Racer {0} has ended as {1} with racing time {2}:{3} seconds:milliseconds", obRacerGwil.RacerNameGwil, placeOfRacerGwil, Math.Floor(obRacerGwil.TimeRacedGwil.TotalSeconds), obRacerGwil.TimeRacedGwil.Milliseconds);
                                 if (placeOfRacerGwil == 1)
                                     obRacerGwil.WinsGwil++;
-                                placeOfRacerGwil++;                                
+                                placeOfRacerGwil++;
                             }
                         }
                         else if (obTypeOfControlGwil == typeof(csPanelGwil))
@@ -820,25 +884,34 @@ namespace DragRacerGwil
         /// Creates the track for the racers
         /// </summary>
         /// <param name="scaleGwil">The scale to original size form</param>
-        private void CreateTrackGwil(double scaleGwil = 1.0)
+        private void CreateTrackGwil( double scaleGwil = 1.0)
         {
-            double xPosGwil = 0;
-            //generate the track
-            int extraSpacingGwil = (int)(35 * (scaleGwil));
-            for (int trackNumberPointGwil = 0; trackNumberPointGwil < trackGwil.Length; trackNumberPointGwil += 1)
+            if (trackTypeGwil == 0)
             {
-                trackGwil[trackNumberPointGwil] = new PointF(extraSpacingGwil + (float)((trackNumberPointGwil / 8) * scaleGwil), extraSpacingGwil + (float)xPosGwil);
+                double xPosGwil = 0;
+                //generate the track
+                int extraSpacingGwil = (int)(35 * (scaleGwil));
+                List<PointF> obNewTrackGwil = new List<PointF>();
+                for (int trackNumberPointGwil = 0; trackNumberPointGwil < trackGwil.Length; trackNumberPointGwil += 1)
+                {
+                    obNewTrackGwil.Add(new PointF(extraSpacingGwil + (float)((trackNumberPointGwil / 8) * scaleGwil), extraSpacingGwil + (float)xPosGwil));
+                }
+                trackGwil = obNewTrackGwil.ToArray();
             }
-            //List<PointF> obNewTrackGwil = new List<PointF>();
-            //for(float angleGwil = 0; angleGwil < 360; angleGwil += 0.1F)
-            //{
-            //    obNewTrackGwil.Add(PointOnCircle(50, angleGwil, new PointF(100, 60)));
-            //}
-            //trackGwil = obNewTrackGwil.ToArray();
+            else
+            {
+                List<PointF> obNewTrackGwil = new List<PointF>();
+                for (float angleGwil = 90; angleGwil < 450; angleGwil += 0.05F)
+                {
+                    obNewTrackGwil.Add(PointOnCircleGwil(80, angleGwil, new PointF(300, 60)));
+                }
+                trackGwil = obNewTrackGwil.ToArray();
+            }
         }
 
         private void frmMainGwil_Load(object sender, EventArgs e)
         {
+            //create serial monitor and add message filter
             csMessageHelperGwil.AddMessageFilterGwil(this);
             frmSerialMonitor serialMGwil = new frmSerialMonitor();
             csMessageHelperGwil.SetSerialMonitorGwil(serialMGwil);
@@ -1156,28 +1229,6 @@ namespace DragRacerGwil
             }
         }
 
-        /// <summary>
-        /// Updates the statistics of the racers
-        /// </summary>
-        public void UpdateStatsGwil()
-        {
-            //get the labels and update the text in the labels
-            csLabelGwil obR1statsGwil = (csLabelGwil)obControlsGwil.GetByNameGwil("lblR1StatsGwil");
-            if (obR1statsGwil != null)
-                obR1statsGwil.TextGwil = ((csDragRacerGwil)obRacersListGwil[0]).RacerNameGwil + " has won " + ((csDragRacerGwil)obRacersListGwil[0]).WinsGwil + " from " + raceCountGwil + " races";
-
-            csLabelGwil obR2statsGwil = (csLabelGwil)obControlsGwil.GetByNameGwil("lblR2StatsGwil");
-            if (obR2statsGwil != null)
-                obR2statsGwil.TextGwil = ((csDragRacerGwil)obRacersListGwil[1]).RacerNameGwil + " has won " + ((csDragRacerGwil)obRacersListGwil[1]).WinsGwil + " from " + raceCountGwil + " races";
-
-            csLabelGwil obR3statsGwil = (csLabelGwil)obControlsGwil.GetByNameGwil("lblR3StatsGwil");
-            if (obR3statsGwil != null)
-                obR3statsGwil.TextGwil = ((csDragRacerGwil)obRacersListGwil[2]).RacerNameGwil + " has won " + ((csDragRacerGwil)obRacersListGwil[2]).WinsGwil + " from " + raceCountGwil + " races";
-
-            csLabelGwil obR4statsGwil = (csLabelGwil)obControlsGwil.GetByNameGwil("lblR4StatsGwil");
-            if (obR4statsGwil != null)
-                obR4statsGwil.TextGwil = ((csDragRacerGwil)obRacersListGwil[3]).RacerNameGwil + " has won " + ((csDragRacerGwil)obRacersListGwil[3]).WinsGwil + " from " + raceCountGwil + " races";
-        }
         #endregion Methods
     }
 }

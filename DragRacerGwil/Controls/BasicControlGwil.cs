@@ -6,7 +6,6 @@ namespace DragRacerGwil.Controls
     public class csBasicControlGwil
     {
         #region Fields
-        
         public bool changedSinceDrawGwil = false;
         public bool mouseDownGwil = false;
         public bool mouseEnteredGwil = false;

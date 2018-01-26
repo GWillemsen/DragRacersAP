@@ -17,6 +17,7 @@ namespace DragRacerGwil.Controls
 
         //draw data
         private Brush obDrawBrushGwil = new SolidBrush(Color.Gray);
+
         private Font obFontGwil = new Font("Times New Roman", 11);
 
         #endregion Fields

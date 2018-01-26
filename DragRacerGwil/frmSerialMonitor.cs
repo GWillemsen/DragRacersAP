@@ -22,6 +22,7 @@ namespace DragRacerGwil
         #endregion Constructors
 
         #region Methods
+
         /// <summary>
         /// Log a message to the serial monitor
         /// </summary>
@@ -87,7 +88,6 @@ namespace DragRacerGwil
 
         private void cbkAdvancedLogGwil_CheckedChanged(object sender, EventArgs e)
         {
-
             //if it is check show th advanced log, otherwise hide it
             if (cbkAdvancedLogGwil.Checked == true)
             {

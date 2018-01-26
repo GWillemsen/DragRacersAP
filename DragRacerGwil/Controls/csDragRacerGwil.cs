@@ -159,15 +159,6 @@ namespace DragRacerGwil.Controls
         #region Properties
 
         /// <summary>
-        /// The number of wins the racer has
-        /// </summary>
-        public int WinsGwil
-        {
-            get => winsGwil; //returns the number of wins;
-            set => winsGwil = value;//set the number of wins
-        }
-
-        /// <summary>
         /// indication weather the racer has reached the finish
         /// </summary>
         public bool FinishedGwil
@@ -238,7 +229,7 @@ namespace DragRacerGwil.Controls
         /// The name of the racer
         /// </summary>
         public string RacerNameGwil
-        {           
+        {
             get => obRacerNameGwil;//returns the racer name
             set
             {
@@ -265,6 +256,15 @@ namespace DragRacerGwil.Controls
         {
             //read-only, the time the racer raced
             get => endOfRaceGwil - startOfRaceGwil;
+        }
+
+        /// <summary>
+        /// The number of wins the racer has
+        /// </summary>
+        public int WinsGwil
+        {
+            get => winsGwil; //returns the number of wins;
+            set => winsGwil = value;//set the number of wins
         }
 
         #endregion Properties
