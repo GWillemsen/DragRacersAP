@@ -22,7 +22,12 @@ namespace DragRacerGwil
         #endregion Constructors
 
         #region Methods
-
+        /// <summary>
+        /// Log a message to the serial monitor
+        /// </summary>
+        /// <param name="messageGwil">The message to log</param>
+        /// <param name="extensizeItemGwil">Whether it belong in the advanced log only</param>
+        /// <param name="textColorGwil">The color the text(default black)</param>
         public void LogMessageGwil(string messageGwil, bool extensizeItemGwil, int textColorGwil = -16777216)
         {
             try
@@ -82,11 +87,18 @@ namespace DragRacerGwil
 
         private void cbkAdvancedLogGwil_CheckedChanged(object sender, EventArgs e)
         {
+
             //if it is check show th advanced log, otherwise hide it
             if (cbkAdvancedLogGwil.Checked == true)
+            {
+                csMessageHelperGwil.LogMessage("Showing advanced log");
                 rtbAdvancedLogGwil.BringToFront();
+            }
             else
+            {
+                csMessageHelperGwil.LogMessage("Showing simple log");
                 rtbAdvancedLogGwil.SendToBack();
+            }
         }
 
         private void frmSerialMonitor_FormClosing(object sender, FormClosingEventArgs e)
@@ -96,6 +108,7 @@ namespace DragRacerGwil
             //make it hide so we can continue the monitor once shown again
             this.Hide();
             IsShownGwil = false;
+            csMessageHelperGwil.LogMessage("Closing serial monitor");
         }
 
         #endregion Methods

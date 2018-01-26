@@ -6,6 +6,7 @@ namespace DragRacerGwil.Controls
     public class csBasicControlGwil
     {
         #region Fields
+        
         public bool changedSinceDrawGwil = false;
         public bool mouseDownGwil = false;
         public bool mouseEnteredGwil = false;
@@ -33,6 +34,7 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public csBasicControlGwil()
         {
+            //basic full reset
             BasicControlFullResetGwil();
         }
 
@@ -42,6 +44,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_NameGwil">The name of the control</param>
         public csBasicControlGwil(string a_NameGwil)
         {
+            //basic full reset
             BasicControlFullResetGwil();
             //make everything default except the text
             contentGwil = "";
@@ -61,6 +64,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_LocationGwil">The new location of the control</param>
         public csBasicControlGwil(string a_NameGwil, PointF a_LocationGwil)
         {
+            //basic full reset
             BasicControlFullResetGwil();
             //make everything default except the text and location
             contentGwil = "";
@@ -81,6 +85,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_SizeGwil">The new size of the control</param>
         public csBasicControlGwil(string a_NameGwil, PointF a_LocationGwil, Size a_SizeGwil)
         {
+            //basic full reset
             BasicControlFullResetGwil();
             //make everything default except the text, size and location
             contentGwil = "";
@@ -102,6 +107,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_BackgroundColorGwil">The background color of the control</param>
         public csBasicControlGwil(string a_NameGwil, PointF a_LocationGwil, Size a_SizeGwil, Color a_BackgroundColorGwil)
         {
+            //basic full reset
             BasicControlFullResetGwil();
             //make everything default except the text, size, location and background color
             contentGwil = "";
@@ -121,18 +127,22 @@ namespace DragRacerGwil.Controls
         /// Gets raised when the control is clicked
         /// </summary>
         public event EventHandler OnClickGwil;
+
         /// <summary>
         /// Gets raised when the mouse button is down in the control
         /// </summary>
         public event EventHandler OnMouseDownGwil;
+
         /// <summary>
         /// Gets raised when the mouse enters this control
         /// </summary>
         public event EventHandler OnMouseEnterGwil;
+
         /// <summary>
         /// Gets raised when the mouse leaves this control
         /// </summary>
         public event EventHandler OnMouseLeaveGwil;
+
         /// <summary>
         /// Gets raised when the mouse moves around in the control
         /// </summary>
@@ -157,6 +167,7 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public bool AutoResizeHeightGwil
         {
+            //gets or sets the values
             get => allowAutoResizeHeightGwil;
             set => allowAutoResizeHeightGwil = value;
         }
@@ -285,7 +296,7 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public int SubstractFromFormHeightGwil
         {
-            get => toSubstractFromHeigthGwil;
+            get => toSubstractFromHeigthGwil;//returns the height
             set
             {
                 //if the new value isn't the same update the control next draw
@@ -301,7 +312,7 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public int SubstractFromFormWidthGwil
         {
-            get => toSubstractFromWidthGwil;
+            get => toSubstractFromWidthGwil;//return the width
             set
             {
                 //if the new value isn't the same update the control next draw
@@ -333,6 +344,7 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public int Z_indexGwil
         {
+            //gets or sets the z index of this control
             get => zIndexGwil;
             set => zIndexGwil = value;
         }

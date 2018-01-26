@@ -51,7 +51,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AudioPlayerGwil.cs" />
     <Compile Include="Controls\BasicControlGwil.cs" />
     <Compile Include="Controls\csButtonGwil.cs" />
     <Compile Include="Controls\csLabelGwil.cs" />

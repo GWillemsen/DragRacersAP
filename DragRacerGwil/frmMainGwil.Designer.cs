@@ -12,7 +12,6 @@
             // 
             // tmrKeepEmRacingGwil
             // 
-            this.tmrKeepEmRacingGwil.Interval = 1;
             this.tmrKeepEmRacingGwil.Tick += new System.EventHandler(this.tmrKeepEmRacingGwil_Tick);
             // 
             // frmMainGwil

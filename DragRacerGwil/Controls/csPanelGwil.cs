@@ -159,6 +159,7 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public Bitmap BackgroundImageGwil
         {
+            //returns or sets the background image
             get => obBackgroundImage;
             set
             {
@@ -174,6 +175,7 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public csControlListGwil ChildsListGwil
         {
+            //returns or sets the childsList
             get => obChildsGwil;
             set => obChildsGwil = value;
         }

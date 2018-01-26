@@ -20,6 +20,7 @@ namespace DragRacerGwil.Controls
         /// <param name="obBaseListGwil">The list to add the new list, double items will be dropped.</param>
         public csControlListGwil(List<csBasicControlGwil> obBaseListGwil)
         {
+            //adds the range to this list
             this.AddRange(obBaseListGwil);
         }
 

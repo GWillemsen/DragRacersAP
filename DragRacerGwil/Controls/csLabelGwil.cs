@@ -11,7 +11,6 @@ namespace DragRacerGwil.Controls
         private bool disposed = false;
 
         private Color foregroundColorGwil = Color.Black;
-        private string obContentGwil = "";
         private Brush obDrawBrushGwil = new SolidBrush(Color.Gray);
         private Font obFontGwil = new Font("Times New Roman", 11);
 
@@ -24,8 +23,9 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public csLabelGwil()
         {
+            //do a full reset and than set properties
             BasicControlFullResetGwil();
-            obContentGwil = NameGwil;
+            ContentGwil = NameGwil;
             obDrawBrushGwil = new SolidBrush(Color.Gray);
             foregroundColorGwil = Color.Black;
         }
@@ -38,6 +38,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_ControlSizeGwil">The size of the label</param>
         public csLabelGwil(string a_NameGwil, Point a_LocationGwil, Size a_ControlSizeGwil)
         {
+            //do a full reset and than set properties
             BasicControlFullResetGwil();
             LocationGwil = a_LocationGwil;
             NameGwil = a_NameGwil;
@@ -53,6 +54,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_ContentGwil">The text of the label</param>
         public csLabelGwil(string a_NameGwil, Point a_LocationGwil, Size a_ControlSizeGwil, string a_Content)
         {
+            //do a full reset and than set properties
             BasicControlFullResetGwil();
             LocationGwil = a_LocationGwil;
             NameGwil = a_NameGwil;
@@ -70,6 +72,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_TextColorGwil">The color of the text</param>
         public csLabelGwil(string a_NameGwil, Point a_LocationGwil, Size a_ControlSizeGwil, string a_ContentGwil, Color a_TextColorGwil)
         {
+            //do a full reset and than set properties
             BasicControlFullResetGwil();
             LocationGwil = a_LocationGwil;
             NameGwil = a_NameGwil;
@@ -114,8 +117,8 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public string TextGwil
         {
-            get => obContentGwil;//returns the text in the button
-            set => obContentGwil = value;//sets the text in the button
+            get => ContentGwil;//returns the text in the button
+            set => ContentGwil = value;//sets the text in the button
         }
 
         #endregion Properties
@@ -127,6 +130,7 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public void Dispose()
         {
+            //release resources
             Dispose(true);
             GC.SuppressFinalize(this);
         }
@@ -145,10 +149,10 @@ namespace DragRacerGwil.Controls
                 grGwil.FillRectangle(obDrawBrushGwil, new RectangleF(LocationGwil, SizeGwil));
 
                 //measure how many lines and characters will fit in the button
-                grGwil.MeasureString(obContentGwil, FontGwil, SizeGwil, StringFormat.GenericDefault, out int charsCountGwil, out int linesGwil);
+                grGwil.MeasureString(ContentGwil, FontGwil, SizeGwil, StringFormat.GenericDefault, out int charsCountGwil, out int linesGwil);
 
                 //create new string to fit the content that will fit in it
-                string obDrawingContentGwil = obContentGwil.Substring(0, charsCountGwil);
+                string obDrawingContentGwil = ContentGwil.Substring(0, charsCountGwil);
 
                 //draw the string
                 grGwil.DrawString(obDrawingContentGwil, FontGwil, new SolidBrush(foregroundColorGwil), new RectangleF(LocationGwil, SizeGwil));
@@ -157,7 +161,9 @@ namespace DragRacerGwil.Controls
             }
         }
 
-        // Protected implementation of Dispose pattern.
+        /// <summary>
+        /// Protected implementation of Dispose pattern.
+        /// </summary>
         protected virtual void Dispose(bool disposing)
         {
             if (disposed)
@@ -169,8 +175,7 @@ namespace DragRacerGwil.Controls
                 obFontGwil.Dispose();
                 obDrawBrushGwil.Dispose();
             }
-
-            // Free any unmanaged objects here.
+            //make sure it can't dispose again
             disposed = true;
         }
 

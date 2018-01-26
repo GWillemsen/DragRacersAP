@@ -18,6 +18,7 @@ namespace DragRacerGwil.Controls
         private double speedGwil = 1;
         private DateTime startOfRaceGwil = new DateTime();
         private double traveldRouteGwil = 0;
+        private int winsGwil = 0;
 
         #endregion Fields
 
@@ -28,6 +29,7 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public csDragRacerGwil()
         {
+            //do a full reset
             BasicControlFullResetGwil();
         }
 
@@ -157,6 +159,15 @@ namespace DragRacerGwil.Controls
         #region Properties
 
         /// <summary>
+        /// The number of wins the racer has
+        /// </summary>
+        public int WinsGwil
+        {
+            get => winsGwil; //returns the number of wins;
+            set => winsGwil = value;//set the number of wins
+        }
+
+        /// <summary>
         /// indication weather the racer has reached the finish
         /// </summary>
         public bool FinishedGwil
@@ -165,10 +176,11 @@ namespace DragRacerGwil.Controls
         }
 
         /// <summary>
-        /// The position at which this racer has finished
+        /// The position at which this racer has finished(1th, 2nd etc)
         /// </summary>
         public int FinishPositionGwil
         {
+            //set or get the place the racer has
             get => finishPositionGwil;
             set => finishPositionGwil = value;
         }
@@ -187,7 +199,7 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public Bitmap ImageGwil
         {
-            get => backgroundImageGwil;
+            get => backgroundImageGwil;//returns the background image
             set
             {
                 //create an new bitmap with current racer size to put as background to minimize GPU overhead when drawing the form
@@ -226,9 +238,15 @@ namespace DragRacerGwil.Controls
         /// The name of the racer
         /// </summary>
         public string RacerNameGwil
-        {
-            get => obRacerNameGwil;
-            set => obRacerNameGwil = value;
+        {           
+            get => obRacerNameGwil;//returns the racer name
+            set
+            {
+                //check if we need to redraw on next update
+                if (obRacerNameGwil != value)
+                    changedSinceDrawGwil = true;
+                obRacerNameGwil = value;
+            }
         }
 
         /// <summary>
@@ -265,37 +283,17 @@ namespace DragRacerGwil.Controls
             if (obOptionalPublicRandomGwil == null)
             {
                 //create random class
-                System.Random rndGwil = new System.Random();
+                System.Random obRndGwil = new System.Random();
                 //get a new random for the speed
-                speedGwil = rndGwil.Next(5, 56);
+                speedGwil = (obRndGwil.Next(100, 560) / 10);
+                //speedGwil = ((obRndGwil.NextDouble() * 60) * 2);
             }
             else
             {
-                byte[] longDataGwil = new byte[8];
-                obOptionalPublicRandomGwil.NextBytes(longDataGwil);
-                ulong rawNumberGwil = BitConverter.ToUInt64(longDataGwil, 0);
-                double scaleGwil = (double)(56 - 5) / UInt64.MaxValue;
-                speedGwil = (5 + (rawNumberGwil * scaleGwil));
+                //use the public random
+                //speedGwil = ((obOptionalPublicRandomGwil.NextDouble() * 60) * 2);
+                speedGwil = (obOptionalPublicRandomGwil.Next(100, 560) / 10);
             }
-        }
-
-        /// <summary>
-        /// Creates an random speed for the current racer
-        /// </summary>
-        /// <param name="obOptionalPublicRandomGwil">
-        /// The random to use in case the use of a public static(shared vb) is preferred
-        /// </param>
-        public void CreateRandomSpeedGwil(System.Security.Cryptography.RandomNumberGenerator obOptionalPublicRandomGwil)
-        {
-            //create the 8 bytes for the 64 bit ulong
-            byte[] longDataGwil = new byte[8];
-            obOptionalPublicRandomGwil.GetBytes(longDataGwil);
-            //convert the 8 bytes to an ulong
-            ulong rawNumberGwil = BitConverter.ToUInt64(longDataGwil, 0);
-            //calc the scale for the conversion
-            double scaleGwil = (double)(56 - 5) / UInt64.MaxValue;
-            //set the new number
-            speedGwil = (5 + (rawNumberGwil * scaleGwil));
         }
 
         /// <summary>
@@ -305,6 +303,7 @@ namespace DragRacerGwil.Controls
         {
             if (FinishedGwil == false)
             {
+                //move the drag racer the speed across the track
                 traveldRouteGwil += speedGwil;
                 if (traveldRouteGwil < tracsGwil.Length)
                 {
@@ -402,6 +401,7 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public void StartRaceGwil()
         {
+            //sets the start time of the race
             startOfRaceGwil = DateTime.Now;
         }
 

@@ -7,6 +7,7 @@ namespace DragRacerGwil
 {
     public static class csMessageHelperGwil
     {
+
         #region Fields
 
         //weather the filter is initialized
@@ -25,6 +26,7 @@ namespace DragRacerGwil
         /// <param name="obParentFormGwil">The form to add</param>
         public static void AddMessageFilterGwil(Form obParentFormGwil)
         {
+            //check if we need to make a filter first
             if (initedGwil == false)
             {
                 initedGwil = true;
@@ -48,6 +50,7 @@ namespace DragRacerGwil
         /// <returns>The currently set serial monitor</returns>
         public static Form GetSerialMonitorGwil()
         {
+            //return the serial monitor
             return obMessageFilterGwil.obFrmSerialMonitorGwil;
         }
 
@@ -57,6 +60,7 @@ namespace DragRacerGwil
         /// <param name="messageToLogGwil">The message to send to the monitor and debugger</param>
         public static void LogMessage(string messageToLogGwil, bool extensiveLogItem = false, int textColorGwil = -16777216)
         {
+            //send the message to the serial monitor
             if (obMessageFilterGwil.obFrmSerialMonitorGwil != null)
                 obMessageFilterGwil.obFrmSerialMonitorGwil.LogMessageGwil(messageToLogGwil, extensiveLogItem, textColorGwil);
             System.Diagnostics.Debug.WriteLine(messageToLogGwil);
@@ -68,6 +72,7 @@ namespace DragRacerGwil
         /// <param name="form">Form the remove</param>
         public static void RemoveFormFromList(Form form)
         {
+            //remove the form from the list of watch
             if (obMessageFilterGwil.obTargetFormsGwil.Contains(form) == true)
                 obMessageFilterGwil.obTargetFormsGwil.Remove(form);
         }

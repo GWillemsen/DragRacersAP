@@ -14,10 +14,9 @@ namespace DragRacerGwil
 
         //generic variables
         public static bool shouldEndOrRestartGwil = true;
-
         private static MeteringSampleProvider obPostVolumeMeterGwil = null;
         private static WaveFileReader obReaderGwil = null;
-
+        
         //providers for wave data
         private static SampleChannel obSampleChannelGwil = null;
 
@@ -46,13 +45,14 @@ namespace DragRacerGwil
         //custom event for handling audio data
         public static event StartPlayNewSongDelegateGwil StartPlayNewSongGwil;
         public static event VolumeMeterEventGwil StreamVolumeGwil;
+        public static event EventHandler<StoppedEventArgs> AudioStoppedPlayingGwil;
 
         #endregion Events
 
         #region Enums
 
         /// <summary>
-        /// The enum for the overide of the current playing stream(if there is)
+        /// The enumerator for the override of the current playing stream(if there is)
         /// </summary>
         public enum OverrideTypeGwil
         {
@@ -154,6 +154,7 @@ namespace DragRacerGwil
         public static Exception PlayGwil(WaveFileReader obWaveReaderGwil, OverrideTypeGwil overideReturnWhenPlayingGwil = OverrideTypeGwil.addToWaitList)
         {
             csMessageHelperGwil.LogMessage("Starting play of audio");
+            
             //if we should not continue starting to play this file
             if (shouldEndOrRestartGwil == false && overideReturnWhenPlayingGwil == OverrideTypeGwil.dontPlayNewStream)
             {
@@ -163,7 +164,7 @@ namespace DragRacerGwil
             //if we need to pause current and play after the new one
             if (shouldEndOrRestartGwil == false && overideReturnWhenPlayingGwil == OverrideTypeGwil.pauseCurrentStreamAndContinueAfterEnded)
             {
-                //set play from playlist to true and add to to the list
+                //set play from play list to true and add to the list
                 obStreamsToPlayGwil.Add(obReaderGwil);
                 playFromStreamListGwil = true;
             }
@@ -171,7 +172,7 @@ namespace DragRacerGwil
             //if we need to add to list to play after the current (in line) ones
             if (shouldEndOrRestartGwil == false && overideReturnWhenPlayingGwil == OverrideTypeGwil.addToWaitList)
             {
-                //set play from playlist to true and add to the list and leave this function
+                //set play from play list to true and add to the list and leave this function
                 playFromStreamListGwil = true;
                 obStreamsToPlayGwil.Add(obWaveReaderGwil);
                 return null;
@@ -191,7 +192,7 @@ namespace DragRacerGwil
                 csMessageHelperGwil.LogMessage("Raising events and adding handlers", true);
                 //raise events
                 waveOutGwil.PlaybackStopped += WaveOutGwil_PlaybackStopped;
-                StartPlayNewSongGwil?.Invoke(new SongsStartedEventArgsGwil(obReaderGwil.WaveFormat, obReaderGwil.TotalTime));
+                StartPlayNewSongGwil?.Invoke(new csSongsStartedEventArgsGwil(obReaderGwil.WaveFormat, obReaderGwil.TotalTime));
                 obPostVolumeMeterGwil.StreamVolume += (senderGwil, eventGwil) => { StreamVolumeGwil?.Invoke(eventGwil); };
                 obSampleChannelGwil.PreVolumeMeter += (senderGwil, eventGwil) => { PreVolumeMeterGwil?.Invoke(eventGwil); };
                 csMessageHelperGwil.LogMessage("Successfully started audio play");
@@ -277,22 +278,27 @@ namespace DragRacerGwil
         /// <param name="eGwil">Extra info about why stopped</param>
         private static void WaveOutGwil_PlaybackStopped(object obSenderGwil, StoppedEventArgs eGwil)
         {
-            CloseWaveOutGwil();//close the last audio stream
+            //raise other events too to say we stop playing
+            AudioStoppedPlayingGwil?.Invoke(obSenderGwil, eGwil);
+
             if (playFromStreamListGwil == true && obStreamsToPlayGwil.Count > 0)
             {
-                //start next song from playlist
+                CloseWaveOutGwil();//close the last audio stream
+                //start next song from play list
                 PlayGwil(obStreamsToPlayGwil[0], OverrideTypeGwil.endCurrentStreamAndStartNew);
                 obStreamsToPlayGwil.RemoveAt(0);
                 csMessageHelperGwil.LogMessage("Playback of audio stopped starting next song on playlist");
             }
             else
             {
-                //reset data varaiables
+                CloseWaveOutGwil();//close the last audio stream
+                //reset data variables
                 shouldEndOrRestartGwil = true;
                 playFromStreamListGwil = false;
                 obStreamsToPlayGwil.Clear();
                 csMessageHelperGwil.LogMessage("Playback of audio stopped and no songs from playlist");
             }
+            
         }
 
         #endregion Methods
@@ -301,7 +307,7 @@ namespace DragRacerGwil
     /// <summary>
     /// A class that contains data about a song start event
     /// </summary>
-    public class SongsStartedEventArgsGwil : EventArgs
+    public class csSongsStartedEventArgsGwil : EventArgs
     {
         #region Fields
         private TimeSpan totalLenghtSongGwil;
@@ -314,12 +320,13 @@ namespace DragRacerGwil
         /// <summary>
         /// Create a new Start song event argument list
         /// </summary>
-        /// <param name="waveFormatGwil">The format of the wave data</param>
-        /// <param name="totalLenghtGwil">Teh lenght of the song</param>
-        public SongsStartedEventArgsGwil(WaveFormat waveFormatGwil, TimeSpan totalLenghtGwil)
+        /// <param name="a_WaveFormatGwil">The format of the wave data</param>
+        /// <param name="a_TotalLenghtGwil">Teh lenght of the song</param>
+        public csSongsStartedEventArgsGwil(WaveFormat a_WaveFormatGwil, TimeSpan a_TotalLenghtGwil)
         {
-            this.wavFormatGwil = waveFormatGwil;
-            this.totalLenghtSongGwil = totalLenghtGwil;
+            //creates a new event
+            this.wavFormatGwil = a_WaveFormatGwil;
+            this.totalLenghtSongGwil = a_TotalLenghtGwil;
         }
 
         #endregion Constructors
@@ -327,11 +334,11 @@ namespace DragRacerGwil
         #region Properties
 
         /// <summary>
-        /// The total lenght of the song
+        /// The total length of the song
         /// </summary>
         public TimeSpan TotalLenghtGwil
         {
-            get => totalLenghtSongGwil;
+            get => totalLenghtSongGwil;//return the total length time span
         }
 
         /// <summary>
@@ -339,7 +346,7 @@ namespace DragRacerGwil
         /// </summary>
         public WaveFormat WaveFormatGwil
         {
-            get => wavFormatGwil;
+            get => wavFormatGwil;//return the wave format object
         }
 
         #endregion Properties
