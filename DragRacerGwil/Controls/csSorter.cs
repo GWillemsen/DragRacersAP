@@ -14,12 +14,13 @@ namespace DragRacerGwil.Controls
         /// </summary>
         /// <param name="obControlAGwil">Control 1</param>
         /// <param name="obControlBGwil">Control 2</param>
-        /// <returns></returns>
+        /// <returns>The number what the result of the comparison is</returns>
         public int Compare(csBasicControlGwil obControlAGwil, csBasicControlGwil obControlBGwil)
         {
-            if (obControlAGwil.Z_indexGwil > obControlBGwil.Z_indexGwil)
+            //check what number we need to return(this is not my choice, it defined by IComparer)
+            if (obControlAGwil.Z_indexGwil < obControlBGwil.Z_indexGwil)
                 return 1;
-            else if (obControlAGwil.Z_indexGwil < obControlBGwil.Z_indexGwil)
+            else if (obControlAGwil.Z_indexGwil > obControlBGwil.Z_indexGwil)
                 return -1;
             else
                 return 0;

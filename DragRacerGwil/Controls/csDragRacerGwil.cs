@@ -1,18 +1,24 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace DragRacerGwil.Controls
 {
     public class csDragRacerGwil : csBasicControlGwil
     {
         #region Fields
+        private Bitmap backgroundImageGwil = new Bitmap(1, 1);
         private DateTime endOfRaceGwil = new DateTime();
+        private int finishPositionGwil = 0;
         private bool knowItsFinishedGwil = false;
+        private Font obFontGwil = new Font("Times New Roman", 8);
         private string obRacerNameGwil = "";
-        private bool reachedFinshGwil = false;
+        private bool passedHalfWayGwil = false;
+        private bool reachedFinishGwil = false;
         private double speedGwil = 1;
         private DateTime startOfRaceGwil = new DateTime();
         private double traveldRouteGwil = 0;
+        private int winsGwil = 0;
 
         #endregion Fields
 
@@ -23,6 +29,7 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public csDragRacerGwil()
         {
+            //do a full reset
             BasicControlFullResetGwil();
         }
 
@@ -36,8 +43,8 @@ namespace DragRacerGwil.Controls
             //make everything default except the text
             NameGwil = a_NameGwil;
             endOfRaceGwil = new DateTime();
-            obRacerNameGwil = "";
-            reachedFinshGwil = false;
+            obRacerNameGwil = a_NameGwil;
+            reachedFinishGwil = false;
             speedGwil = 1;
             startOfRaceGwil = new DateTime();
             traveldRouteGwil = 0;
@@ -59,8 +66,8 @@ namespace DragRacerGwil.Controls
             NameGwil = a_NameGwil;
             LocationGwil = a_LocationGwil;
             endOfRaceGwil = new DateTime();
-            obRacerNameGwil = "";
-            reachedFinshGwil = false;
+            obRacerNameGwil = a_NameGwil;
+            reachedFinishGwil = false;
             speedGwil = 1;
             startOfRaceGwil = new DateTime();
             traveldRouteGwil = 0;
@@ -84,8 +91,8 @@ namespace DragRacerGwil.Controls
             LocationGwil = a_LocationGwil;
             SizeGwil = a_SizeGwil;
             endOfRaceGwil = new DateTime();
-            obRacerNameGwil = "";
-            reachedFinshGwil = false;
+            obRacerNameGwil = a_NameGwil;
+            reachedFinishGwil = false;
             speedGwil = 1;
             startOfRaceGwil = new DateTime();
             traveldRouteGwil = 0;
@@ -111,8 +118,8 @@ namespace DragRacerGwil.Controls
             SizeGwil = a_SizeGwil;
             BackgroundColorGwil = a_BackgroundColorGwil;
             endOfRaceGwil = new DateTime();
-            obRacerNameGwil = "";
-            reachedFinshGwil = false;
+            obRacerNameGwil = a_NameGwil;
+            reachedFinishGwil = false;
             speedGwil = 1;
             startOfRaceGwil = new DateTime();
             traveldRouteGwil = 0;
@@ -140,7 +147,7 @@ namespace DragRacerGwil.Controls
             BackgroundColorGwil = a_BackgroundColorGwil;
             endOfRaceGwil = new DateTime();
             obRacerNameGwil = a_RacerNameGwil;
-            reachedFinshGwil = false;
+            reachedFinishGwil = false;
             speedGwil = 1;
             startOfRaceGwil = new DateTime();
             traveldRouteGwil = 0;
@@ -156,13 +163,62 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public bool FinishedGwil
         {
-            get => reachedFinshGwil;//return true if finished
+            get => reachedFinishGwil;//return true if finished
+        }
+
+        /// <summary>
+        /// The position at which this racer has finished(1th, 2nd etc)
+        /// </summary>
+        public int FinishPositionGwil
+        {
+            //set or get the place the racer has
+            get => finishPositionGwil;
+            set => finishPositionGwil = value;
+        }
+
+        /// <summary>
+        /// The font to use when drawing the text
+        /// </summary>
+        public Font FontGwil
+        {
+            get => obFontGwil;//returns the current font
+            set => obFontGwil = value;//sets the new font
+        }
+
+        /// <summary>
+        /// The new background image of the racer
+        /// </summary>
+        public Bitmap ImageGwil
+        {
+            get => backgroundImageGwil;//returns the background image
+            set
+            {
+                //create an new bitmap with current racer size to put as background to minimize GPU overhead when drawing the form
+                Bitmap obNewBmpGwil = new Bitmap(
+                    ((int)SizeGwil.Width < 0) ? -((int)SizeGwil.Width) : (int)SizeGwil.Width,
+                    ((int)SizeGwil.Height < 0) ? -((int)SizeGwil.Height) : (int)SizeGwil.Height);
+                var destRectGwil = new Rectangle(0, 0, obNewBmpGwil.Width, obNewBmpGwil.Height);
+
+                using (var obGraphicsGwil = Graphics.FromImage(obNewBmpGwil))
+                {
+                    //set quality to highest result
+                    obGraphicsGwil.CompositingMode = CompositingMode.SourceCopy;
+                    obGraphicsGwil.CompositingQuality = CompositingQuality.HighQuality;
+                    obGraphicsGwil.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                    obGraphicsGwil.SmoothingMode = SmoothingMode.HighQuality;
+                    obGraphicsGwil.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                    //resize the image and draw it
+                    obGraphicsGwil.DrawImage(value, destRectGwil, 0, 0, value.Width, value.Height, GraphicsUnit.Pixel);
+                }
+                //set the resized image as background
+                backgroundImageGwil = obNewBmpGwil;
+            }
         }
 
         /// <summary>
         /// (Optional) Weather the parent control know it has reached the end
         /// </summary>
-        public bool KnowIsFinished
+        public bool KnowIsFinishedGwil
         {
             //get or set the boolean
             get => knowItsFinishedGwil;
@@ -174,8 +230,14 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public string RacerNameGwil
         {
-            get => obRacerNameGwil;
-            set => obRacerNameGwil = value;
+            get => obRacerNameGwil;//returns the racer name
+            set
+            {
+                //check if we need to redraw on next update
+                if (obRacerNameGwil != value)
+                    changedSinceDrawGwil = true;
+                obRacerNameGwil = value;
+            }
         }
 
         /// <summary>
@@ -196,6 +258,15 @@ namespace DragRacerGwil.Controls
             get => endOfRaceGwil - startOfRaceGwil;
         }
 
+        /// <summary>
+        /// The number of wins the racer has
+        /// </summary>
+        public int WinsGwil
+        {
+            get => winsGwil; //returns the number of wins;
+            set => winsGwil = value;//set the number of wins
+        }
+
         #endregion Properties
 
         #region Methods
@@ -203,12 +274,26 @@ namespace DragRacerGwil.Controls
         /// <summary>
         /// Creates an random speed for the current racer
         /// </summary>
-        public void CreateRandomSpeedGwil()
+        /// <param name="obOptionalPublicRandomGwil">
+        /// The random to use in case the use of a public static(shared vb) is preferred
+        /// </param>
+        public void CreateRandomSpeedGwil(Random obOptionalPublicRandomGwil = null)
         {
-            //create random class
-            System.Random rndGwil = new System.Random();
-            //get a new random for the speed
-            speedGwil = rndGwil.Next(5, 11);
+            //check if we need to use the pulic random
+            if (obOptionalPublicRandomGwil == null)
+            {
+                //create random class
+                System.Random obRndGwil = new System.Random();
+                //get a new random for the speed
+                speedGwil = (obRndGwil.Next(100, 560) / 10);
+                //speedGwil = ((obRndGwil.NextDouble() * 60) * 2);
+            }
+            else
+            {
+                //use the public random
+                //speedGwil = ((obOptionalPublicRandomGwil.NextDouble() * 60) * 2);
+                speedGwil = (obOptionalPublicRandomGwil.Next(100, 560) / 10);
+            }
         }
 
         /// <summary>
@@ -218,6 +303,7 @@ namespace DragRacerGwil.Controls
         {
             if (FinishedGwil == false)
             {
+                //move the drag racer the speed across the track
                 traveldRouteGwil += speedGwil;
                 if (traveldRouteGwil < tracsGwil.Length)
                 {
@@ -225,7 +311,14 @@ namespace DragRacerGwil.Controls
                     LocationGwil = new PointF(tracsGwil[(int)traveldRouteGwil].X + offset.X, tracsGwil[(int)traveldRouteGwil].Y + offset.Y);
                 }
                 else
-                    reachedFinshGwil = true;
+                    reachedFinishGwil = true;
+
+                if (traveldRouteGwil > tracsGwil.Length / 2 && passedHalfWayGwil == false)
+                {
+                    passedHalfWayGwil = true;
+                    CreateRandomSpeedGwil();
+                    csMessageHelperGwil.LogMessage("Creating new speed for racer: " + obRacerNameGwil, false);
+                }
             }
         }
 
@@ -244,8 +337,26 @@ namespace DragRacerGwil.Controls
                 obGrGwil.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
                 obGrGwil.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
-                //draw a rectangle with color on the graphics as the racer
-                obGrGwil.FillRectangle(new SolidBrush(BackgroundColorGwil), new RectangleF(LocationGwil, SizeGwil));
+                //check if location needs to be calculated first and thus calculate the new size
+                PointF drawLocGwil = LocationGwil;
+                SizeF drawSizeGwil = SizeGwil;
+                if (SizeGwil.Height < 0)
+                {
+                    drawLocGwil = new PointF(LocationGwil.X + SizeGwil.Width, LocationGwil.Y);
+                    drawSizeGwil = new SizeF(-drawSizeGwil.Width, drawSizeGwil.Height);
+                }
+
+                if (SizeGwil.Height < 0)
+                {
+                    drawLocGwil = new PointF(drawLocGwil.X, drawLocGwil.Y + SizeGwil.Height);
+                    drawSizeGwil = new SizeF(drawSizeGwil.Width, -drawSizeGwil.Height);
+                }
+
+                // draw a rectangle with color on the graphics as the racer
+                obGrGwil.FillRectangle(new SolidBrush(BackgroundColorGwil), new RectangleF(drawLocGwil, drawSizeGwil));
+                //obGrGwil.FillRectangle(new SolidBrush(BackgroundColorGwil), new RectangleF(drawLocGwil, drawSizeGwil));
+                obGrGwil.DrawImage(backgroundImageGwil, drawLocGwil.X, drawLocGwil.Y, drawSizeGwil.Width, drawSizeGwil.Height);
+                obGrGwil.DrawString(obRacerNameGwil, FontGwil, new SolidBrush(Color.Black), new PointF(drawLocGwil.X, drawLocGwil.Y + drawSizeGwil.Height));
 
                 //put back the stored settings
                 obGrGwil.InterpolationMode = prevSettingInterGwil;
@@ -264,23 +375,25 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public void EndRaceGwil()
         {
+            //set end of race to now
             endOfRaceGwil = DateTime.Now;
         }
 
         /// <summary>
         /// Reset racer to the start
         /// </summary>
-        /// <param name="startPointGwil"></param>
-        /// <param name="offset"></param>
+        /// <param name="startPointGwil">The point at which the race starts as a base point</param>
+        /// <param name="offset">The amount of pixels the offset from the base point is</param>
         public void ResetRacerToStartGwil(PointF startPointGwil, PointF offsetGwil)
         {
             LocationGwil = new PointF() { X = startPointGwil.X + offsetGwil.X, Y = startPointGwil.Y + offsetGwil.Y }; //reset the location of the racer
-            reachedFinshGwil = false;//reset the finished boolean
+            reachedFinishGwil = false;//reset the finished boolean
             //reset the time when the race started and stopped
             startOfRaceGwil = new DateTime();
             endOfRaceGwil = new DateTime();
-            KnowIsFinished = false;
+            KnowIsFinishedGwil = false;
             traveldRouteGwil = 0;
+            passedHalfWayGwil = false;
         }
 
         /// <summary>
@@ -288,7 +401,17 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public void StartRaceGwil()
         {
+            //sets the start time of the race
             startOfRaceGwil = DateTime.Now;
+        }
+
+        /// <summary>
+        /// Return the most important information show as a string
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return "{" + string.Format("{0}, {1}; {3} at {2}", NameGwil, SpeedGwil, LocationGwil, SizeGwil) + "}";
         }
 
         #endregion Methods

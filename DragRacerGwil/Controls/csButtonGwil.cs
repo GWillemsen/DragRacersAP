@@ -11,10 +11,15 @@ namespace DragRacerGwil.Controls
     {
         #region Fields
         private static Color foregroundColorGwil = Color.Black;
-        private Brush obDrawBrushGwil = new SolidBrush(Color.Gray);
-        private Font obFontGwil = new Font("Times New Roman", 11);
-        // Flag: Has Dispose already been called?
+
+        // Has Dispose already been called?
         private bool disposed = false;
+
+        //draw data
+        private Brush obDrawBrushGwil = new SolidBrush(Color.Gray);
+
+        private Font obFontGwil = new Font("Times New Roman", 11);
+
         #endregion Fields
 
         #region Constructors
@@ -32,19 +37,19 @@ namespace DragRacerGwil.Controls
             //add events for the redraw of the button
             OnMouseDownGwil += (senderGwil, eGwil) =>
             {
-                changedSinceDrawGwil = true;
+                changedSinceDrawGwil = true;//make a redraw
             };
             OnMouseUpGwil += (senderGwil, eGwil) =>
             {
-                changedSinceDrawGwil = true;
+                changedSinceDrawGwil = true;//make a redraw
             };
             OnMouseMoveGwil += (senderGwil, eGwil) =>
             {
-                changedSinceDrawGwil = true;
+                changedSinceDrawGwil = true;//make a redraw
             };
             OnMouseLeaveGwil += (senderGwil, eGwil) =>
             {
-                changedSinceDrawGwil = true;
+                changedSinceDrawGwil = true;//make a redraw
             };
         }
 
@@ -58,22 +63,23 @@ namespace DragRacerGwil.Controls
         public csButtonGwil(string a_NameGwil)
         {
             BasicControlFullResetGwil();
+
             //add events for the redraw of the button
             OnMouseDownGwil += (senderGwil, eGwil) =>
             {
-                changedSinceDrawGwil = true;
+                changedSinceDrawGwil = true;//make a redraw
             };
             OnMouseUpGwil += (senderGwil, eGwil) =>
             {
-                changedSinceDrawGwil = true;
+                changedSinceDrawGwil = true;//make a redraw
             };
             OnMouseMoveGwil += (senderGwil, eGwil) =>
             {
-                changedSinceDrawGwil = true;
+                changedSinceDrawGwil = true;//make a redraw
             };
             OnMouseLeaveGwil += (senderGwil, eGwil) =>
             {
-                changedSinceDrawGwil = true;
+                changedSinceDrawGwil = true;//make a redraw
             };
 
             //set the properties
@@ -88,11 +94,24 @@ namespace DragRacerGwil.Controls
         public csButtonGwil(string a_NameGwil, PointF a_LocationGwil)
         {
             BasicControlFullResetGwil();
+
             //add events for the redraw of the button
-            OnMouseDownGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
-            OnMouseUpGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
-            OnMouseMoveGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
-            OnMouseLeaveGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
+            OnMouseDownGwil += (senderGwil, eGwil) =>
+            {
+                changedSinceDrawGwil = true;//make a redraw
+            };
+            OnMouseUpGwil += (senderGwil, eGwil) =>
+            {
+                changedSinceDrawGwil = true;//make a redraw
+            };
+            OnMouseMoveGwil += (senderGwil, eGwil) =>
+            {
+                changedSinceDrawGwil = true;//make a redraw
+            };
+            OnMouseLeaveGwil += (senderGwil, eGwil) =>
+            {
+                changedSinceDrawGwil = true;//make a redraw
+            };
 
             //set the properties
             LocationGwil = a_LocationGwil;
@@ -108,11 +127,24 @@ namespace DragRacerGwil.Controls
         public csButtonGwil(string a_NameGwil, PointF a_LocationGwil, Size a_SizeGwil)
         {
             BasicControlFullResetGwil();
+
             //add events for the redraw of the button
-            OnMouseDownGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
-            OnMouseUpGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
-            OnMouseMoveGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
-            OnMouseLeaveGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
+            OnMouseDownGwil += (senderGwil, eGwil) =>
+            {
+                changedSinceDrawGwil = true;//make a redraw
+            };
+            OnMouseUpGwil += (senderGwil, eGwil) =>
+            {
+                changedSinceDrawGwil = true;//make a redraw
+            };
+            OnMouseMoveGwil += (senderGwil, eGwil) =>
+            {
+                changedSinceDrawGwil = true;//make a redraw
+            };
+            OnMouseLeaveGwil += (senderGwil, eGwil) =>
+            {
+                changedSinceDrawGwil = true;//make a redraw
+            };
 
             //set the properties
             SizeGwil = a_SizeGwil;
@@ -130,11 +162,24 @@ namespace DragRacerGwil.Controls
         public csButtonGwil(string a_NameGwil, PointF a_LocationGwil, Size a_SizeGwil, string a_Text)
         {
             BasicControlFullResetGwil();
+
             //add events for the redraw of the button
-            OnMouseDownGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
-            OnMouseUpGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
-            OnMouseMoveGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
-            OnMouseLeaveGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
+            OnMouseDownGwil += (senderGwil, eGwil) =>
+            {
+                changedSinceDrawGwil = true;//make a redraw
+            };
+            OnMouseUpGwil += (senderGwil, eGwil) =>
+            {
+                changedSinceDrawGwil = true;//make a redraw
+            };
+            OnMouseMoveGwil += (senderGwil, eGwil) =>
+            {
+                changedSinceDrawGwil = true;//make a redraw
+            };
+            OnMouseLeaveGwil += (senderGwil, eGwil) =>
+            {
+                changedSinceDrawGwil = true;//make a redraw
+            };
 
             //set the properties
             SizeGwil = a_SizeGwil;
@@ -154,11 +199,24 @@ namespace DragRacerGwil.Controls
         public csButtonGwil(string a_NameGwil, PointF a_LocationGwil, Size a_SizeGwil, string a_Text, Font a_FontGwil)
         {
             BasicControlFullResetGwil();
+
             //add events for the redraw of the button
-            OnMouseDownGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
-            OnMouseUpGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
-            OnMouseMoveGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
-            OnMouseLeaveGwil += (senderGwil, eGwil) => { changedSinceDrawGwil = true; };
+            OnMouseDownGwil += (senderGwil, eGwil) =>
+            {
+                changedSinceDrawGwil = true;//make a redraw
+            };
+            OnMouseUpGwil += (senderGwil, eGwil) =>
+            {
+                changedSinceDrawGwil = true;//make a redraw
+            };
+            OnMouseMoveGwil += (senderGwil, eGwil) =>
+            {
+                changedSinceDrawGwil = true;//make a redraw
+            };
+            OnMouseLeaveGwil += (senderGwil, eGwil) =>
+            {
+                changedSinceDrawGwil = true;//make a redraw
+            };
 
             //set the properties
             SizeGwil = a_SizeGwil;
@@ -178,7 +236,7 @@ namespace DragRacerGwil.Controls
         public Brush DrawingBrushGwil
         {
             get => obDrawBrushGwil;//returns the drawing brush
-            set => obDrawBrushGwil = value;//sets the drawing brush
+            set { obDrawBrushGwil = value; changedSinceDrawGwil = true; }//sets the drawing brush
         }
 
         /// <summary>
@@ -187,7 +245,7 @@ namespace DragRacerGwil.Controls
         public Font FontGwil
         {
             get => obFontGwil;//returns the current font
-            set => obFontGwil = value;//sets the new font
+            set { obFontGwil = value; changedSinceDrawGwil = true; }//sets the new font
         }
 
         /// <summary>
@@ -196,21 +254,22 @@ namespace DragRacerGwil.Controls
         public Color ForegroundColorGwil
         {
             get => foregroundColorGwil;//returns the text color
-            set => foregroundColorGwil = value;//sets the text color
-        }
-
-        /// <summary>
-        /// The text in the button
-        /// </summary>
-        public string TextGwil
-        {
-            get => ContentGwil;//returns the text in the button
-            set => ContentGwil = value;//sets the text in the button
+            set { foregroundColorGwil = value; changedSinceDrawGwil = true; } //sets the text color
         }
 
         #endregion Properties
 
         #region Methods
+
+        /// <summary>
+        /// Free all occupied resources
+        /// </summary>
+        public void Dispose()
+        {
+            //disposes of all resources
+            Dispose(true);
+            System.GC.SuppressFinalize(this);
+        }
 
         /// <summary>
         /// Draws the button on the graphics
@@ -295,17 +354,8 @@ namespace DragRacerGwil.Controls
             }
         }
 
-        /// <summary>
-        /// Free all occupied resources 
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            System.GC.SuppressFinalize(this);
-        }
-
         ///<summary>
-        ///Protected implementation of Dispose pattern.
+        ///Implementation of Dispose pattern.
         ///</summary>
         protected virtual void Dispose(bool disposing)
         {
@@ -322,6 +372,7 @@ namespace DragRacerGwil.Controls
             // Free any unmanaged objects here.
             disposed = true;
         }
+
         #endregion Methods
     }
 }

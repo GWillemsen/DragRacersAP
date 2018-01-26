@@ -8,7 +8,8 @@ namespace DragRacerGwil.Controls
     public class csPanelGwil : csBasicControlGwil
     {
         #region Fields
-        private List<csBasicControlGwil> obChildsGwil = new List<csBasicControlGwil>();
+        private Bitmap obBackgroundImage = new Bitmap(1, 1);
+        private csControlListGwil obChildsGwil = new csControlListGwil();
 
         #endregion Fields
 
@@ -122,7 +123,7 @@ namespace DragRacerGwil.Controls
             LocationGwil = a_LocationGwil;
             NameGwil = a_NameGwil;
             SizeGwil = a_SizeGwil;
-            obChildsGwil = a_ChildsGwil;
+            obChildsGwil = new csControlListGwil(a_ChildsGwil);
         }
 
         /// <summary>
@@ -146,7 +147,7 @@ namespace DragRacerGwil.Controls
             LocationGwil = a_LocationGwil;
             NameGwil = a_NameGwil;
             SizeGwil = a_SizeGwil;
-            obChildsGwil = a_ChildsGwil.ToList();
+            obChildsGwil = new csControlListGwil(a_ChildsGwil.ToList());
         }
 
         #endregion Constructors
@@ -154,10 +155,27 @@ namespace DragRacerGwil.Controls
         #region Properties
 
         /// <summary>
+        /// The background image of the control
+        /// </summary>
+        public Bitmap BackgroundImageGwil
+        {
+            //returns or sets the background image
+            get => obBackgroundImage;
+            set
+            {
+                //if new value is not old than update the control next draw
+                if (obBackgroundImage != value)
+                    changedSinceDrawGwil = true;
+                obBackgroundImage = value;//set the new bitmap
+            }
+        }
+
+        /// <summary>
         /// The controls in the panel as an list
         /// </summary>
-        public List<csBasicControlGwil> ChildsListGwil
+        public csControlListGwil ChildsListGwil
         {
+            //returns or sets the childsList
             get => obChildsGwil;
             set => obChildsGwil = value;
         }
@@ -181,15 +199,21 @@ namespace DragRacerGwil.Controls
                 //create graphics objects for the drawing
                 Bitmap obThePanelGwil = new Bitmap((int)SizeGwil.Width, ((int)SizeGwil.Height));
                 Graphics obPanelGrGwil = Graphics.FromImage(obThePanelGwil);
-
+                obPanelGrGwil.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.Default;
+                obPanelGrGwil.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
                 //clear the bitmap with the background color
                 obPanelGrGwil.Clear(BackgroundColorGwil);
+
+                // Create rect for dest image.
+                RectangleF destRectGwil = new RectangleF(new Point(0, 0), SizeGwil);
+                RectangleF srcRectGwil = new Rectangle(0, 0, BackgroundImageGwil.Width, BackgroundImageGwil.Height);
+                obPanelGrGwil.DrawImage(BackgroundImageGwil, destRectGwil, srcRectGwil, GraphicsUnit.Pixel);
+
                 //draw each individual control on the graphics
                 foreach (csBasicControlGwil obChildGwil in obChildsGwil)
                     obChildGwil.DrawGwil(obPanelGrGwil, true);
-
                 //draw the panel on the graphics
-                obGrGwil.DrawImage(obThePanelGwil, LocationGwil.X, LocationGwil.Y, SizeGwil.Width, SizeGwil.Height);
+                obGrGwil.DrawImage(obThePanelGwil, LocationGwil);
                 //dispose of the local graphics and image
                 obPanelGrGwil.Dispose();
                 obThePanelGwil.Dispose();
@@ -209,14 +233,15 @@ namespace DragRacerGwil.Controls
             OnMouseMoveGwil += MouseMove;
             OnMouseUpGwil += MouseUp;
             OnMouseLeaveGwil += MouseLeave;
+            OnResizeGwil += ResizeFormGwil;
         }
 
         /// <summary>
         /// Sends click event to control if mouse clicked on it
         /// </summary>
-        /// <param name="obSender">The parent control</param>
+        /// <param name="obSenderGwil">The parent control</param>
         /// <param name="eGwil">The mouse event args</param>
-        private void MouseClick(object obSender, System.EventArgs eGwil)
+        private void MouseClick(object obSenderGwil, System.EventArgs eGwil)
         {
             //convert the event args to correct format
             MouseEventArgs obOldEventArgsGwil = (MouseEventArgs)eGwil;
@@ -235,22 +260,25 @@ namespace DragRacerGwil.Controls
                          obMouseEventGwil.Y <= obControlGwil.LocationGwil.Y + obControlGwil.SizeGwil.Height)
                     {
                         //check if the new control is closer to the 0 index than the last one
-                        if (obClickControlGwil == null || obControlGwil.Z_indexGwil < obClickControlGwil.Z_indexGwil)
+                        if ((obClickControlGwil == null || obControlGwil.Z_indexGwil < obClickControlGwil.Z_indexGwil) && obControlGwil.Visible == true)
                             obClickControlGwil = obControlGwil;
                     }
                 }
             }
 
             //raise the controls click event
-            obClickControlGwil?.ClickGwil(obSender, obMouseEventGwil);
+            obClickControlGwil?.ClickGwil(obSenderGwil, obMouseEventGwil);
+
+            if (obClickControlGwil?.changedSinceDrawGwil == true)
+                changedSinceDrawGwil = true;
         }
 
         /// <summary>
         /// Sends mouse down event to control if mouse hovers over it and presses the mouse on it
         /// </summary>
-        /// <param name="obSender">The parent control</param>
+        /// <param name="obSenderGwil">The parent control</param>
         /// <param name="eGwil">The mouse event args</param>
-        private void MouseDown(object obSender, System.EventArgs eGwil)
+        private void MouseDown(object obSenderGwil, System.EventArgs eGwil)
         {
             //convert the event args to correct format
             MouseEventArgs obOldEventArgsGwil = (MouseEventArgs)eGwil;
@@ -259,6 +287,9 @@ namespace DragRacerGwil.Controls
 
             //control to preform mouseDown on
             csBasicControlGwil obMouseDownControlGwil = null;
+
+            //bool to check if we need to invalidate
+            bool invalidateControlGwil = false;
 
             foreach (csBasicControlGwil obControlGwil in obChildsGwil)
             {
@@ -269,7 +300,8 @@ namespace DragRacerGwil.Controls
                     if (obMouseEventGwil.Y >= obControlGwil.LocationGwil.Y &&
                          obMouseEventGwil.Y <= obControlGwil.LocationGwil.Y + obControlGwil.SizeGwil.Height)
                     {
-                        if (obMouseDownControlGwil == null || obControlGwil.Z_indexGwil < obMouseDownControlGwil.Z_indexGwil)
+                        //if the mouseDown control is not null and the z index is higher(further to the background)
+                        if ((obMouseDownControlGwil == null || obControlGwil.Z_indexGwil < obMouseDownControlGwil.Z_indexGwil) && obControlGwil.Visible == true)
                             obMouseDownControlGwil = obControlGwil;
                     }
                     else
@@ -291,19 +323,55 @@ namespace DragRacerGwil.Controls
                         obControlGwil.mouseEnteredGwil = false;
                     }
                 }
+                //check if we need to invalidate the control
+                if (obControlGwil.changedSinceDrawGwil == true)
+                    invalidateControlGwil = true;
             }
 
             //raise the mouse down event
-            obMouseDownControlGwil?.MouseDownRaiseGwil(obSender, obMouseEventGwil);
+            obMouseDownControlGwil?.MouseDownRaiseGwil(obSenderGwil, obMouseEventGwil);
+
+            //invalidate control if we need to
+            if (invalidateControlGwil == true)
+                changedSinceDrawGwil = true;
+        }
+
+        /// <summary>
+        /// Raises the mouse leave events of the controls if the mouse left that control
+        /// </summary>
+        /// <param name="obSenderGwil">The parent control</param>
+        /// <param name="eGwil">The mouse event args</param>
+        private void MouseLeave(object obSenderGwil, System.EventArgs eGwil)
+        {
+            //convert the event args to correct format
+            MouseEventArgs obOldEventArgsGwil = (MouseEventArgs)eGwil;
+            MouseEventArgs obMouseEventGwil = new MouseEventArgs(obOldEventArgsGwil.Button, obOldEventArgsGwil.Clicks,
+                (int)(obOldEventArgsGwil.X - LocationGwil.X), (int)(obOldEventArgsGwil.Y - LocationGwil.Y), obOldEventArgsGwil.Delta);
+
+            //bool to check weather something changed
+            bool invalidateControlGwil = false;
+
+            //loops through all controls and raises the mouse leave event if it thinks the mouse was in it
+            foreach (csBasicControlGwil obControlGwil in obChildsGwil)
+            {
+                if (obControlGwil.mouseEnteredGwil == true)
+                    obControlGwil.MouseLeaveGwil(obSenderGwil, obMouseEventGwil);
+                if (obControlGwil.changedSinceDrawGwil == true)
+                    invalidateControlGwil = true;
+            }
+
+            //invalidate control if we need to
+            if (invalidateControlGwil == true)
+                changedSinceDrawGwil = true;
         }
 
         /// <summary>
         /// Sends mouse moved event to the control the mouse moved in(or when it moves in/out raises
         /// those events too)
         /// </summary>
-        /// <param name="obSender">The parent control</param>
+        /// <param name="obSenderGwil">The parent control</param>
         /// <param name="eGwil">The mouse event args</param>
-        private void MouseMove(object obSender, System.EventArgs eGwil)
+        private void MouseMove(object obSenderGwil, System.EventArgs eGwil)
         {
             //convert the event args to correct format
             MouseEventArgs obOldEventArgsGwil = (MouseEventArgs)eGwil;
@@ -312,6 +380,9 @@ namespace DragRacerGwil.Controls
 
             //the control to preform the event on
             csBasicControlGwil obMouseMoveControlGwil = null;
+
+            //boolean to check if we need to invalidate the form
+            bool invalidateControlGwil = false;
 
             //loop through all controls
             foreach (csBasicControlGwil obControlGwil in obChildsGwil)
@@ -323,110 +394,139 @@ namespace DragRacerGwil.Controls
                     if (obMouseEventGwil.Y >= obControlGwil.LocationGwil.Y &&
                          obMouseEventGwil.Y <= obControlGwil.LocationGwil.Y + obControlGwil.SizeGwil.Height)
                     {
-                        if (obMouseMoveControlGwil == null || obControlGwil.Z_indexGwil < obMouseMoveControlGwil.Z_indexGwil)
+                        if ((obMouseMoveControlGwil == null || obControlGwil.Z_indexGwil < obMouseMoveControlGwil.Z_indexGwil) && obControlGwil.Visible == true)
                         {
                             obMouseMoveControlGwil = obControlGwil;
                         }
                     }
                     else if (obControlGwil.mouseEnteredGwil == true)
                         //otherwise raise leave events
-                        obControlGwil.MouseLeaveGwil(obSender, obMouseEventGwil);
+                        obControlGwil.MouseLeaveGwil(obSenderGwil, obMouseEventGwil);
                 }
                 else
                 {
                     if (obControlGwil.mouseEnteredGwil == true)
                         //otherwise raise leave events
-                        obControlGwil.MouseLeaveGwil(obSender, obMouseEventGwil);
+                        obControlGwil.MouseLeaveGwil(obSenderGwil, obMouseEventGwil);
                 }
 
                 //check if the control has detected that is should redraw
                 if (obControlGwil.changedSinceDrawGwil == true)
-                    changedSinceDrawGwil = true;//set the boolean to true so the form will invalidate
+                    invalidateControlGwil = true;//set the boolean to true so the form will invalidate
             }
 
             //if the mouse was not in the control before, raise the entered event first
             if (obMouseMoveControlGwil?.mouseEnteredGwil == false)
-                obMouseMoveControlGwil?.MouseEnterRaiseGwil(obSender, obMouseEventGwil);
+                obMouseMoveControlGwil?.MouseEnterRaiseGwil(obSenderGwil, obMouseEventGwil);
             //if so click a move event
-            obMouseMoveControlGwil?.MouseMoveRaiseGwil(obSender, obMouseEventGwil);
+            obMouseMoveControlGwil?.MouseMoveRaiseGwil(obSenderGwil, obMouseEventGwil);
+
+            //if the mousemove control changed since the last draw invalidate parent control
+            if (obMouseMoveControlGwil?.changedSinceDrawGwil == true)
+                changedSinceDrawGwil = true;
+
+            //invalidate control if we need to
+            if (invalidateControlGwil == true)
+                changedSinceDrawGwil = true;
         }
 
         /// <summary>
         /// Sends mouse up event to the control if the mouse was pressed down
         /// </summary>
-        /// <param name="obSender">The parent control</param>
+        /// <param name="obSenderGwil">The parent control</param>
         /// <param name="eGwil">The mouse event args</param>
-        private void MouseUp(object obSender, System.EventArgs eGwil)
+        private void MouseUp(object obSenderGwil, System.EventArgs eGwil)
         {
             //convert the event args to correct format
             MouseEventArgs obOldEventArgsGwil = (MouseEventArgs)eGwil;
             MouseEventArgs obMouseEventGwil = new MouseEventArgs(obOldEventArgsGwil.Button, obOldEventArgsGwil.Clicks,
                 (int)(obOldEventArgsGwil.X - LocationGwil.X), (int)(obOldEventArgsGwil.Y - LocationGwil.Y), obOldEventArgsGwil.Delta);
 
+            //bool to check weather we need to invalidate the control
+            bool invalidateControlGwil = false;
+
             foreach (csBasicControlGwil obControlGwil in obChildsGwil)
             {
-                ////check if mouse is in the control
-                //if (e.X >= controlGwil.LocationGwil.X &&
-                //    e.X <= controlGwil.SizeGwil.Width + controlGwil.LocationGwil.X)
-                //{
-                //    if (e.Y >= controlGwil.LocationGwil.Y &&
-                //         e.Y <= controlGwil.LocationGwil.Y + controlGwil.SizeGwil.Height)
-                //    {
-                //        //raise the mouse up event
-                //        controlGwil.MouseUpRaiseGwil(this, e);
-                //    }
-                //    else
-                //    {
-                //        //if mouse is down or mouse is entered, but the mouse is not actually there reset to properties
-                //        if (controlGwil.mouseDownGwil == true || controlGwil.mouseEnteredGwil == true)
-                //        {
-                //            controlGwil.mouseDownGwil = false;
-                //            controlGwil.mouseEnteredGwil = false;
-                //        }
-                //    }
-                //}
-                //else
-                //{
-                //    //if mouse is down or mouse is entered, but the mouse is not actually there reset to properties
-                //    if (controlGwil.mouseDownGwil == true || controlGwil.mouseEnteredGwil == true)
-                //    {
-                //        controlGwil.mouseDownGwil = false;
-                //        controlGwil.mouseEnteredGwil = false;
-                //    }
-                //}
                 if (obControlGwil.mouseDownGwil == true)
                     //raise the mouse up event
-                    obControlGwil.MouseUpRaiseGwil(obSender, obMouseEventGwil);
+                    obControlGwil.MouseUpRaiseGwil(obSenderGwil, obMouseEventGwil);
 
                 if (obMouseEventGwil.X < obControlGwil.LocationGwil.X && obMouseEventGwil.X > obControlGwil.SizeGwil.Width + obControlGwil.LocationGwil.X)
                     //raise the mouse left event
-                    obControlGwil.MouseLeaveGwil(obSender, obMouseEventGwil);
+                    obControlGwil.MouseLeaveGwil(obSenderGwil, obMouseEventGwil);
 
                 if (obMouseEventGwil.Y < obControlGwil.LocationGwil.Y && obMouseEventGwil.Y > obControlGwil.LocationGwil.Y + obControlGwil.SizeGwil.Height)
                     //raise the mouse left event
-                    obControlGwil.MouseLeaveGwil(obSender, obMouseEventGwil);
+                    obControlGwil.MouseLeaveGwil(obSenderGwil, obMouseEventGwil);
+                if (obControlGwil.changedSinceDrawGwil == true)
+                    invalidateControlGwil = true;
             }
+
+            //invalidate control if we need to
+            if (invalidateControlGwil == true)
+                changedSinceDrawGwil = true;
         }
 
         /// <summary>
-        /// Raises the mouse leave events of the controls if the mouse left that control
+        /// Resize child controls on a form resize
         /// </summary>
-        /// <param name="obSender">The parent control</param>
-        /// <param name="eGwil">The mouse event args</param>
-        private void MouseLeave(object obSender, System.EventArgs eGwil)
+        /// <param name="obSenderGwil">The sender of the event</param>
+        /// <param name="eGwil">The event arguments</param>
+        private void ResizeFormGwil(object obSenderGwil, System.EventArgs eGwil)
         {
-            //convert the event args to correct format
-            MouseEventArgs obOldEventArgsGwil = (MouseEventArgs)eGwil;
-            MouseEventArgs obMouseEventGwil = new MouseEventArgs(obOldEventArgsGwil.Button, obOldEventArgsGwil.Clicks,
-                (int)(obOldEventArgsGwil.X - LocationGwil.X), (int)(obOldEventArgsGwil.Y - LocationGwil.Y), obOldEventArgsGwil.Delta);
-
-            //loops through all controls and raises the mouse leave event if it thinks the mouse was in it
-            foreach (csBasicControlGwil obControlGwil in obChildsGwil)
+            csResizeEventgwil obArgumentsGwil = (csResizeEventgwil)eGwil;
+            //loop through all controls and resize them
+            for (int indexControlsGwil = 0; indexControlsGwil < obChildsGwil.Count; indexControlsGwil++)
             {
-                if(obControlGwil.mouseEnteredGwil == true)
-                    obControlGwil.MouseLeaveGwil(obSender, obMouseEventGwil);
+                //first set the auto resize and than the form widths because this way the form widths override the auto resize
+                csBasicControlGwil obControlGwil = obChildsGwil[indexControlsGwil];
+                SizeF oldSizeOfControlGwil = obControlGwil.SizeGwil;
+                if (obControlGwil.AutoResizeHeightGwil == true && obControlGwil.AutoResizeWidthGwil == true)
+                {
+                    obControlGwil.SizeGwil = new SizeF(
+                        (float)(obControlGwil.SizeGwil.Width * obArgumentsGwil.HorizontalScaleGwil),
+                        (float)(obControlGwil.SizeGwil.Height * obArgumentsGwil.VerticalScaleGwil));
+                }
+                else
+                {
+                    if (obControlGwil.AutoResizeWidthGwil == true)
+                    {
+                        obControlGwil.SizeGwil = new SizeF(
+                            (float)(obControlGwil.SizeGwil.Width * obArgumentsGwil.HorizontalScaleGwil), obControlGwil.SizeGwil.Height);
+                    }
+
+                    if (obControlGwil.AutoResizeHeightGwil == true)
+                    {
+                        obControlGwil.SizeGwil = new SizeF(
+                            obControlGwil.SizeGwil.Width, (float)(obControlGwil.SizeGwil.Height * obArgumentsGwil.VerticalScaleGwil));
+                    }
+                }
+
+                //set the to form heights
+                if (obControlGwil.IsFormHeightGwil == true && obControlGwil.IsFormWidthGwil == true)
+                {
+                    obControlGwil.SizeGwil = new SizeF(
+                        obArgumentsGwil.FullWidthParentGwil - obControlGwil.SubstractFromFormWidthGwil,
+                        obArgumentsGwil.FullHeightParentGwil - obControlGwil.SubstractFromFormHeightGwil);
+                }
+                else
+                {
+                    if (obControlGwil.IsFormHeightGwil == true)
+                        obControlGwil.SizeGwil = new SizeF(
+                            obControlGwil.SizeGwil.Width,
+                            obArgumentsGwil.FullHeightParentGwil - obControlGwil.SubstractFromFormHeightGwil);
+
+                    if (obControlGwil.IsFormWidthGwil == true)
+                        obControlGwil.SizeGwil = new SizeF(
+                            obArgumentsGwil.FullWidthParentGwil - obControlGwil.SubstractFromFormWidthGwil,
+                            obControlGwil.SizeGwil.Height);
+                }
+                csResizeEventgwil toRaiseGwil = new csResizeEventgwil(obArgumentsGwil.VerticalScaleGwil, obArgumentsGwil.HorizontalScaleGwil,
+                    obArgumentsGwil.OldSizeOfCurrentControlGwil, SizeGwil, (int)SizeGwil.Width, (int)SizeGwil.Height, oldSizeOfControlGwil);
+                obControlGwil.RaiseResizeEventGwil(this, toRaiseGwil);
             }
         }
+
         #endregion Methods
     }
 }

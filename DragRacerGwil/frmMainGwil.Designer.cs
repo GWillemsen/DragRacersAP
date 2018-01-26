@@ -12,15 +12,16 @@
             // 
             // tmrKeepEmRacingGwil
             // 
-            this.tmrKeepEmRacingGwil.Interval = 1;
             this.tmrKeepEmRacingGwil.Tick += new System.EventHandler(this.tmrKeepEmRacingGwil_Tick);
             // 
             // frmMainGwil
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(733, 394);
+            this.ClientSize = new System.Drawing.Size(782, 453);
             this.DoubleBuffered = true;
+            this.MaximumSize = new System.Drawing.Size(800, 500);
+            this.MinimumSize = new System.Drawing.Size(800, 500);
             this.Name = "frmMainGwil";
             this.Load += new System.EventHandler(this.frmMainGwil_Load);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.frmMainGwil_MouseClick);

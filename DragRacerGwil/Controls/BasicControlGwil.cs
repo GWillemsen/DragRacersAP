@@ -9,12 +9,18 @@ namespace DragRacerGwil.Controls
         public bool changedSinceDrawGwil = false;
         public bool mouseDownGwil = false;
         public bool mouseEnteredGwil = false;
-        private bool allowAutoResizeGwil = false;
+        private bool allowAutoResizeHeightGwil = true;
+        private bool allowAutoResizeWidthGwil = true;
         private Color backgroundColorGwil = Color.LightGray;
         private string contentGwil = "";
+        private bool hidesOnOutsideClickGwil = false;
+        private bool isFormHeightGwil = false;
+        private bool isFormWidthGwil = false;
         private PointF locationGwil = new PointF(0, 0);
         private string nameGwil = "";
         private SizeF sizeGwil = new SizeF(0, 0);
+        private int toSubstractFromHeigthGwil = 0;
+        private int toSubstractFromWidthGwil = 0;
         private bool visibleGwil = true;
         private int zIndexGwil = 0;
 
@@ -27,6 +33,7 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public csBasicControlGwil()
         {
+            //basic full reset
             BasicControlFullResetGwil();
         }
 
@@ -36,6 +43,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_NameGwil">The name of the control</param>
         public csBasicControlGwil(string a_NameGwil)
         {
+            //basic full reset
             BasicControlFullResetGwil();
             //make everything default except the text
             contentGwil = "";
@@ -55,6 +63,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_LocationGwil">The new location of the control</param>
         public csBasicControlGwil(string a_NameGwil, PointF a_LocationGwil)
         {
+            //basic full reset
             BasicControlFullResetGwil();
             //make everything default except the text and location
             contentGwil = "";
@@ -75,6 +84,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_SizeGwil">The new size of the control</param>
         public csBasicControlGwil(string a_NameGwil, PointF a_LocationGwil, Size a_SizeGwil)
         {
+            //basic full reset
             BasicControlFullResetGwil();
             //make everything default except the text, size and location
             contentGwil = "";
@@ -96,6 +106,7 @@ namespace DragRacerGwil.Controls
         /// <param name="a_BackgroundColorGwil">The background color of the control</param>
         public csBasicControlGwil(string a_NameGwil, PointF a_LocationGwil, Size a_SizeGwil, Color a_BackgroundColorGwil)
         {
+            //basic full reset
             BasicControlFullResetGwil();
             //make everything default except the text, size, location and background color
             contentGwil = "";
@@ -115,18 +126,22 @@ namespace DragRacerGwil.Controls
         /// Gets raised when the control is clicked
         /// </summary>
         public event EventHandler OnClickGwil;
+
         /// <summary>
         /// Gets raised when the mouse button is down in the control
         /// </summary>
         public event EventHandler OnMouseDownGwil;
+
         /// <summary>
         /// Gets raised when the mouse enters this control
         /// </summary>
         public event EventHandler OnMouseEnterGwil;
+
         /// <summary>
         /// Gets raised when the mouse leaves this control
         /// </summary>
         public event EventHandler OnMouseLeaveGwil;
+
         /// <summary>
         /// Gets raised when the mouse moves around in the control
         /// </summary>
@@ -137,17 +152,33 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public event EventHandler OnMouseUpGwil;
 
+        /// <summary>
+        /// Gets raised when the control resized
+        /// </summary>
+        public event EventHandler OnResizeGwil;
+
         #endregion Events
 
         #region Properties
 
         /// <summary>
-        /// Weather the control will resize automatically with the parent control
+        /// Weather the controls height will resize automatically with the parent control
         /// </summary>
-        public bool AutoResizeGwil
+        public bool AutoResizeHeightGwil
         {
-            get => allowAutoResizeGwil;
-            set => allowAutoResizeGwil = value;
+            //gets or sets the values
+            get => allowAutoResizeHeightGwil;
+            set => allowAutoResizeHeightGwil = value;
+        }
+
+        /// <summary>
+        /// Weather the controls width will resize automatically with the parent control
+        /// </summary>
+        public bool AutoResizeWidthGwil
+        {
+            //set or get weather the control will resize with the parent
+            get => allowAutoResizeWidthGwil;
+            set => allowAutoResizeWidthGwil = value;
         }
 
         /// <summary>
@@ -179,6 +210,39 @@ namespace DragRacerGwil.Controls
                 //update the value
                 contentGwil = value;
             }
+        }
+
+        /// <summary>
+        /// If this boolean is true the control will set visibility to false when there was a mouse
+        /// click outside this control
+        /// </summary>
+        public bool HidesWhenClickedOutsideControlGwil
+        {
+            //get and set the boolean
+            get => hidesOnOutsideClickGwil;
+            set => hidesOnOutsideClickGwil = value;
+        }
+
+        /// <summary>
+        /// If the control should be resized to the form full height
+        /// </summary>
+        public bool IsFormHeightGwil
+        {
+            //get the bool value
+            get => isFormHeightGwil;
+            //set the bool value to the given one
+            set => isFormHeightGwil = value;
+        }
+
+        /// <summary>
+        /// If the control should be resized to the form full width
+        /// </summary>
+        public bool IsFormWidthGwil
+        {
+            //get the bool value
+            get => isFormWidthGwil;
+            //set the booleans value to the given one
+            set => isFormWidthGwil = value;
         }
 
         /// <summary>
@@ -227,6 +291,38 @@ namespace DragRacerGwil.Controls
         }
 
         /// <summary>
+        /// The optional width to subtract from the forms height before drawing
+        /// </summary>
+        public int SubstractFromFormHeightGwil
+        {
+            get => toSubstractFromHeigthGwil;//returns the height
+            set
+            {
+                //if the new value isn't the same update the control next draw
+                if (toSubstractFromHeigthGwil != value)
+                    changedSinceDrawGwil = true;
+                //set the new value
+                toSubstractFromHeigthGwil = value;
+            }
+        }
+
+        /// <summary>
+        /// The optional width to subtract from the forms width before drawing
+        /// </summary>
+        public int SubstractFromFormWidthGwil
+        {
+            get => toSubstractFromWidthGwil;//return the width
+            set
+            {
+                //if the new value isn't the same update the control next draw
+                if (toSubstractFromWidthGwil != value)
+                    changedSinceDrawGwil = true;
+                //set the new value
+                toSubstractFromWidthGwil = value;
+            }
+        }
+
+        /// <summary>
         /// The visibility of the form
         /// </summary>
         public bool Visible
@@ -247,6 +343,7 @@ namespace DragRacerGwil.Controls
         /// </summary>
         public int Z_indexGwil
         {
+            //gets or sets the z index of this control
             get => zIndexGwil;
             set => zIndexGwil = value;
         }
@@ -271,7 +368,7 @@ namespace DragRacerGwil.Controls
         }
 
         /// <summary>
-        /// Raise the event that the button is clicked
+        /// Raise the event that the control is clicked
         /// </summary>
         /// <param name="senderGwil">The sender of the event</param>
         /// <param name="eGwil">The extra info of the event</param>
@@ -283,61 +380,72 @@ namespace DragRacerGwil.Controls
         /// <summary>
         /// Draw the control
         /// </summary>
-        /// <param name="grGwil">Graphics to draw the button on</param>
+        /// <param name="grGwil">Graphics to draw the control on</param>
         public virtual void DrawGwil(Graphics grGwil, bool forceRedrawGwil = false) { }
 
         /// <summary>
         /// Raise the event that the mouse button is pressed down
         /// </summary>
         /// <param name="senderGwil">The sender of the event</param>
-        /// <param name="argGwil">The extra info of the event</param>
-        public void MouseDownRaiseGwil(object senderGwil, System.Windows.Forms.MouseEventArgs argGwil)
+        /// <param name="obArgGwil">The extra info of the event</param>
+        public void MouseDownRaiseGwil(object senderGwil, System.Windows.Forms.MouseEventArgs obArgGwil)
         {
             mouseDownGwil = true;//say the mouse button is down
-            OnMouseDownGwil?.Invoke(senderGwil, argGwil);//raise the event handler if it not null
+            OnMouseDownGwil?.Invoke(senderGwil, obArgGwil);//raise the event handler if it not null
         }
 
         /// <summary>
         /// Raise the event that the mouse entered this control
         /// </summary>
         /// <param name="senderGwil"></param>
-        /// <param name="argGwil"></param>
-        public void MouseEnterRaiseGwil(object senderGwil, System.Windows.Forms.MouseEventArgs argGwil)
+        /// <param name="obArgGwil"></param>
+        public void MouseEnterRaiseGwil(object senderGwil, System.Windows.Forms.MouseEventArgs obArgGwil)
         {
             mouseEnteredGwil = true;//set to true, so it know the mouse has entered
-            OnMouseEnterGwil?.Invoke(senderGwil, argGwil);//if the event handler is not null raise it
+            OnMouseEnterGwil?.Invoke(senderGwil, obArgGwil);//if the event handler is not null raise it
         }
 
         /// <summary>
         /// Raise the event that the mouse left the control
         /// </summary>
         /// <param name="senderGwil">The sender of the event</param>
-        /// <param name="argGwil">The extra info of the event</param>
-        public void MouseLeaveGwil(object senderGwil, System.Windows.Forms.MouseEventArgs argGwil)
+        /// <param name="obArgGwil">The extra info of the event</param>
+        public void MouseLeaveGwil(object senderGwil, System.Windows.Forms.MouseEventArgs obArgGwil)
         {
             mouseEnteredGwil = false;//say the mouse is not in the control
-            OnMouseLeaveGwil?.Invoke(senderGwil, argGwil);//raise the mouse left event if it is not null
+            OnMouseLeaveGwil?.Invoke(senderGwil, obArgGwil);//raise the mouse left event if it is not null
         }
 
         /// <summary>
         /// Raise the event that the mouse was moved
         /// </summary>
         /// <param name="senderGwil">The sender of the event</param>
-        /// <param name="argGwil">The extra info of the event</param>
-        public void MouseMoveRaiseGwil(object senderGwil, System.Windows.Forms.MouseEventArgs argGwil)
+        /// <param name="obArgGwil">The extra info of the event</param>
+        public void MouseMoveRaiseGwil(object senderGwil, System.Windows.Forms.MouseEventArgs obArgGwil)
         {
-            OnMouseMoveGwil?.Invoke(senderGwil, argGwil);//raise the mouse moved event if it is not null
+            OnMouseMoveGwil?.Invoke(senderGwil, obArgGwil);//raise the mouse moved event if it is not null
         }
 
         /// <summary>
         /// Raise the event that the button of the mouse was released
         /// </summary>
         /// <param name="senderGwil">The sender of the event</param>
-        /// <param name="argGwil">The extra info of the event</param>
-        public void MouseUpRaiseGwil(object senderGwil, System.Windows.Forms.MouseEventArgs argGwil)
+        /// <param name="obArgGwil">The extra info of the event</param>
+        public void MouseUpRaiseGwil(object senderGwil, System.Windows.Forms.MouseEventArgs obArgGwil)
         {
             mouseDownGwil = false;//say the mouse if not down
-            OnMouseUpGwil?.Invoke(senderGwil, argGwil);//raise the event handler if it is not null
+            OnMouseUpGwil?.Invoke(senderGwil, obArgGwil);//raise the event handler if it is not null
+        }
+
+        /// <summary>
+        /// Raises the resize event for the control
+        /// </summary>
+        /// <param name="senderGwil">The sender of the event</param>
+        /// <param name="argsGwil">Arguments for the event</param>
+        public void RaiseResizeEventGwil(object senderGwil, EventArgs argsGwil)
+        {
+            //if on resize is not null invoke it
+            OnResizeGwil?.Invoke(senderGwil, argsGwil);
         }
 
         /// <summary>
